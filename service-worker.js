@@ -1,7 +1,7 @@
 // service-worker.js
-const CACHE_NAME = 'static-v1';
+const CACHE_NAME = 'ffl-calc-v1.2';
 const urlsToCache = [
-  './',             // catch the root (index.html)
+  './',
   './index.html',
   './manifest.json',
   './icons/icon-192.png',
@@ -20,6 +20,21 @@ self.addEventListener('install', evt => {
           console.error('[SW] Failed to cache:', url, err);
         }
       }
+    })
+  );
+});
+
+self.addEventListener('activate', evt => {
+  evt.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames
+          .filter(name => name !== CACHE_NAME)
+          .map(name => {
+            console.log('[SW] Deleting old cache:', name);
+            return caches.delete(name);
+          })
+      );
     })
   );
 });
