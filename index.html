@@ -1,4 +1,4 @@
-<!-- Uploaded to Github Repositiry 9 MMarch 2026 as 2025.FFL v1 -->
+<!-- Uploaded to Github Repositiry 9 March 2026 @ 0805 as 2025.FFL v1.1 -->
 
 
 <!DOCTYPE html>
@@ -1110,7 +1110,7 @@ function calculateVerify(name) {
 
 	if (typeof rate.maxRate === "number") {
 			const maxMlHr = rate.absolute
-				? (rate.maxRate * unitConverrsion) / med.concentration
+				? (rate.maxRate * unitConversion) / med.concentration
 				: rate.perMinute
 					? (rate.maxRate * unitConversion * weight * 60) / med.concentration
 					: (rate.maxRate * unitConversion * weight) / med.concentration;
