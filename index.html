@@ -1,4 +1,4 @@
-<!-- Version 1.4 implemented update checker -->
+<!-- Version 1.4.1 - Minor changes made to test update checker implementation -->
 
 
 <!DOCTYPE html>
@@ -1060,7 +1060,6 @@ function buildTables() {
 	Object.entries(sectionConfig).forEach(([sectionId, config]) => {
 
 			const table =
-				document.getElementById(sectionId)
 					.closest("table");
 
 			const thead =
@@ -1160,7 +1159,7 @@ function calculateAll() {
 
 				const baseLabel = med.label || name;
 				updateHTML(`${name}-label`, capped
-				? `${baseLabel}<br><span style="color:red; font-weight:bold;"><span style="font-size:0.65em;">⚠️</span> Dose Capped <span style="font-size:0.65em;">⚠️</span></span>`
+				? `${baseLabel}<br><span style="color:red; font-weight:bold;"><span style="font-size:0.65em;">⚠️</span> Dose Cap <span style="font-size:0.65em;">⚠️</span></span>`
 				: baseLabel);
 
 			if (minDose === maxDose) {
