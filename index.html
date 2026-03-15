@@ -1,4 +1,4 @@
-<!-- Version 1.3 - Standardized tabs vs spaces -->
+<!-- Version 1.4 implemented update checker -->
 
 
 <!DOCTYPE html>
@@ -39,6 +39,21 @@ body {
 	font-weight: bold;
 	text-align: center;
 	color: #EA9B56;
+}
+
+.update-banner {
+	display: none;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	background: #EA9B56;
+	color: black;
+	text-align: center;
+	padding: 10px;
+	font-weight: bold;
+	font-size: 15px;
+	z-index: 9999;
+	cursor: pointer;
 }
 
 .footer {
@@ -1286,25 +1301,49 @@ function updateHTML(cls, val) {
 </script>
 
 <script>
-	if ('serviceWorker' in navigator) {
-		window.addEventListener('load', () => {
-			navigator.serviceWorker.register('./service-worker.js')
-				.then(reg => console.log('[SW] Registered:', reg.scope))
-				.catch(err => console.error('[SW] Registration failed:', err));
-		});
-		navigator.serviceWorker.addEventListener('message', event => {
-			if (event.data.version) {
-				document.getElementById('version-footer').textContent =
-					`Version ${event.data.version} | Updated ${event.data.date}`;
-			}
-		});
-		navigator.serviceWorker.ready.then(reg => {
-			reg.active.postMessage('getVersion');
-		});
-	}
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(reg => {
+          console.log('[SW] Registered:', reg.scope);
+
+          // Check for updates every time the page loads
+          reg.update();
+
+          // If a new service worker is waiting, show the banner
+          if (reg.waiting) {
+            document.getElementById('update-banner').style.display = 'block';
+          }
+
+          // Watch for a new service worker installing then waiting
+          reg.addEventListener('updatefound', () => {
+            const newWorker = reg.installing;
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                document.getElementById('update-banner').style.display = 'block';
+              }
+            });
+          });
+        })
+        .catch(err => console.error('[SW] Registration failed:', err));
+    });
+
+    navigator.serviceWorker.addEventListener('message', event => {
+      if (event.data.version) {
+        document.getElementById('version-footer').textContent =
+          `Version ${event.data.version}  |  Updated ${event.data.date}`;
+      }
+    });
+
+    navigator.serviceWorker.ready.then(reg => {
+      reg.active.postMessage('getVersion');
+    });
+  }
+</script>
 </script>
 
 <div id="version-footer" class="footer">Version --</div>
-
+<div id="update-banner" class="update-banner" onclick="window.location.reload()">An update is available - tap here to reload</div>
 </body>
 </html>
