@@ -1,7 +1,7 @@
 // service-worker.js
-const CACHE_NAME = 'ffl-calc-v1.4.2' /* UPDATE CACHE NAME		'ffl-calc-v1.x'; */
-const VERSION = '1.4.2' /* UPDATE VERSION		'1.x'		*/
-const UPDATE_DATE = '3.15.26' /*		'UPDATE DATE OF UPLOAD'		*/
+const CACHE_NAME = 'ffl-calc-v1.4.4' /* UPDATE CACHE NAME		'ffl-calc-v1.x'; */
+const VERSION = '1.4.4' /* UPDATE VERSION		'1.x'		*/
+const UPDATE_DATE = '3.15.26 15:20' /*		'UPDATE DATE OF UPLOAD'		*/
 const urlsToCache = [
   './',
   './index.html',
@@ -9,12 +9,6 @@ const urlsToCache = [
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
-
-self.addEventListener	('message', event => {
-	if (event.data === 'getVersion') {
-		event.source.postMessage({ version: VERSION, date: UPDATE_DATE });
-	}
-})
 
 self.addEventListener('install', evt => {
   console.log('[SW] Installing, will cache:', urlsToCache);
@@ -47,8 +41,17 @@ self.addEventListener('activate', evt => {
   );
 });
 
-self.addEventListener("fetch", event => {
+self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => response || fetch(event.request))
   );
+});
+
+self.addEventListener('message', event => {
+  if (event.data === 'getVersion') {
+    event.source.postMessage({ version: VERSION, date: UPDATE_DATE });
+  }
+  if (event.data === 'skipWaiting') {
+    self.skipWaiting();
+  }
 });

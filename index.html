@@ -1,4 +1,4 @@
-<!-- Version 1.4.1 - Minor changes made to test update checker implementation -->
+<!-- Version 1.4.4 -->
 
 
 <!DOCTYPE html>
@@ -49,7 +49,7 @@ body {
 	background: #EA9B56;
 	color: black;
 	text-align: center;
-	padding: 10px;
+	padding: 15px;
 	font-weight: bold;
 	font-size: 15px;
 	z-index: 9999;
@@ -1310,9 +1310,17 @@ function updateHTML(cls, val) {
           // Check for updates every time the page loads
           reg.update();
 
-          // If a new service worker is waiting, show the banner
-          if (reg.waiting) {
+          // Store reference to waiting worker and wire up banner
+          function setWaitingWorker(worker) {
             document.getElementById('update-banner').style.display = 'block';
+            document.getElementById('update-banner').onclick = () => {
+              worker.postMessage('skipWaiting');
+            };
+          }
+
+          // If a new service worker is already waiting on load
+          if (reg.waiting) {
+            setWaitingWorker(reg.waiting);
           }
 
           // Watch for a new service worker installing then waiting
@@ -1320,7 +1328,7 @@ function updateHTML(cls, val) {
             const newWorker = reg.installing;
             newWorker.addEventListener('statechange', () => {
               if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                document.getElementById('update-banner').style.display = 'block';
+                setWaitingWorker(newWorker);
               }
             });
           });
@@ -1328,6 +1336,12 @@ function updateHTML(cls, val) {
         .catch(err => console.error('[SW] Registration failed:', err));
     });
 
+    // When new service worker takes control, reload to use it
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      window.location.reload();
+    });
+
+    // Request version info from service worker
     navigator.serviceWorker.addEventListener('message', event => {
       if (event.data.version) {
         document.getElementById('version-footer').textContent =
@@ -1335,6 +1349,7 @@ function updateHTML(cls, val) {
       }
     });
 
+    // Send the request once the service worker is active
     navigator.serviceWorker.ready.then(reg => {
       reg.active.postMessage('getVersion');
     });
