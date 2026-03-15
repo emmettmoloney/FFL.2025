@@ -1,7 +1,7 @@
 // service-worker.js
-const CACHE_NAME = 'ffl-calc-v1.3';
-const VERSION = '1.3'
-const UPDATE_DATE = '3.15.26'
+const CACHE_NAME = 'ffl-calc-v1.x';
+const VERSION = '1.x'
+const UPDATE_DATE = 'date of publish'
 const urlsToCache = [
   './',
   './index.html',
@@ -10,7 +10,7 @@ const urlsToCache = [
   './icons/icon-512.png'
 ];
 
-self.addeventlistener('message', event => {
+self.addEventListener('message', event => {
 	if (event.data === 'getVersion') {
 		event.source.postMessage({ version: VERSION, date: UPDATE_DATE });
 	}
