@@ -1,4 +1,4 @@
-<!-- Version 1.2 - includes bug fixes and improvements from claude, uploaded to github main thread @ 1600 on 3/9/2026 -->
+<!-- Version 1.3 - Standardized tabs vs spaces -->
 
 
 <!DOCTYPE html>
@@ -28,9 +28,9 @@
 */
 
 body {
-  font-family: Arial, sans-serif;
-  margin: 15px;
-  background: #00005c;
+	font-family: Arial, sans-serif;
+	margin: 15px;
+	background: #00005c;
 }
 
 .page-title {
@@ -41,102 +41,112 @@ body {
 	color: #EA9B56;
 }
 
+.footer {
+	position: fixed;
+	bottom: 8px;
+	width: 100%;
+	text-align: center;
+	font-size: 11px;
+	color: #EA9B56;
+	pointer-events: none;
+}
+
 .container {
-  max-width: 1100px;
-  margin: auto;
+	max-width: 1100px;
+	margin: auto;
 }
 
 /* Warning box styling */
 .warning-box {
-  background: #ffe6e6;
-  border: 2px solid red;
-  padding: 12px;
-  text-align: center;
-  font-size: 18px;
-  border-radius: 5px;
-  margin-bottom: 20px;
+	background: #ffe6e6;
+	border: 2px solid red;
+	padding: 12px;
+	text-align: center;
+	font-size: 18px;
+	border-radius: 5px;
+	margin-bottom: 20px;
 }
 
 /* Profile buttons */
 .start-button {
-  font-size: 20px;
-  font-weight: bold;
-  padding: 12px 24px;
-  margin: 10px;
-  background-color: #EA9B56;
-  color: black;
-  border-radius: 8px;
-  cursor: pointer;
-  border: none;
+	font-size: 20px;
+	font-weight: bold;
+	padding: 12px 24px;
+	margin: 10px;
+	background-color: #EA9B56;
+	color: black;
+	border-radius: 8px;
+	cursor: pointer;
+	border: none;
 }
 
 .start-button:hover {
-  background-color: #000080;
-  color: #EA9B56;
+	background-color: #000080;
+	color: #EA9B56;
 }
 
 /* Hide calculator until profile selected */
 .page-section {
-  display: none;
+	display: none;
 }
 
 /* Section titles */
 .section-title {
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 10px;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 10px;
 }
 
 /* Section Subtitles */
 .section-subtitle {
-  font-size: 15px;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 12px;
-  margin-bottom: 4px;
+	font-size: 15px;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 12px;
+	margin-bottom: 4px;
 }
 
 /* Weight input block */
 .patient-weight {
-  background-color: #EA9B56;
-  font-size: 22px;
-  font-weight: bold;
-  text-align: center;
-  padding: 20px;
-  border-radius: 5px;
-  margin-bottom: 15px;
+	background-color: #EA9B56;
+	font-size: 22px;
+	font-weight: bold;
+	text-align: center;
+	padding: 20px;
+	border-radius: 5px;
+	margin-bottom: 15px;
 }
 
 input {
-  width: 125px;
-  height: 40px;
-  margin-top: 10px;
-  font-size: 24px;
-  text-align: center;
+	width: 125px;
+	height: 40px;
+	margin-top: 10px;
+	font-size: 24px;
+	text-align: center;
 }
 
 /* Tables */
 table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-  background: white;
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+	background: white;
 }
 
 table, th, td {
-  border: 1px solid black;
-  padding: 6px;
-  font-size: 16px;
-  text-align: center;
+	border: 1px solid black;
+	padding: 6px;
+	font-size: 16px;
+	text-align: center;
 }
 
 .empty-cell {
-  border: none;
+	border: none;
 }
 
 th {
-  background: #f2f2f2;
+	background: #f2f2f2;
 }
 
 /* Section color coding */
@@ -149,30 +159,30 @@ th {
 
 /* Infusion verification add-on */
 .verify-row td {
-  background: #f0f4ff;
-  font-style: italic;
-  font-size: 13px;
-  padding: 2px 6px; 
+	background: #f0f4ff;
+	font-style: italic;
+	font-size: 13px;
+	padding: 2px 6px; 
 }
 
 .verify-input {
-  width: 100px;
-  height: 22px;
-  font-size: 14px;
-  text-align: center;
-  margin-top: 0px;
-  margin-left: 6px;
+	width: 100px;
+	height: 22px;
+	font-size: 14px;
+	text-align: center;
+	margin-top: 0px;
+	margin-left: 6px;
 }
 
 /* Hides Spinner UI in patient weight entry box */
 input[type="number"] {
-  appearance: textfield;
-  -moz-appearance: textfield;
+	appearance: textfield;
+	-moz-appearance: textfield;
 }
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+	-webkit-appearance: none;
+	margin: 0;
 }
 </style>
 </head>
@@ -190,29 +200,29 @@ input[type="number"]::-webkit-inner-spin-button {
 -->
 
 <div id="start-page">
-  <h2 class="page-title">Flight for Life Colorado<br>Dose Calculator<br><span style="font-size: 24px"><img src="icons/icon-192.png" alt="custom emoji" style="width:1em; height:1em; vertical-align:middle;"> 2025 Guidelines <img src="icons/icon-192.png" alt="custom emoji" style="width:1em; height:1em; vertical-align:middle;"></span></h2>
+	<h2 class="page-title">Flight for Life Colorado<br>Dose Calculator<br><span style="font-size: 24px"><img src="icons/icon-192.png" alt="custom emoji" style="width:1em; height:1em; vertical-align:middle;"> 2025 Guidelines <img src="icons/icon-192.png" alt="custom emoji" style="width:1em; height:1em; vertical-align:middle;"></span></h2>
 
-  <div class="warning-box">
-    ⚠️⚠️⚠️⚠️⚠️
-    <br> 
+	<div class="warning-box">
+		⚠️⚠️⚠️⚠️⚠️
+		<br> 
 		This calculator is a clinical adjunct and must never replace independent medication verifications or a provider's clinical judgement.
 		<br>
 		⚠️⚠️⚠️⚠️⚠️
 		<br>
-		
+
 		<br>
 		This calculator’s doses are specific and limited to IV/IO medication guidelines unless explicitly stated.
-  </div>
+	</div>
 
-  <div style="text-align: center;">
-    <button class="start-button profile-select" data-profile="adult">Adult</button>
-    <br>
-    <br>
-    <button class="start-button profile-select" data-profile="geriatric">Geriatric</button>
-    <br>
-    <br>
-    <button class="start-button profile-select" data-profile="pediatric">Pediatric</button>
-  </div>
+	<div style="text-align: center;">
+		<button class="start-button profile-select" data-profile="adult">Adult</button>
+		<br>
+		<br>
+		<button class="start-button profile-select" data-profile="geriatric">Geriatric</button>
+		<br>
+		<br>
+		<button class="start-button profile-select" data-profile="pediatric">Pediatric</button>
+	</div>
 </div>
 
 
@@ -227,76 +237,76 @@ input[type="number"]::-webkit-inner-spin-button {
 
 <div id="calculator-page" class="page-section">
 
-  <div style="text-align: center;">
-    <button class="start-button" onclick="goHome()">← Back to Start</button>
-  </div>
+	<div style="text-align: center;">
+		<button class="start-button" onclick="goHome()">← Back to Start</button>
+	</div>
 
-  <!-- Patient Weight Input -->
-  <div class="patient-weight">
-    <span id="profileLabel"></span> Patient Weight (kg)<br>
-    <input type="number" id="weightInput" placeholder="(kg)">
-  </div>
+	<!-- Patient Weight Input -->
+	<div class="patient-weight">
+		<span id="profileLabel"></span> Patient Weight (kg)<br>
+		<input type="number" id="weightInput" placeholder="(kg)">
+	</div>
 
-  <!-- SECTION CONTAINERS -->
-  <!-- Tables will be built dynamically inside each "tbody" -->
+	<!-- SECTION CONTAINERS -->
+	<!-- Tables will be built dynamically inside each "tbody" -->
 
-  <div class="supportive-agents">
-    <div class="section-title">Supportive Agents</div>
-    <table>
-      <thead><tr></tr></thead>
-      <tbody id="supportive-body"></tbody>
-    </table>
-  </div>
+	<div class="supportive-agents">
+		<div class="section-title">Supportive Agents</div>
+		<table>
+			<thead><tr></tr></thead>
+			<tbody id="supportive-body"></tbody>
+		</table>
+	</div>
 
-  <div class="induction-agents">
-    <div class="section-title">Induction Agents</div>
-    <table>
-      <thead><tr></tr></thead>
-      <tbody id="induction-body"></tbody>
-    </table>
-  </div>
+	<div class="induction-agents">
+		<div class="section-title">Induction Agents</div>
+		<table>
+			<thead><tr></tr></thead>
+			<tbody id="induction-body"></tbody>
+		</table>
+	</div>
 
-  <div class="paralytic-agents">
-    <div class="section-title">Paralytic Agents</div>
-    <table>
-      <thead><tr></tr></thead>
-      <tbody id="paralytic-body"></tbody>
-    </table>
-  </div>
+	<div class="paralytic-agents">
+		<div class="section-title">Paralytic Agents</div>
+		<table>
+			<thead><tr></tr></thead>
+			<tbody id="paralytic-body"></tbody>
+		</table>
+	</div>
 
-  <div class="pain-control">
-    <div class="section-title">Pain Control</div>
-    <table>
-      <thead><tr></tr></thead>
-      <tbody id="pain-body"></tbody>
-    </table>
-  </div>
+	<div class="pain-control">
+		<div class="section-title">Pain Control</div>
+		<table>
+			<thead><tr></tr></thead>
+			<tbody id="pain-body"></tbody>
+		</table>
+	</div>
 
-  <div class="sedation">
-    <div class="section-title">Sedation</div>
-    <table>
-      <thead><tr></tr></thead>
-      <tbody id="sedation-body"></tbody>
-    </table>
-  </div>
+	<div class="sedation">
+		<div class="section-title">Sedation</div>
+		<table>
+			<thead><tr></tr></thead>
+			<tbody id="sedation-body"></tbody>
+		</table>
+	</div>
 
-  <div class="mechvent">
-    <div class="section-title">Mechanical Ventilation & Infusions</div>
-			<div class="section-subtitle">Bolus Medications</div>
-				<table>
-					<thead><tr></tr></thead>
-					<tbody id="vent-bolus-body"></tbody>
-				</table>
-			<div class="section-subtitle">Continuous Infusions</div>
-				<table>
-					<thead><tr></tr></thead>
-					<tbody id="vent-inf-body"></tbody>
-				</table>
-  </div>
+	<div class="mechvent">
+		<div class="section-title">Mechanical Ventilation & Infusions</div>
+		<div class="section-subtitle">Bolus Medications</div>
+		<table>
+			<thead><tr></tr></thead>
+			<tbody id="vent-bolus-body"></tbody>
+		</table>
+		<div class="section-subtitle">Continuous Infusions</div>
+		<table>
+			<thead><tr></tr></thead>
+			<tbody id="vent-inf-body"></tbody>
+		</table>
+	</div>
 
-  <div style="text-align: center;">
-    <button class="start-button" onclick="goHome()">← Back to Start</button>
-  </div>
+	<div style="text-align: center;">
+		<button class="start-button" onclick="goHome()">← Back to Start</button>
+	</div>
 
 </div>
 </div>
@@ -305,7 +315,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* 
 ======================================================
-   GLOBAL PROFILE STATE
+	 GLOBAL PROFILE STATE
 ====================================================== 
 */
 let currentProfile = null;
@@ -316,7 +326,7 @@ function getProtocol(med) {
 
 /* 
 ======================================================
-   MEDICATION REGISTRY
+	 MEDICATION REGISTRY
 ======================================================
 */
 /* USER UPDATE GUIDE, ACTIVE CODE RESUMES LINE 463 */
@@ -324,199 +334,199 @@ function getProtocol(med) {
 ------------------------------------------------------
 Guide for updates to the medication registry
 ------------------------------------------------------
-  - Central Configuration of calculator
-  - Defines:
-       • section
-       • concentration
-       • Units
-       • Profile-specific protocols
-       		- only adult, geriatric, and pediatric available
-       		- "doseRange" to be used if bolus medication, "infusionRate" used if a gtt
-       		- "absolute: true" will remove weigh based calculations
-       		- if mindose = maxdose only one value displays
-       		- "maxTotal" implements a hard stop max dose on weight based dosing and adds dose warning
-       		- "description" section used for guideline summary
-  - Add/Remove/Modify Medications in this section. 
-  - Medications appear in tables in the order they appear here. 
+	- Central Configuration of calculator
+	- Defines:
+			 • section
+			 • concentration
+			 • Units
+			 • Profile-specific protocols
+					- only adult, geriatric, and pediatric available
+					- "doseRange" to be used if bolus medication, "infusionRate" used if a gtt
+					- "absolute: true" will remove weigh based calculations
+					- if mindose = maxdose only one value displays
+					- "maxTotal" implements a hard stop max dose on weight based dosing and adds dose warning
+					- "description" section used for guideline summary
+	- Add/Remove/Modify Medications in this section. 
+	- Medications appear in tables in the order they appear here. 
 
 ======================================================
 MEDICATION REGISTRY — CONFIGURATION & UPDATE GUIDE
 ======================================================
 
 REQUIRED FIELDS (every entry must have these):
-   section        Array of table IDs where med appears.
-                  Available: "supportive-body", "induction-body",
-                  "paralytic-body", "pain-body", "sedation-body",
-                  "vent-bolus-body", "vent-inf-body"
-                  Example: section: ["pain-body"]
-                  Multiple sections: section: ["pain-body", "vent-bolus-body"]
+	 section        Array of table IDs where med appears.
+									Available: "supportive-body", "induction-body",
+									"paralytic-body", "pain-body", "sedation-body",
+									"vent-bolus-body", "vent-inf-body"
+									Example: section: ["pain-body"]
+									Multiple sections: section: ["pain-body", "vent-bolus-body"]
 
-   concentration  Amount of drug per mL of solution (number).
-                  Example: concentration: 10  (= 10 mg/mL or 10 mcg/mL)
-                  Used to calculate volume (mL) from dose.
+	 concentration  Amount of drug per mL of solution (number).
+									Example: concentration: 10  (= 10 mg/mL or 10 mcg/mL)
+									Used to calculate volume (mL) from dose.
 
-   unit           Unit displayed in dose and volume outputs.
-                  Example: unit: "mg"  or  unit: "mcg"
+	 unit           Unit displayed in dose and volume outputs.
+									Example: unit: "mg"  or  unit: "mcg"
 
-   protocols      Object containing at least one profile entry.
-                  Available profiles: adult | geriatric | pediatric
-                  Each profile must contain doseRange OR infusionRate
-                  plus a description field.
+	 protocols      Object containing at least one profile entry.
+									Available profiles: adult | geriatric | pediatric
+									Each profile must contain doseRange OR infusionRate
+									plus a description field.
 
 ------------------------------------------------------
 OPTIONAL FIELDS (medication level):
-   label          Display name shown in table. If omitted, the
-                  registry key name is used instead.
-                  Example: label: "Ketamine for RSI"
+	 label          Display name shown in table. If omitted, the
+									registry key name is used instead.
+									Example: label: "Ketamine for RSI"
 
 ------------------------------------------------------
 PROTOCOL FIELDS — doseRange (bolus medications):
-   Use for any medication given as a one-time or PRN bolus.
-   Generates "Dose" and "Volume" columns.
+	 Use for any medication given as a one-time or PRN bolus.
+	 Generates "Dose" and "Volume" columns.
 
-   REQUIRED:
-   min            Low end of dose range.
-   max            High end of dose range.
-                  If min === max, only one value displays.
+	 REQUIRED:
+	 min            Low end of dose range.
+	 max            High end of dose range.
+									If min === max, only one value displays.
 
-   OPTIONAL:
-   absolute: true Removes weight-based math. Dose displays
-                  as entered (flat mg or mcg dose).
-                  Omit for weight-based dosing (mg/kg).
+	 OPTIONAL:
+	 absolute: true Removes weight-based math. Dose displays
+									as entered (flat mg or mcg dose).
+									Omit for weight-based dosing (mg/kg).
 
-   maxTotal       Hard cap on weight-based dose. Calculation
-                  is capped at this value and a ⚠️ Max Dose
-                  warning appears in the medication name cell.
-                  Example: maxTotal: 100
+	 maxTotal       Hard cap on weight-based dose. Calculation
+									is capped at this value and a ⚠️ Max Dose
+									warning appears in the medication name cell.
+									Example: maxTotal: 100
 
 ------------------------------------------------------
 PROTOCOL FIELDS — infusionRate (continuous infusions):
-   Use for any medication run as a drip/gtt.
-   Generates Infusion and mL/hr columns.
-   Also generates a pump rate verify row automatically.
+	 Use for any medication run as a drip/gtt.
+	 Generates Infusion and mL/hr columns.
+	 Also generates a pump rate verify row automatically.
 
-   REQUIRED:
-   min            Low end of infusion rate range.
-   max            High end of infusion rate range.
+	 REQUIRED:
+	 min            Low end of infusion rate range.
+	 max            High end of infusion rate range.
 
-   OPTIONAL:
-   absolute: true Removes weight-based math. Rate is treated
-                  as a flat dose/hr (e.g. mcg/hr, mg/hr).
-                  Omit for weight-based rates (e.g. mg/kg/hr).
+	 OPTIONAL:
+	 absolute: true Removes weight-based math. Rate is treated
+									as a flat dose/hr (e.g. mcg/hr, mg/hr).
+									Omit for weight-based rates (e.g. mg/kg/hr).
 
-   perMinute:true Applies per-minute math to display and
-                  verify calculator. Use for medications dosed
-                  in mcg/kg/min (e.g. Propofol).
+	 perMinute:true Applies per-minute math to display and
+									verify calculator. Use for medications dosed
+									in mcg/kg/min (e.g. Propofol).
 
-   maxRate        Sets a ceiling in the verify calculator.
-                  If entered dose exceeds this, a ⚠️ warning
-                  is included with the mL/hr output.
-                  Example: maxRate: 75
+	 maxRate        Sets a ceiling in the verify calculator.
+									If entered dose exceeds this, a ⚠️ warning
+									is included with the mL/hr output.
+									Example: maxRate: 75
 
 ------------------------------------------------------
 OPTIONAL FIELDS (protocol level — units override med level):
-   unit           Overrides the medication-level unit for a
-                  specific profile. Use when one profile uses
-                  a different unit (e.g. mcg vs mg).
-                  Example: pediatric: { unit: "mcg", infusionRate: {...} }
+	 unit           Overrides the medication-level unit for a
+									specific profile. Use when one profile uses
+									a different unit (e.g. mcg vs mg).
+									Example: pediatric: { unit: "mcg", infusionRate: {...} }
 
 ------------------------------------------------------
 REQUIRED IN EVERY PROTOCOL:
-   description    Text is displayed below the dose row as a
-                  guideline summary. Supports HTML tags.
-                  Use <br> for line breaks within the text.
-                  Example: description: "1 mg/kg IV.<br>MR Q 30 min PRN"
-                  NOTE: Missing description will prevent the
-                  verify row from rendering for infusion meds.
+	 description    Text is displayed below the dose row as a
+									guideline summary. Supports HTML tags.
+									Use <br> for line breaks within the text.
+									Example: description: "1 mg/kg IV.<br>MR Q 30 min PRN"
+									NOTE: Missing description will prevent the
+									verify row from rendering for infusion meds.
 
 ------------------------------------------------------
 BLANK ENTRY TEMPLATE:
 
-  REGISTRY_KEY: {
-    label: "",                        // optional
-    section: ["section-id"],          // required
-    concentration: 0,                 // required
-    unit: "",                         // required
-    protocols: {
-      adult: {
-        doseRange: {                  // use doseRange OR infusionRate
-          absolute: true,             // optional — remove for weight-based
-          min: 0,
-          max: 0,
-          maxTotal: 0,                // optional
-        },
-        description: ""              // required
-      },
-    }
-  },
+	REGISTRY_KEY: {
+		label: "",                        // optional
+		section: ["section-id"],          // required
+		concentration: 0,                 // required
+		unit: "",                         // required
+		protocols: {
+			adult: {
+				doseRange: {                  // use doseRange OR infusionRate
+					absolute: true,             // optional — remove for weight-based
+					min: 0,
+					max: 0,
+					maxTotal: 0,                // optional
+				},
+				description: ""              // required
+			},
+		}
+	},
 
 ------------------------------------------------------
 NOTES:
-   - Medications render in tables in the order listed here.
-   - To disable a medication temporarily, wrap it in comment character.
-   - Profiles not listed for a medication are simply skipped.
-   - validateMedications() logs console warnings for missing
-     or unrecognized fields on every profile selection.
+	 - Medications render in tables in the order listed here.
+	 - To disable a medication temporarily, wrap it in comment character.
+	 - Profiles not listed for a medication are simply skipped.
+	 - validateMedications() logs console warnings for missing
+		 or unrecognized fields on every profile selection.
 ======================================================
 */
 
 const MEDICATIONS = {
 
-  Epinephrine: {
-    section: ["supportive-body"],
-    concentration: 10,
-    unit: "mcg",
-    protocols: {
-      adult: { doseRange: {absolute: true, min: 5, max: 20 }, description: "5-20 mcg IV, Q 2-5 min PRN" },
-      geriatric: { doseRange: {absolute: true, min: 5, max: 20 }, description: "5-20 mcg IV, Q 2-5 min PRN" },
-      pediatric: { doseRange: {min: 0.5, max: 1, maxTotal: 20 }, description: "0.5-1 mcg/kg IV, max 20 mcg/dose, Q 2-5 min PRN" },
-    }
-  },
-  
-  Atropine: {
-  	section: ["supportive-body"],
-  	concentration: 0.1, 
-  	unit: "mg", 
-  	protocols: {
-  		pediatric: { doseRange: { min: 0.02, max: 0.02, maxTotal: 2 }, description: "Consider for Peds that are bradycardic or who have a HR in the lower 25th percentile for their age" },
-  	}
-  },
+	Epinephrine: {
+		section: ["supportive-body"],
+		concentration: 10,
+		unit: "mcg",
+		protocols: {
+			adult: { doseRange: {absolute: true, min: 5, max: 20 }, description: "5-20 mcg IV, Q 2-5 min PRN" },
+			geriatric: { doseRange: {absolute: true, min: 5, max: 20 }, description: "5-20 mcg IV, Q 2-5 min PRN" },
+			pediatric: { doseRange: {min: 0.5, max: 1, maxTotal: 20 }, description: "0.5-1 mcg/kg IV, max 20 mcg/dose, Q 2-5 min PRN" },
+		}
+	},
 
-  Ketamine_RSI: {
-  	label: "Ketamine for RSI",
-    section: ["induction-body"],
-    concentration: 100,
-    unit: "mg",
-    protocols: {
-      adult: { doseRange: { min: 2, max: 2 }, description: "2 mg/kg slow IVP, Consider Etomidate if an increase in HR or BP would be detrimental" },
-      geriatric: { doseRange: { min: 2, max: 2 }, description: "2 mg/kg slow IVP, Consider Etomidate if an increase in HR or BP would be detrimental" },
-      pediatric: { doseRange: { min: 2, max: 2 }, description: "2 mg/kg slow IVP, give over 20-30 seconds" },
-    }
-  },
- 
-  Etomidate_RSI: {
-  	label: "Etomidate",
-  	section: ["induction-body"],
-  	concentration: 2,
-  	unit: "mg",
-  	protocols: {
-  		adult: { doseRange: {min: 0.3, max: 0.3, maxTotal: 30 }, description: "0.3 mg/kg, max single dose 30 mg" },
-  		geriatric: { doseRange: {min: 0.3, max: 0.3, maxTotal: 30 }, description: "0.3 mg/kg, max single dose 30 mg" },
-  		pediatric: { doseRange: {min: 0.3, max: 0.3, maxTotal: 30 }, description: "0.3 mg/kg, max single dose 30 mg" },
-  	}
-  },
-  
+	Atropine: {
+		section: ["supportive-body"],
+		concentration: 0.1, 
+		unit: "mg", 
+		protocols: {
+			pediatric: { doseRange: { min: 0.02, max: 0.02, maxTotal: 2 }, description: "Consider for Peds that are bradycardic or who have a HR in the lower 25th percentile for their age" },
+		}
+	},
+
+	Ketamine_RSI: {
+		label: "Ketamine for RSI",
+		section: ["induction-body"],
+		concentration: 100,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: { min: 2, max: 2 }, description: "2 mg/kg slow IVP, Consider Etomidate if an increase in HR or BP would be detrimental" },
+			geriatric: { doseRange: { min: 2, max: 2 }, description: "2 mg/kg slow IVP, Consider Etomidate if an increase in HR or BP would be detrimental" },
+			pediatric: { doseRange: { min: 2, max: 2 }, description: "2 mg/kg slow IVP, give over 20-30 seconds" },
+		}
+	},
+
+	Etomidate_RSI: {
+		label: "Etomidate",
+		section: ["induction-body"],
+		concentration: 2,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 0.3, max: 0.3, maxTotal: 30 }, description: "0.3 mg/kg, max single dose 30 mg" },
+			geriatric: { doseRange: {min: 0.3, max: 0.3, maxTotal: 30 }, description: "0.3 mg/kg, max single dose 30 mg" },
+			pediatric: { doseRange: {min: 0.3, max: 0.3, maxTotal: 30 }, description: "0.3 mg/kg, max single dose 30 mg" },
+		}
+	},
+
 	Ketamine_DSI: {
-  	label: "Ketamine for DSI",
-    section: ["induction-body"],
-    concentration: 100,
-    unit: "mg",
-    protocols: {
-      adult: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg slow IV push; In apx 45 seconds patient will tolerate ventilation support, continue preoxygenation for 2-3 then intubate. If needed, MR 0.5 mg/kg twice, at 2-4 min intervals." },
-      geriatric: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg slow IV push; In apx 45 seconds patient will tolerate ventilation support, continue preoxygenation for 2-3 then intubate. If needed, MR 0.5 mg/kg twice, at 2-4 min intervals." },
-      pediatric: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg slow IV push; In apx 45 seconds patient will tolerate ventilation support, continue preoxygenation for 2-3 then intubate. If needed, MR 0.5 mg/kg twice, at 2-4 min intervals." },
-    }
-  },
+		label: "Ketamine for DSI",
+		section: ["induction-body"],
+		concentration: 100,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg slow IV push; In apx 45 seconds patient will tolerate ventilation support, continue preoxygenation for 2-3 then intubate. If needed, MR 0.5 mg/kg twice, at 2-4 min intervals." },
+			geriatric: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg slow IV push; In apx 45 seconds patient will tolerate ventilation support, continue preoxygenation for 2-3 then intubate. If needed, MR 0.5 mg/kg twice, at 2-4 min intervals." },
+			pediatric: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg slow IV push; In apx 45 seconds patient will tolerate ventilation support, continue preoxygenation for 2-3 then intubate. If needed, MR 0.5 mg/kg twice, at 2-4 min intervals." },
+		}
+	},
 
 	Rocuronium: {
 		section: ["paralytic-body"],
@@ -539,7 +549,7 @@ const MEDICATIONS = {
 			pediatric: { doseRange: { min: 0.5, max: 1, maxTotal: 100 }, description: "0.5-1 mcg/kg IV over 2-3 minutes, max 100 mcg/dose, MR Q 30 minutes PRN"},
 		}
 	},
-	
+
 	Fentanyl_geriatric: {
 		label: "Fentanyl",
 		section: ["pain-body", "vent-bolus-body"],
@@ -560,12 +570,11 @@ const MEDICATIONS = {
 			pediatric: { doseRange: { min: 0.1, max: 0.1, maxTotal: 4 }, description: "0.1 mg/kg IV, max 4 mg, MR Q 30-60 min PRN" },
 		}
 	},
-	
-/* 
-========================================================================================================================================================================================================
-NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
-========================================================================================================================================================================================================
 
+/* 
+======================================================
+NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
+======================================================
 	Acetaminophen: {
 		label: "Acetaminophen, Oral"
 		section: ["pain-body"],
@@ -578,6 +587,7 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 		}
 	},
 */
+
 	Ketamine_Pain: {
 		label: "Ketamine",
 		section: ["pain-body"],
@@ -589,7 +599,7 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 			pediatric: { doseRange: { min: 0.1, max: 0.3, maxTotal: 25 }, description: "0.1-0.3 mg/kg, max 25 mg/dose, MR Q 60 min PRN" },
 		}
 	},
-	
+
 	Hydromorphone: {
 		section: ["pain-body"],
 		concentration: 1, 
@@ -659,7 +669,7 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 			pediatric: { doseRange: { absolute: true, min: 0.625, max: 1.25 }, description: "For Peds ≥ 12yo: 0.625–1.25 mg" },
 		}
 	},
-	
+
 	Droperidol_mod: {
 		label: "Droperidol — Moderate Sedation",
 		section: ["sedation-body"],
@@ -671,7 +681,7 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 			pediatric: { doseRange: { absolute: true, min: 2.5, max: 2.5 }, description: "For Peds ≥ 12yo: 2.5 mg over 1–2 minutes, MR PRN after 5–10 min ONCE" },
 		}
 	},
-	
+
 	Droperidol_agg: {
 		label: "Droperidol — Aggressive Sedation",
 		section: ["sedation-body"],
@@ -752,12 +762,12 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 		concentration: 10,
 		unit: "mg",
 		protocols: {
-			adult: { doseRange: { min: 0.5, max: 2 }, description: "Up to 2 mg/kg - titrate 40 mg IVP Q 30 sec to desired effect" },
-			geriatric: { doseRange: { min: 0.5, max: 1 }, description: "Up to 1 mg/kg - titrate 20 mg IVP Q 30 sec to desired effect" },
+			adult: { doseRange: { min: 0, max: 2 }, description: "Up to 2 mg/kg - titrate 40 mg IVP Q 30 sec to desired effect" },
+			geriatric: { doseRange: { min: 0, max: 1 }, description: "Up to 1 mg/kg - titrate 20 mg IVP Q 30 sec to desired effect" },
 			pediatric: { doseRange: { min: 0.5, max: 1 }, description: "0.5-1 mg/kg"}
 		}
 	},
-	
+
 	Propofol_bolus: { 
 		label: "Propofol Bolus Dose",
 		section: ["vent-bolus-body"],
@@ -792,9 +802,9 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 		concentration: 10,
 		unit: "mcg",
 		protocols: {
-			adult: { infusionRate: { absolute: true, min: 25, max: 200, maxRate: 200 }, description: "Provider mixed infusion: Mix 500 mcg in 50 mL D5W = 10 mcg/mL.<br>Start at 25-50 mcg/hr. ± by 25 mcg/hr Q 5-10 min to target RASS" },
-			geriatric: { infusionRate: { absolute: true, min: 25, max: 200, maxRate: 200 }, description: "Provider mixed infusion: Mix 500 mcg in 50 mL D5W = 10 mcg/mL.<br>Start at 25-50 mcg/hr. ± by 25 mcg/hr Q 5-10 min to target RASS" },
-			pediatric: { infusionRate: { min: 1, max: 3, maxRate: 3}, description: "Provider mixed infusion: Mix 500 mcg in 50 mL D5W = 10 mcg/mL.<br>Start at 1 mcg/kg/hr.<br>Increase slowly Q 5-10 min to target RASS" },
+			adult: { infusionRate: { absolute: true, min: 25, max: 200, maxRate: 200 }, description: "Provider mixed infusion: Mix 500 mcg in 50 mL D5W = 10 mcg/mL.<br>50-200 mcg/hr. Start at 25-50 mcg/hr. ± by 25 mcg/hr Q 5-10 min to target RASS" },
+			geriatric: { infusionRate: { absolute: true, min: 25, max: 200, maxRate: 200 }, description: "Provider mixed infusion: Mix 500 mcg in 50 mL D5W = 10 mcg/mL.<br>50-200 mcg/hr. Start at 25-50 mcg/hr. ± by 25 mcg/hr Q 5-10 min to target RASS" },
+			pediatric: { infusionRate: { min: 1, max: 3, maxRate: 3}, description: "Provider mixed infusion: Mix 500 mcg in 50 mL D5W = 10 mcg/mL.<br>1-3 mcg/kg/hr. Start at 1 mcg/kg/hr.<br>Increase slowly Q 5-10 min to target RASS" },
 		}
 	},
 
@@ -810,28 +820,28 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 		}
 	},
 
-  Ketamine_inf: {
-  	label: "Ketamine Infusion",
-  	section: ["vent-inf-body"],
-  	concentration: 2,
-  	unit: "mg",
-  	protocols: {
-  		adult: { infusionRate: { min: 0.5, max: 3, maxRate: 3 }, description: "Provider mixed infusion: Mix 500 mg in 250 mL D5W = 2 mg/mL.<br>Administer 1 mg/kg bolus, start infusion at 0.5 mg/kg/hr. Titrate ± 0.5mg/kg/hr PRN for target RASS. Max rate 3 mg/kg/hr" },
-  		geriatric: { infusionRate: { min: 0.5, max: 3, maxRate: 3 }, description: "Provider mixed infusion: Mix 500 mg in 250 mL D5W = 2 mg/mL.<br>Administer 1 mg/kg bolus, start infusion at 0.5 mg/kg/hr. Titrate ± 0.5mg/kg/hr PRN for target RASS. Max rate 3 mg/kg/hr" },
-  		pediatric: { infusionRate: { min: 0.5, max: 3, maxRate: 3 }, description: "Provider mixed infusion: Mix 500 mg in 250 mL D5W = 2 mg/mL.<br>Administer 1 mg/kg bolus, start infusion at 0.5 mg/kg/hr. Titrate ± 0.5mg/kg/hr PRN for target RASS. Max rate 3 mg/kg/hr" }
-  	}
-  },
+	Ketamine_inf: {
+		label: "Ketamine Infusion",
+		section: ["vent-inf-body"],
+		concentration: 2,
+		unit: "mg",
+		protocols: {
+			adult: { infusionRate: { min: 0.5, max: 3, maxRate: 3 }, description: "Provider mixed infusion: Mix 500 mg in 250 mL D5W = 2 mg/mL.<br>Administer 1 mg/kg bolus, start infusion at 0.5 mg/kg/hr. Titrate ± 0.5mg/kg/hr PRN for target RASS. Max rate 3 mg/kg/hr" },
+			geriatric: { infusionRate: { min: 0.5, max: 3, maxRate: 3 }, description: "Provider mixed infusion: Mix 500 mg in 250 mL D5W = 2 mg/mL.<br>Administer 1 mg/kg bolus, start infusion at 0.5 mg/kg/hr. Titrate ± 0.5mg/kg/hr PRN for target RASS. Max rate 3 mg/kg/hr" },
+			pediatric: { infusionRate: { min: 0.5, max: 3, maxRate: 3 }, description: "Provider mixed infusion: Mix 500 mg in 250 mL D5W = 2 mg/mL.<br>Administer 1 mg/kg bolus, start infusion at 0.5 mg/kg/hr. Titrate ± 0.5mg/kg/hr PRN for target RASS. Max rate 3 mg/kg/hr" }
+		}
+	},
 
-  Propofol_inf: {
-  	label: "Propofol Infusion",
-    section: ["vent-inf-body"],
-    concentration: 10000,
-    unit: "mcg",
-    protocols: { 
-    	adult: { infusionRate: { perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10-75 mcg/kg/min (unless higher rate MD ordered). ± 5-10 mcg/kg/min Q 5-10 min to maintain sedation" },
-    	geriatric: { infusionRate: { perMinute: true, min: 10, max: 75, maxRate: 75  }, description: "10-75 mcg/kg/min (unless higher rate MD ordered). ± 5-10 mcg/kg/min Q 5-10 min to maintain sedation" },
-    	pediatric: { infusionRate: { perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10-75 mcg/kg/min (unless higher rate MD ordered). ± 5-10 mcg/kg/min Q 5-10 min to maintain sedation" },
-    }
+	Propofol_inf: {
+		label: "Propofol Infusion",
+		section: ["vent-inf-body"],
+		concentration: 10000,
+		unit: "mcg",
+		protocols: { 
+			adult: { infusionRate: { perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10-75 mcg/kg/min (unless higher rate MD ordered). ± 5-10 mcg/kg/min Q 5-10 min to maintain sedation" },
+			geriatric: { infusionRate: { perMinute: true, min: 10, max: 75, maxRate: 75  }, description: "10-75 mcg/kg/min (unless higher rate MD ordered). ± 5-10 mcg/kg/min Q 5-10 min to maintain sedation" },
+			pediatric: { infusionRate: { perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10-75 mcg/kg/min (unless higher rate MD ordered). ± 5-10 mcg/kg/min Q 5-10 min to maintain sedation" },
+		}
 	},
 };
 
@@ -842,14 +852,14 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 */
 document.querySelectorAll(".profile-select")
 .forEach(btn => {
-  btn.onclick = () => {
-    currentProfile = btn.dataset.profile;
-    const labels = {adult: "Adult", geriatric: "Geriatric", pediatric: "Pediatric"};
-    document.getElementById("profileLabel").textContent = labels[currentProfile];
-    document.getElementById("start-page").style.display = "none";
-    document.getElementById("calculator-page").style.display = "block";
-    buildTables();
-  };
+	btn.onclick = () => {
+		currentProfile = btn.dataset.profile;
+		const labels = {adult: "Adult", geriatric: "Geriatric", pediatric: "Pediatric"};
+		document.getElementById("profileLabel").textContent = labels[currentProfile];
+		document.getElementById("start-page").style.display = "none";
+		document.getElementById("calculator-page").style.display = "block";
+		buildTables();
+	};
 });
 
 /* 
@@ -859,31 +869,31 @@ document.querySelectorAll(".profile-select")
 */
 function goHome() {
 	const calc = document.getElementById("calculator-page");
-	
+
 	if (calc) calc.style.display="none";
-	
+
 	const start = document.getElementById("start-page");
 	if (start) start.style.display = "block";
-	
+
 	const weightInput = document.getElementById("weightInput");
 	if (weightInput) weightInput.value = "";
-	
+
 	clearAllOutputs();
 }
 
-/* 
+/*
 ======================================================
 		CONSOLE ERROR LOG: VALIDATE MEDICATIONS
 ====================================================== 
 */
 function validateMedications() {
-  const required = ["section", "concentration", "unit", "protocols"];
-  Object.entries(MEDICATIONS).forEach(([name, med]) => {
-    required.forEach(field => {
-      if (med[field] === undefined) {
-        console.warn(`⚠️ MEDICATIONS["${name}"] missing: "${field}"`);
-      }
-    });
+	const required = ["section", "concentration", "unit", "protocols"];
+	Object.entries(MEDICATIONS).forEach(([name, med]) => {
+		required.forEach(field => {
+			if (med[field] === undefined) {
+				console.warn(`⚠️ MEDICATIONS["${name}"] missing: "${field}"`);
+			}
+		});
 	if (med.protocols) {
 				Object.entries(med.protocols).forEach(([profile, proto]) => {
 					if (!proto.doseRange && !proto.infusionRate) {
@@ -900,25 +910,25 @@ function validateMedications() {
 					});
 				});
 			}
-  });
+	});
 }
 
 /* 
 ======================================================
 		BUILD TABLES DYNAMICALLY
 ------------------------------------------------------
-   - Detects which columns apply per section
-   - Builds headers dynamically
-   - Builds rows per medication
+	 - Detects which columns apply per section
+	 - Builds headers dynamically
+	 - Builds rows per medication
 ====================================================== 
 */
 function buildTables() {
-  validateMedications();
-  // Clear existing rows
-  document.querySelectorAll("tbody")
-    .forEach(t => t.innerHTML = "");
+	validateMedications();
+	// Clear existing rows
+	document.querySelectorAll("tbody")
+		.forEach(t => t.innerHTML = "");
 
-  const sectionConfig = {};
+	const sectionConfig = {};
 
 /* 
 ------------------------------------------------
@@ -926,29 +936,29 @@ function buildTables() {
 ------------------------------------------------ 
 */
 
-  Object.entries(MEDICATIONS).forEach(([name, med]) => {
+	Object.entries(MEDICATIONS).forEach(([name, med]) => {
 
-    const protocol = getProtocol(med);
+		const protocol = getProtocol(med);
 
-    if (!protocol) return;
+		if (!protocol) return;
 
-    // Loop through each section the med belongs to
-    med.section.forEach(sectionId => {
+		// Loop through each section the med belongs to
+		med.section.forEach(sectionId => {
 
-      if (!sectionConfig[sectionId]) {
-        sectionConfig[sectionId] = {
-          hasBolus: false,
-          hasInfusion: false
-        };
-      }
+			if (!sectionConfig[sectionId]) {
+				sectionConfig[sectionId] = {
+					hasBolus: false,
+					hasInfusion: false
+				};
+			}
 
-      if (protocol.doseRange)
-        sectionConfig[sectionId].hasBolus = true;
+			if (protocol.doseRange)
+				sectionConfig[sectionId].hasBolus = true;
 
-      if (protocol.infusionRate)
-        sectionConfig[sectionId].hasInfusion = true;
-    });
-  });
+			if (protocol.infusionRate)
+				sectionConfig[sectionId].hasInfusion = true;
+		});
+	});
 
 
 /* 
@@ -957,49 +967,49 @@ function buildTables() {
 ------------------------------------------------ 
 */
 
-  Object.entries(MEDICATIONS).forEach(([name, med]) => {
+	Object.entries(MEDICATIONS).forEach(([name, med]) => {
 
-    const protocol = getProtocol(med);
+		const protocol = getProtocol(med);
 
-    if (!protocol) return;
+		if (!protocol) return;
 
-    med.section.forEach(sectionId => {
+		med.section.forEach(sectionId => {
 
-      const config = sectionConfig[sectionId];
-      const tbody = document.getElementById(sectionId);
+			const config = sectionConfig[sectionId];
+			const tbody = document.getElementById(sectionId);
 
-      const row = document.createElement("tr");
-      row.innerHTML += `<td class="${name}-label">${med.label || name}</td>`;
+			const row = document.createElement("tr");
+			row.innerHTML += `<td class="${name}-label">${med.label || name}</td>`;
 
-      if (config.hasBolus) {
-        row.innerHTML += protocol.doseRange
-          ? `<td class="${name}-dose">--</td><td class="${name}-vol">--</td>`
-          : `<td class="empty-cell"></td><td class="empty-cell"></td>`;
-      }
-
-      if (config.hasInfusion) {
-        row.innerHTML += protocol.infusionRate
-          ? `<td class="${name}-inf">--</td><td class="${name}-mlhr">--</td>`
+			if (config.hasBolus) {
+				row.innerHTML += protocol.doseRange
+					? `<td class="${name}-dose">--</td><td class="${name}-vol">--</td>`
 					: `<td class="empty-cell"></td><td class="empty-cell"></td>`;
-      }
+			}
 
-      tbody.appendChild(row);
+			if (config.hasInfusion) {
+				row.innerHTML += protocol.infusionRate
+					? `<td class="${name}-inf">--</td><td class="${name}-mlhr">--</td>`
+					: `<td class="empty-cell"></td><td class="empty-cell"></td>`;
+			}
+
+			tbody.appendChild(row);
 
 			if (protocol && protocol.description) {
-      	const descRow = document.createElement("tr");
-      	const totalCols = 1 + (config.hasBolus ? 2 : 0) + (config.hasInfusion ? 2 : 0);
-      	const td = document.createElement("td");
-      	
-      	td.colSpan = totalCols;
-      	td.innerHTML = protocol.description;
-      	td.style.textAlign = "center";
-      	td.style.fontSize = "12px";
-      	
-      	descRow.appendChild(td);
-      	tbody.appendChild(descRow);
-      }
+				const descRow = document.createElement("tr");
+				const totalCols = 1 + (config.hasBolus ? 2 : 0) + (config.hasInfusion ? 2 : 0);
+				const td = document.createElement("td");
 
-      if (protocol.infusionRate) {
+				td.colSpan = totalCols;
+				td.innerHTML = protocol.description;
+				td.style.textAlign = "center";
+				td.style.fontSize = "12px";
+
+				descRow.appendChild(td);
+				tbody.appendChild(descRow);
+			}
+
+			if (protocol.infusionRate) {
 				const rate = protocol.infusionRate;
 				const activeUnit = protocol.unit || med.unit;
 				const doseUnit = rate.absolute
@@ -1010,7 +1020,7 @@ function buildTables() {
 
 				const verifyRow = document.createElement("tr");
 				verifyRow.className = "verify-row";
-				
+
 				const totalCols = 1 + (config.hasBolus ? 2 : 0) + (config.hasInfusion ? 2 : 0);
 				verifyRow.innerHTML = `<td colspan="${totalCols}" style="text-align:center;">
 					To verify pump rate enter current dose:  
@@ -1018,13 +1028,13 @@ function buildTables() {
 					&nbsp;|&nbsp;
 					Pump Rate = <span id="verify-out-${name}">--</span>
 				</td>`;
-				
+
 				tbody.appendChild(verifyRow);
 				document.getElementById(`verify-${name}`)
 					.addEventListener("input", () => calculateVerify(name));
 			}      
-    });
-  });
+		});
+	});
 
 /* 
 ------------------------------------------------
@@ -1032,23 +1042,23 @@ function buildTables() {
 ------------------------------------------------ 
 */
 
-  Object.entries(sectionConfig).forEach(([sectionId, config]) => {
+	Object.entries(sectionConfig).forEach(([sectionId, config]) => {
 
-      const table =
-        document.getElementById(sectionId)
-          .closest("table");
+			const table =
+				document.getElementById(sectionId)
+					.closest("table");
 
-      const thead =
-        table.querySelector("thead tr");
+			const thead =
+				table.querySelector("thead tr");
 
-      thead.innerHTML = "<th>Medication</th>";
+			thead.innerHTML = "<th>Medication</th>";
 
-      if (config.hasBolus)
-        thead.innerHTML += "<th>Dose</th><th>Volume</th>";
+			if (config.hasBolus)
+				thead.innerHTML += "<th>Dose</th><th>Volume</th>";
 
-      if (config.hasInfusion)
-        thead.innerHTML += "<th>Infusion</th><th>mL/hr</th>";
-    });
+			if (config.hasInfusion)
+				thead.innerHTML += "<th>Infusion</th><th>mL/hr</th>";
+		});
 }
 
 /* 
@@ -1057,7 +1067,7 @@ function buildTables() {
 ====================================================== 
 */
 function formatDose(num) {
-  return Number(num.toFixed(2)).toString();
+	return Number(num.toFixed(2)).toString();
 }
 
 /* 
@@ -1073,52 +1083,51 @@ document.getElementById("weightInput")
 
 /* 
 ======================================================
-        MAXIMUM WEIGHTS BEFORE ERROR PER PROFILE
+				MAXIMUM WEIGHTS BEFORE ERROR PER PROFILE
 ====================================================== 
 */
 const MAX_WEIGHT = {
-  adult: 200,
-  geriatric: 150,
-  pediatric: 90,
+	adult: 200,
+	geriatric: 150,
+	pediatric: 90,
 };
 
 /* 
 ======================================================
-        DOSE CALCULATION ENGINE
+				DOSE CALCULATION ENGINE
 ====================================================== 
 */
 function calculateAll() {
 
-  const weight = parseFloat(document.getElementById("weightInput").value);
+	const weight = parseFloat(document.getElementById("weightInput").value);
 
-  if (!weight || weight <= 0) {
-    clearAllOutputs();
-    return;
-  }
+	if (!weight || weight <= 0) {
+		clearAllOutputs();
+		return;
+	}
 
 	const maxWeight = MAX_WEIGHT[currentProfile];
-		if (weight > maxWeight) {
-			const override = confirm(`${weight} kg exceeds the ${currentProfile} profile maximum of ${maxWeight} kg.\n\nPress OK to proceed, or Cancel to re-enter weight.`);
-			if (!override) {
-				document.getElementById("weightInput").value = "";
-				clearAllOutputs();
-				return;
-			}
+	if (weight > maxWeight) {
+		const override = confirm(`${weight} kg exceeds the ${currentProfile} profile maximum of ${maxWeight} kg.\n\nPress OK to proceed, or Cancel to re-enter weight.`);
+		if (!override) {
+			document.getElementById("weightInput").value = "";
+			clearAllOutputs();
+			return;
 		}
+	}
 
-  Object.entries(MEDICATIONS)
-  .forEach(([name, med]) => {
+	Object.entries(MEDICATIONS).forEach(([name, med]) => {
 
-    const protocol = getProtocol(med);
+		const protocol = getProtocol(med);
 
-    if (!protocol) return;
-
+		if (!protocol) return;
+		
 /* ----- Bolus Medications ----- */
-    if (protocol.doseRange) {
-    	const dr = protocol.doseRange;
+		if (protocol.doseRange) {
+			const dr = protocol.doseRange;
 				let minDose = dr.min;
 				let maxDose = dr.max;
-				
+
 				if (dr.absolute) {
 					minDose = dr.min;
 					maxDose = dr.max;
@@ -1127,59 +1136,59 @@ function calculateAll() {
 					minDose = weight * dr.min;
 					maxDose = weight * dr.max;
 				}
-			
+
 			let capped = false;
 				if (typeof dr.maxTotal === "number") {
 					if (minDose > dr.maxTotal) { minDose = dr.maxTotal; capped = true; }
 					if (maxDose > dr.maxTotal) { maxDose = dr.maxTotal; capped = true; }
 				}
-	
+
 				const baseLabel = med.label || name;
 				updateHTML(`${name}-label`, capped
-        ? `${baseLabel}<br><span style="color:red; font-weight:bold;"><span style="font-size:0.65em;">⚠️</span> Max Dose <span style="font-size:0.65em;">⚠️</span></span>`
-        : baseLabel);
-        			
+				? `${baseLabel}<br><span style="color:red; font-weight:bold;"><span style="font-size:0.65em;">⚠️</span> Dose Capped <span style="font-size:0.65em;">⚠️</span></span>`
+				: baseLabel);
+
 			if (minDose === maxDose) {
 				update(`${name}-dose`,
 					`${formatDose(minDose)} ${med.unit}`);
-				
+
 				update(`${name}-vol`,
 					`${formatDose(minDose/med.concentration)} mL`);
 			}
 			else {
 				update(`${name}-dose`,
 					`${formatDose(minDose)} – ${formatDose(maxDose)} ${med.unit}`);
-	
+
 				update(`${name}-vol`,
 					`${formatDose(minDose/med.concentration)} – ${formatDose(maxDose/med.concentration)} mL`);
-    	}
+			}
 		}
 /* ----- Infusion (single or range) ----- */
-    if (protocol.infusionRate) {
-      const rate = protocol.infusionRate;
-      	let minDose = rate.min;
-      	let maxDose = rate.max;
-      	
-      	if (!rate.absolute) {
-      		minDose = weight * rate.min;
-      		maxDose = weight * rate.max;
-      	}
-      	
-      	const activeUnit = protocol.unit || med.unit;
+		if (protocol.infusionRate) {
+			const rate = protocol.infusionRate;
+				let minDose = rate.min;
+				let maxDose = rate.max;
+
+				if (!rate.absolute) {
+					minDose = weight * rate.min;
+					maxDose = weight * rate.max;
+				}
+
+				const activeUnit = protocol.unit || med.unit;
 				const scalar = rate.perMinute ? 60 : 1;
 				const minDoseHr = rate.absolute ? minDose : minDose * scalar;
 				const maxDoseHr = rate.absolute ? maxDose : maxDose * scalar;
-				
+
 				const doseUnit = rate.perMinute ? `${activeUnit}/min` : `${activeUnit}/hr`;
 				const unitConversion = (activeUnit === "mcg" && med.unit === "mg") ? 0.001 : 1;
-				
+
 				update(`${name}-inf`,
 					`${formatDose(minDose)} – ${formatDose(maxDose)} ${doseUnit}`);
-				
+
 				update(`${name}-mlhr`,
 					`${formatDose((minDoseHr * unitConversion)/med.concentration)} – ${formatDose((maxDoseHr * unitConversion)/med.concentration)} mL/hr`);
 		}
-  });
+	});
 	Object.keys(MEDICATIONS).forEach(name => {
 		const input = document.getElementById(`verify-${name}`);
 		if (input && input.value) calculateVerify(name);
@@ -1188,37 +1197,37 @@ function calculateAll() {
 
 /* 
 ======================================================
-        PUMP RATE ENGINE
+				PUMP RATE ENGINE
 ====================================================== 
 */
 function calculateVerify(name) {
-  const med = MEDICATIONS[name];
-  const protocol = getProtocol(med);
-  if (!protocol || !protocol.infusionRate) return;
+	const med = MEDICATIONS[name];
+	const protocol = getProtocol(med);
+	if (!protocol || !protocol.infusionRate) return;
 
-  const input = document.getElementById(`verify-${name}`);
-  const output = document.getElementById(`verify-out-${name}`);
-  if (!input || !output) return;
+	const input = document.getElementById(`verify-${name}`);
+	const output = document.getElementById(`verify-out-${name}`);
+	if (!input || !output) return;
 
-  const dose = parseFloat(input.value);
-  if (!dose || dose <= 0) {
-    output.textContent = "--";
-    return;
-  }
+	const dose = parseFloat(input.value);
+	if (!dose || dose <= 0) {
+		output.textContent = "--";
+		return;
+	}
 
-  const rate = protocol.infusionRate;
-  const activeUnit = protocol.unit || med.unit;
-  const weight = parseFloat(document.getElementById("weightInput").value) || 0;  
-  const unitConversion = (activeUnit === "mcg" && med.unit === "mg") ? 0.001 : 1;
+	const rate = protocol.infusionRate;
+	const activeUnit = protocol.unit || med.unit;
+	const weight = parseFloat(document.getElementById("weightInput").value) || 0;  
+	const unitConversion = (activeUnit === "mcg" && med.unit === "mg") ? 0.001 : 1;
 
-  let mlHr;
-  if (rate.absolute) {
-    mlHr = (dose * unitConversion) / med.concentration;
-  } else if (rate.perMinute) {
-    mlHr = (dose * unitConversion * weight * 60) / med.concentration;
-  } else {
-    mlHr = (dose * unitConversion * weight) / med.concentration;
-  }
+	let mlHr;
+	if (rate.absolute) {
+		mlHr = (dose * unitConversion) / med.concentration;
+	} else if (rate.perMinute) {
+		mlHr = (dose * unitConversion * weight * 60) / med.concentration;
+	} else {
+		mlHr = (dose * unitConversion * weight) / med.concentration;
+	}
 
 	if (typeof rate.maxRate === "number") {
 			const maxMlHr = rate.absolute
@@ -1226,13 +1235,13 @@ function calculateVerify(name) {
 				: rate.perMinute
 					? (rate.maxRate * unitConversion * weight * 60) / med.concentration
 					: (rate.maxRate * unitConversion * weight) / med.concentration;
-	
+
 			if (dose > rate.maxRate) {
-				output.innerHTML = `<span style="color:red; font-weight:bold;"><span style="font-size:0.65em;">⚠️</span>${formatDose(mlHr)} mL/hr Exceeds max rate of: ${formatDose(maxMlHr)} mL/hr <span style="font-size:0.65em;">⚠️</span></span>`;
+				output.innerHTML = `<span style="color:red; font-weight:bold;"><<span style="font-size:0.65em;">⚠️</span>${formatDose(mlHr)} mL/hr exceeds guideline max rate of: ${formatDose(maxMlHr)} mL/hr <span style="font-size:0.65em;">⚠️</span></span>`;
 				return;
 			}
 		}
-	
+
 		output.textContent = `${formatDose(mlHr)} mL/hr`;
 }
 
@@ -1243,19 +1252,20 @@ function calculateVerify(name) {
 */
 function clearAllOutputs() {
 	Object.keys(MEDICATIONS)
-    .forEach(name => {
-      const med = MEDICATIONS[name];
+		.forEach(name => {
+			const med = MEDICATIONS[name];
 			const proto = getProtocol(med);
-			updateHTML(`${name}-label`, (proto && proto.label) ? proto.label : (med.label || name));			update(`${name}-dose`, "--");
-      update(`${name}-vol`, "--");
-      update(`${name}-inf`, "--");
-      update(`${name}-mlhr`, "--");
-      const verifyInput = document.getElementById(`verify-${name}`);
-      if (verifyInput) verifyInput.value = "";
-      const verifyOut = document.getElementById(`verify-out-${name}`);
-      if (verifyOut) verifyOut.textContent = "--";
-    	});
-  }
+			updateHTML(`${name}-label`, (proto && proto.label) ? proto.label : (med.label || name));
+			update(`${name}-dose`, "--");
+			update(`${name}-vol`, "--");
+			update(`${name}-inf`, "--");
+			update(`${name}-mlhr`, "--");
+			const verifyInput = document.getElementById(`verify-${name}`);
+			if (verifyInput) verifyInput.value = "";
+			const verifyOut = document.getElementById(`verify-out-${name}`);
+			if (verifyOut) verifyOut.textContent = "--";
+		});
+	}
 
 /* 
 ======================================================
@@ -1269,21 +1279,32 @@ function update(cls, val) {
 }
 
 function updateHTML(cls, val) {
-  const els = document.getElementsByClassName(cls);
-  for (let i = 0; i < els.length; i++) { els[i].innerHTML = val; }
+	const els = document.getElementsByClassName(cls);
+	for (let i = 0; i < els.length; i++) { els[i].innerHTML = val; }
 }
 
 </script>
 
 <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./service-worker.js')
-        .then(reg => console.log('[SW] Registered:', reg.scope))
-        .catch(err => console.error('[SW] Registration failed:', err));
-    });
-  }
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', () => {
+			navigator.serviceWorker.register('./service-worker.js')
+				.then(reg => console.log('[SW] Registered:', reg.scope))
+				.catch(err => console.error('[SW] Registration failed:', err));
+		});
+		navigator.serviceWorker.addEventListener('message', event => {
+			if (event.data.version) {
+				document.getElementById('version-footer').textContent =
+					`Version ${event.data.version} | Updated ${event.data.date}`;
+			}
+		});
+		navigator.serviceWorker.ready.then(reg => {
+			reg.active.postMessage('getVersion');
+		});
+	}
 </script>
+
+<div id="version-footer" class="footer">Version --</div>
 
 </body>
 </html>

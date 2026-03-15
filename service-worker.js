@@ -1,5 +1,7 @@
 // service-worker.js
-const CACHE_NAME = 'ffl-calc-v1.2';
+const CACHE_NAME = 'ffl-calc-v1.3';
+const VERSION = '1.3'
+const UPDATE_DATE = '3.15.26'
 const urlsToCache = [
   './',
   './index.html',
@@ -7,6 +9,12 @@ const urlsToCache = [
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
+
+self.addeventlistener('message', event => {
+	if (event.data === 'getVersion') {
+		event.source.postMessage({ version: VERSION, date: UPDATE_DATE });
+	}
+})
 
 self.addEventListener('install', evt => {
   console.log('[SW] Installing, will cache:', urlsToCache);
