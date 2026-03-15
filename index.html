@@ -1,4 +1,4 @@
-<!-- Version 1.4.5 -->
+<!-- Version 1.4.6 -->
 
 
 <!DOCTYPE html>
@@ -1038,7 +1038,7 @@ function buildTables() {
 
 				const totalCols = 1 + (config.hasBolus ? 2 : 0) + (config.hasInfusion ? 2 : 0);
 				verifyRow.innerHTML = `<td colspan="${totalCols}" style="text-align:center;">
-					To verify pump rate enter current dose:  
+					Enter current dose:  
 					<input type="number" class="verify-input" id="verify-${name}" placeholder="${doseUnit}">
 					&nbsp;|&nbsp;
 					Pump Rate = <span id="verify-out-${name}">--</span>
