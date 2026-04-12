@@ -43,7 +43,8 @@ body {
 
 .update-banner {
 	display: none;
-	position: absolute;
+	position: fixed;
+	top: 10vh;
 	left: 50%;
 	transform: translateX(-50%);
 	background: #FF0000;
@@ -51,7 +52,7 @@ body {
 	text-align: center;
 	padding: 20px;
 	font-weight: bold;
-	font-size: 25px;
+	font-size: 35px;
 	z-index: 9999;
 	cursor: pointer;
 	max-width: 90%;
@@ -1359,6 +1360,6 @@ function updateHTML(cls, val) {
 </script>
 
 <div id="version-footer" class="footer">Version --</div>
-<div id="update-banner" class="update-banner" onclick="window.location.reload()">New version available - tap here load updates</div>
+<div id="update-banner" class="update-banner" onclick="window.location.reload()">New version available - Tap here load updates</div>
 </body>
 </html>
