@@ -1,7 +1,7 @@
 // service-worker.js
-const CACHE_NAME = 'ffl-calc-v1.4.6' /* UPDATE CACHE NAME		'ffl-calc-v1.x'; */
-const VERSION = '1.4.6' /* UPDATE VERSION		'1.x'		*/
-const UPDATE_DATE = '3.15.26 15:33' /*		'UPDATE DATE OF UPLOAD'		*/
+const CACHE_NAME = 'ffl-calc-v1.4.7' /* UPDATE CACHE NAME		'ffl-calc-v1.x' */
+const VERSION =  '1.4.7' /* UPDATE VERSION		'1.x'		*/
+const UPDATE_DATE = '4.11.26 23:42' /*  'UPDATE DATE OF UPLOAD'		*/
 const urlsToCache = [
   './',
   './index.html',
