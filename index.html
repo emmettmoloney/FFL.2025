@@ -1,4 +1,9 @@
-<!-- Version 1.4.6 -->
+<!-- 
+Version 1.4.7 
+-Updated version alert banner color
+-Typo in infusion max flag that resulted in extra "<"
+-
+-->
 
 
 <!DOCTYPE html>
@@ -46,10 +51,10 @@ body {
 	position: fixed;
 	top: 0;
 	width: 100%;
-	background: #EA9B56;
+	background: #FF0000;
 	color: black;
 	text-align: center;
-	padding: 15px;
+	padding: 20px;
 	font-weight: bold;
 	font-size: 15px;
 	z-index: 9999;
@@ -344,7 +349,9 @@ function getProtocol(med) {
 	 MEDICATION REGISTRY
 ======================================================
 */
-/* USER UPDATE GUIDE, ACTIVE CODE RESUMES LINE 463 */
+
+/* USER UPDATE GUIDE, ACTIVE CODE RESUMES LINE 495 */
+
 /*
 ------------------------------------------------------
 Guide for updates to the medication registry
@@ -655,9 +662,9 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 		concentration: 100,
 		unit: "mg",
 		protocols: {
-			adult: { doseRange: { min: 0.5, max: 1 }, description: "Higher dose for procedural sedation and acute agitation. Lower dose range for comfort, such as BiPAP. 0.5–1 mg/kg slow IVP, MR 0.5 mg/kg Q 5-10 min PRN" }, 
-			geriatric: { doseRange: { min: 0.5, max: 1 }, description: "Higher dose for procedural sedation and acute agitation. Lower dose range for comfort, such as BiPAP. 0.5–1 mg/kg slow IVP, MR 0.5 mg/kg Q 5-10 min PRN" },
-			pediatric: { doseRange: { min: 0.5, max: 1 }, description: "Higher dose for procedural sedation and acute agitation. Lower dose range for comfort, such as BiPAP. 0.5-1 mg/kg, MR 0.5 mg/kg Q 5-10 min PRN" },
+			adult: { doseRange: { min: 0.5, max: 1 }, description: "Use higher dose for procedural sedation and acute agitation. Use lower dose range for comfort, such as BiPAP. 0.5–1 mg/kg slow IVP, MR 0.5 mg/kg Q 5-10 min PRN" }, 
+			geriatric: { doseRange: { min: 0.5, max: 1 }, description: "Use higher dose for procedural sedation and acute agitation. Use lower dose range for comfort, such as BiPAP. 0.5–1 mg/kg slow IVP, MR 0.5 mg/kg Q 5-10 min PRN" },
+			pediatric: { doseRange: { min: 0.5, max: 1 }, description: "Use higher dose for procedural sedation and acute agitation. Use lower dose range for comfort, such as BiPAP. 0.5-1 mg/kg, MR 0.5 mg/kg Q 5-10 min PRN" },
 		}
 	},
 
@@ -884,7 +891,6 @@ document.querySelectorAll(".profile-select")
 */
 function goHome() {
 	const calc = document.getElementById("calculator-page");
-
 	if (calc) calc.style.display="none";
 
 	const start = document.getElementById("start-page");
@@ -1040,8 +1046,8 @@ function buildTables() {
 				verifyRow.innerHTML = `<td colspan="${totalCols}" style="text-align:center;">
 					Enter current dose:  
 					<input type="number" class="verify-input" id="verify-${name}" placeholder="${doseUnit}">
-					&nbsp;|&nbsp;
-					Pump Rate = <span id="verify-out-${name}">--</span>
+					<br>
+					Pump Rate: <span id="verify-out-${name}">--</span>
 				</td>`;
 
 				tbody.appendChild(verifyRow);
@@ -1098,7 +1104,7 @@ document.getElementById("weightInput")
 
 /* 
 ======================================================
-				MAXIMUM WEIGHTS BEFORE ERROR PER PROFILE
+		MAXIMUM WEIGHTS BEFORE ERROR PER PROFILE
 ====================================================== 
 */
 const MAX_WEIGHT = {
@@ -1109,7 +1115,7 @@ const MAX_WEIGHT = {
 
 /* 
 ======================================================
-				DOSE CALCULATION ENGINE
+		DOSE CALCULATION ENGINE
 ====================================================== 
 */
 function calculateAll() {
@@ -1123,7 +1129,7 @@ function calculateAll() {
 
 	const maxWeight = MAX_WEIGHT[currentProfile];
 	if (weight > maxWeight) {
-		const override = confirm(`${weight} kg exceeds the ${currentProfile} profile maximum of ${maxWeight} kg.\n\nPress OK to proceed, or Cancel to re-enter weight.`);
+		const override = confirm(`${weight} kg exceeds the ${currentProfile} profile maximum of ${maxWeight} kg.\n\nPress OK to proceed with entered weight\n or\n Press Cancel to re-enter weight.`);
 		if (!override) {
 			document.getElementById("weightInput").value = "";
 			clearAllOutputs();
@@ -1252,7 +1258,7 @@ function calculateVerify(name) {
 					: (rate.maxRate * unitConversion * weight) / med.concentration;
 
 			if (dose > rate.maxRate) {
-				output.innerHTML = `<span style="color:red; font-weight:bold;"><<span style="font-size:0.65em;">⚠️</span>${formatDose(mlHr)} mL/hr exceeds guideline max rate of: ${formatDose(maxMlHr)} mL/hr <span style="font-size:0.65em;">⚠️</span></span>`;
+				output.innerHTML = `<span style="color:red; font-weight:bold;"><span style="font-size:0.65em;">⚠️</span>${formatDose(mlHr)} mL/hr exceeds guideline max rate of: ${formatDose(maxMlHr)} mL/hr <span style="font-size:0.65em;">⚠️</span></span>`;
 				return;
 			}
 		}
@@ -1357,6 +1363,6 @@ function updateHTML(cls, val) {
 </script>
 
 <div id="version-footer" class="footer">Version --</div>
-<div id="update-banner" class="update-banner" onclick="window.location.reload()">An update is available - tap here to reload</div>
+<div id="update-banner" class="update-banner" onclick="window.location.reload()">New version available - tap here load updates</div>
 </body>
 </html>
