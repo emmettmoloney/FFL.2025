@@ -1,18 +1,20 @@
 // service-worker.js
-const CACHE_NAME = 'ffl-calc-v1.4.14' /* UPDATE CACHE NAME		'ffl-calc-v1.x' */
-const VERSION =  '1.4.14' /* UPDATE VERSION		'1.x'		*/
-const UPDATE_DATE = '4.12.26 00:35' /*  'UPDATE DATE OF UPLOAD'		*/
+const CACHE_NAME = 'ffl-calc-v2.0'        /* UPDATE CACHE NAME		'ffl-calc-vX.X' */
+const VERSION =  '2.0'                    /* UPDATE VERSION		'X.X'		*/
+const UPDATE_DATE = '5/22/26 1820'     /*  'DATE OF UPLOAD'		*/
 const urlsToCache = [
   './',
   './index.html',
+  './scripts/FFL-Calc.js',
+  './styles/FFL-Calc.css',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
 
-self.addEventListener('install', evt => {
+self.addEventListener('install', (event) => {
   console.log('[SW] Installing, will cache:', urlsToCache);
-  evt.waitUntil(
+  event.waitUntil(
     caches.open(CACHE_NAME).then(async cache => {
       for (let url of urlsToCache) {
         try {
@@ -26,8 +28,8 @@ self.addEventListener('install', evt => {
   );
 });
 
-self.addEventListener('activate', evt => {
-  evt.waitUntil(
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames
