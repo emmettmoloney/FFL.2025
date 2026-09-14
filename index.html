@@ -27,6 +27,7 @@
 		------------------------------------------------------
 				- User selects patient profile
 				- Shows warning disclaimer
+				- Test Line 9/14 01.15
 		====================================================== 
 		-->
 		<div id="start-page">
@@ -54,13 +55,13 @@
 			</div>
 
 			<div style="text-align: center;">
-				<button class="start-button profile-select" data-profile="adult">Adult</button>
+				<button class="start-button profile-select" onclick="selectProfile('adult')">Adult</button>
 				<br>
 				<br>
-				<button class="start-button profile-select" data-profile="geriatric">Geriatric</button>
+				<button class="start-button profile-select" onclick="selectProfile('geriatric')">Geriatric</button>
 				<br>
 				<br>
-				<button class="start-button profile-select" data-profile="pediatric">Pediatric</button>
+				<button class="start-button profile-select" onclick="selectProfile('pediatric')">Pediatric</button>
 			</div>
 		</div>
 
@@ -78,10 +79,24 @@
 				<button class="start-button" onclick="goHome()">← Back to Start</button>
 			</div>
 
-			<!-- PATIENT WEIGHT INPUT -->
-			<div class="patient-weight">
-				<span id="profileLabel"></span> Patient Weight<br>
-				<input type="number" id="weightInput" placeholder="(kg)">
+			<!-- PATIENT WEIGHT INPUT AND FILTER CONTROLS -->
+			<div id="weight-input-container" style="display: none;">
+				<div class="patient-weight">
+					<span id="profileLabel"></span> Patient Weight<br>
+					<input type="number" id="weightInput" placeholder="(kg)">
+				</div>
+
+				<!-- VIEW FILTER CONTROLS (populated by JavaScript) -->
+				<div class="view-filter-controls">
+					<div class="filter-row">
+						<button class="filter-btn" onclick="setView('rsi')">RSI</button>
+						<button class="filter-btn" onclick="setView('pain-sed')">Pain & Sed.</button>
+						<button class="filter-btn" onclick="setView('seizures')">Seizures</button>
+					</div>
+					<div class="filter-row">
+						<button class="filter-btn full-width" onclick="setView('all')">Show Me Everything</button>
+					</div>
+				</div>
 			</div>
 
 			<!-- SECTION CONTAINERS -->
@@ -136,6 +151,29 @@
 				<table>
 					<thead><tr></tr></thead>
 					<tbody id="vent-inf-body"></tbody>
+				</table>
+			</div>
+
+			<!-- Seizure Management Section -->
+			<div class="section-card seizures">
+				<div class="section-title seizures-section-title">Seizure Management</div>
+				
+				<!-- First Line Management -->
+				<table>
+					<thead><tr></tr></thead>
+					<tbody id="seizures-first-body"></tbody>
+				</table>
+				
+				<!-- Second Line Management -->
+				<table>
+					<thead><tr></tr></thead>
+					<tbody id="seizures-second-body"></tbody>
+				</table>
+				
+				<!-- Third Line Management -->
+				<table>
+					<thead><tr></tr></thead>
+					<tbody id="seizures-third-body"></tbody>
 				</table>
 			</div>
 

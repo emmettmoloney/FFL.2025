@@ -318,6 +318,7 @@ td {
 .pain-control      { border-left-color: var(--color-pain);      }
 .sedation          { border-left-color: var(--color-sedation);  }
 .mechvent          { border-left-color: var(--color-mechvent);  }
+.seizures          { border-left-color: #ff6b6b; }
 
 
 /* 
@@ -409,4 +410,81 @@ td {
     font-size: 11px;
     padding: 3px;
   }
+}
+
+/* 
+------------------------------------------------------------
+   19. Seizures Section (NEW)
+------------------------------------------------------------ 
+*/
+.seizures-section-title {
+  color: #ff6b6b; /* Red accent for seizures */
+  font-weight: bold;
+}
+
+.seizures-section-title::before {
+  content: "⚠️ ";
+}
+
+/* 
+------------------------------------------------------------
+   20. View Filter Controls (NEW)
+------------------------------------------------------------ 
+*/
+.view-filter-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.filter-row {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.filter-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--color-accent);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  background: var(--color-accent);
+  color: black;
+}
+
+.filter-btn.full-width {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* 
+------------------------------------------------------------
+   19. Seizures Section (NEW)
+------------------------------------------------------------ 
+*/
+.seizures-section-title {
+  color: #ff6b6b; /* Red accent for seizures */
+  font-weight: bold;
+}
+
+.seizures-section-title::before {
+  content: "⚠️ ";
+}
+
+/* 
+------------------------------------------------------------
+   20. Seizures Section Cards (NEW)
+------------------------------------------------------------ 
+*/
+.seizures {
+  border-left-color: #ff6b6b;
 }

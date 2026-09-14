@@ -5,9 +5,101 @@
 ====================================================== 
 */
 let currentProfile = null;
+let currentView = 'all'; // 'rsi', 'pain-sed', 'seizures', or 'all'
 
 function getProtocol(med) {
 	return med.protocols[currentProfile] || med.protocols.standard || null;
+}
+
+/* 
+======================================================
+	 VIEW FILTERING FUNCTIONS
+====================================================== 
+*/
+
+function getViewSections(viewName) {
+	switch(viewName) {
+		case 'rsi':
+			return ['supportive-body', 'induction-body', 'paralytic-body'];
+		case 'pain-sed':
+			return ['pain-body', 'sedation-body', 'vent-bolus-body', 'vent-inf-body'];
+		case 'seizures':
+			return ['seizures-first-body', 'seizures-second-body', 'seizures-third-body'];
+		case 'all':
+		default:
+			return ['supportive-body', 'induction-body', 'paralytic-body',
+					'pain-body', 'sedation-body', 'vent-bolus-body', 'vent-inf-body',
+					'seizures-first-body', 'seizures-second-body', 'seizures-third-body'];
+	}
+}
+
+function shouldShowSection(sectionId) {
+	return getViewSections(currentView).includes(sectionId);
+}
+
+function setView(viewName) {
+	currentView = viewName;
+	
+	// Hide all sections first
+	document.querySelectorAll('.section-card').forEach(card => {
+		card.style.display = 'none';
+	});
+	
+	// Show only sections matching current view
+	const sectionsToShow = getViewSections(viewName);
+	sectionsToShow.forEach(sectionId => {
+		const tbody = document.getElementById(sectionId);
+		if (tbody) {
+			tbody.style.display = 'block';
+		}
+	});
+	
+	// Rebuild tables for visible sections
+	buildTables();
+}
+
+function buildFilterButtons() {
+	const container = document.getElementById("weight-input-container");
+	if (!container) return;
+	
+	const filterRow1 = document.createElement("div");
+	filterRow1.className = "filter-row";
+	
+	const rsiBtn = document.createElement("button");
+	rsiBtn.className = "filter-btn";
+	rsiBtn.textContent = "RSI";
+	rsiBtn.dataset.view = "rsi";
+	rsiBtn.onclick = () => setView("rsi");
+	
+	const painSedBtn = document.createElement("button");
+	painSedBtn.className = "filter-btn";
+	painSedBtn.textContent = "Pain & Sed.";
+	painSedBtn.dataset.view = "pain-sed";
+	painSedBtn.onclick = () => setView("pain-sed");
+	
+	const seizuresBtn = document.createElement("button");
+	seizuresBtn.className = "filter-btn";
+	seizuresBtn.textContent = "Seizures";
+	seizuresBtn.dataset.view = "seizures";
+	seizuresBtn.onclick = () => setView("seizures");
+	
+	filterRow1.appendChild(rsiBtn);
+	filterRow1.appendChild(painSedBtn);
+	filterRow1.appendChild(seizuresBtn);
+	
+	const filterRow2 = document.createElement("div");
+	filterRow2.className = "filter-row";
+	
+	const allBtn = document.createElement("button");
+	allBtn.className = "filter-btn full-width";
+	allBtn.textContent = "Show Me Everything";
+	allBtn.dataset.view = "all";
+	allBtn.onclick = () => setView("all");
+	
+	filterRow2.appendChild(allBtn);
+	
+	container.appendChild(filterRow1);
+	container.appendChild(filterRow2);
 }
 
 /* 
@@ -531,6 +623,108 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 			pediatric: { infusionRate: { perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10-75 mcg/kg/min (unless higher rate MD ordered). ± 5-10 mcg/kg/min Q 5-10 min to maintain sedation" },
 		},
 	},
+
+	/* 
+	======================================================
+		SEIZURES SECTION
+	====================================================== 
+	*/
+
+	Midazolam_seizure: {
+		label: "Midazolam (Versed)",
+		section: ["seizures-first-body"],
+		concentration: 5,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {absolute: true, min: 5, max: 5 }, description: "5 mg IV or 10 mg IM / IN, MR Q 2-5 min PRN" },
+			geriatric: { doseRange: {absolute: true, min: 5, max: 5 }, description: "5 mg IV or 10 mg IM / IN, MR Q 2-5 min PRN" },
+			pediatric: { doseRange: {min: 0.1, max: 0.1, maxTotal: 5 }, description: "0.1 mg/kg IV, MR Q 2-5 min PRN" },
+		},
+	},
+
+	Lorazepam_seizure: {
+		label: "Lorazepam (Ativan)",
+		section: ["seizures-first-body"],
+		concentration: 2,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {absolute: true, min: 4, max: 4 }, description: "4 mg IV over 2 min, MR Q 5 min PRN" },
+			geriatric: { doseRange: {absolute: true, min: 4, max: 4 }, description: "4 mg IV over 2 min, MR Q 5 min PRN" },
+			pediatric: { doseRange: {min: 0.1, max: 0.1, maxTotal: 4 }, description: "0.1 mg/kg IV, max dose 4 mg, MR Q 5 min PRN" },
+		},
+	},
+
+	Diazepam_seizure: {
+		label: "Diazepam (Valium)",
+		section: ["seizures-first-body"],
+		concentration: 5,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {absolute: true, min: 10, max: 10 }, description: "10 mg IV at 2.5 mg/min, MR Q 5 min PRN" },
+			geriatric: { doseRange: {absolute: true, min: 10, max: 10 }, description: "10 mg IV at 2.5 mg/min, MR Q 5 min PRN" },
+			pediatric: { doseRange: {min: 0.2, max: 0.2, maxTotal: 10 }, description: "0.2 mg/kg IV, max dose 10 mg, at 2 mg/min, MR Q 5 min PRN" },
+		},
+	},
+
+	Levetiracetam_active: {
+		label: "Levetiracetam (Keppra) Active Seizures",
+		section: ["seizures-second-body"],
+		concentration: 100,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 60, max: 60, maxTotal: 4500 }, description: "60 mg/kg IV, over 15 min, max dose 4500 mg" },
+			geriatric: { doseRange: {min: 60, max: 60, maxTotal: 4500 }, description: "60 mg/kg IV, over 15 min, max dose 4500 mg" },
+			pediatric: { doseRange: {min: 60, max: 60, maxTotal: 4500 }, description: "60 mg/kg IV, over 15 min, max dose 4500 mg" },
+		},
+	},
+
+	Levetiracetam_prophylaxis: {
+		label: "Levetiracetam (Keppra) Seizure Prophylaxis",
+		section: ["seizures-second-body"],
+		concentration: 100,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 20, max: 20, maxTotal: 4500 }, description: "20 mg/kg IV, over 15 min, max dose 4500 mg" },
+			geriatric: { doseRange: {min: 20, max: 20, maxTotal: 4500 }, description: "20 mg/kg IV, over 15 min, max dose 4500 mg" },
+			pediatric: { doseRange: {min: 20, max: 20, maxTotal: 4500 }, description: "20 mg/kg IV, over 15 min, max dose 4500 mg" },
+		},
+	},
+
+	Propofol_seizure_bolus: {
+		label: "Propofol (Bolus)",
+		section: ["seizures-third-body"],
+		concentration: 10,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 2, max: 2 }, description: "For intubated patients. Indicated for refractory status epileptics. 2 mg/kg loading dose followed by infusion" },
+			geriatric: { doseRange: {min: 2, max: 2 }, description: "For intubated patients. Indicated for refractory status epileptics. 2 mg/kg loading dose followed by infusion" },
+			pediatric: { doseRange: {min: 2, max: 2 }, description: "For intubated patients. Indicated for refractory status epileptics. 2 mg/kg loading dose followed by infusion" },
+		},
+	},
+
+	Propofol_seizure_infusion: {
+		label: "Propofol (Infusion)",
+		section: ["seizures-third-body"],
+		concentration: 10000,
+		unit: "mcg",
+		protocols: {
+			adult: { infusionRate: {min: 10, max: 75 }, description: "10 mcg/kg/min to a max of 75 mcg/kg/min" },
+			geriatric: { infusionRate: {min: 10, max: 75 }, description: "10 mcg/kg/min to a max of 75 mcg/kg/min" },
+			pediatric: { infusionRate: {min: 10, max: 75 }, description: "10 mcg/kg/min to a max of 75 mcg/kg/min" },
+		},
+	},
+
+	Phenobarbital_seizure: {
+		label: "Phenobarbital",
+		section: ["seizures-third-body"],
+		concentration: 130,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 15, max: 15, maxTotal: 4500 }, description: "15 mg/kg IV, at 60 mg/min" },
+			geriatric: { doseRange: {min: 15, max: 15, maxTotal: 4500 }, description: "15 mg/kg IV, at 60 mg/min" },
+			pediatric: { doseRange: {min: 20, max: 20, maxTotal: 1000 }, description: "20 mg/kg IV, at 2 mg/kg/min. MR at 5 mg/kg Q 10-15 min to total of 40 mg/kg" },
+		},
+	},
 };
 
 /* 
@@ -538,20 +732,31 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 		PROFILE SELECTION FUNCTION
 ====================================================== 
 */
-document.querySelectorAll(".profile-select")
-	.forEach(btn => {
-		btn.onclick = () => {
-			currentProfile = btn.dataset.profile;
-
-			const labels = {adult: "Adult", geriatric: "Geriatric", pediatric: "Pediatric"};
-
-			document.getElementById("profileLabel").textContent = labels[currentProfile];
-			document.getElementById("start-page").style.display = "none";
-			document.getElementById("calculator-page").style.display = "block";
-			
-			buildTables();
-		};
+function selectProfile(profile) {
+	currentProfile = profile;
+	currentView = 'all'; // Reset to show everything
+	
+	const labels = {adult: "Adult", geriatric: "Geriatric", pediatric: "Pediatric"};
+	
+	document.getElementById("profileLabel").textContent = labels[currentProfile];
+	document.getElementById("start-page").style.display = "none";
+	document.getElementById("calculator-page").style.display = "block";
+	
+	// Show weight input and filter buttons
+	const weightContainer = document.getElementById("weight-input-container");
+	if (weightContainer) weightContainer.style.display = "block";
+	
+	// Hide all sections initially
+	document.querySelectorAll(".section-card").forEach(card => {
+		card.style.display = "none";
 	});
+	
+	// Set view to 'all' and apply it
+	setView('all');
+	
+	// Build filter buttons
+	buildFilterButtons();
+}
 
 /* 
 ======================================================
@@ -567,6 +772,17 @@ function goHome() {
 
 	const weightInput = document.getElementById("weightInput");
 	if (weightInput) weightInput.value = "";
+
+	// Clear filter buttons
+	const filterButtons = document.querySelectorAll(".filter-btn");
+	filterButtons.forEach(btn => btn.remove());
+
+	// Hide weight input container
+	const weightContainer = document.getElementById("weight-input-container");
+	if (weightContainer) weightContainer.style.display = "none";
+
+	// Reset view to 'all'
+	currentView = 'all';
 
 	clearAllOutputs();
 }
@@ -662,6 +878,9 @@ function buildTables() {
 		if (!protocol) return;
 
 		med.section.forEach(sectionId => {
+			// Skip sections not in current view
+			if (!shouldShowSection(sectionId)) return;
+
 			const config = sectionConfig[sectionId];
 			const tbody = document.getElementById(sectionId);
 			
@@ -740,6 +959,9 @@ function buildTables() {
 	------------------------------------------------ 
 	*/
 	Object.entries(sectionConfig).forEach(([sectionId, config]) => {
+		// Skip sections not in current view
+		if (!shouldShowSection(sectionId)) return;
+
 		const table = document.getElementById(sectionId).closest("table");
 
 		const thead =
