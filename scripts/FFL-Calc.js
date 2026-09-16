@@ -6,6 +6,39 @@
 */
 let currentProfile = null;
 
+// Section filter state – null means show all sections
+let currentSectionFilter = null;
+
+// All section IDs present in the page (including seizures)
+const ALL_SECTIONS = [
+	'supportive-body',
+	'induction-body',
+	'paralytic-body',
+	'pain-body',
+	'sedation-body',
+	'vent-bolus-body',
+	'vent-inf-body',
+	'seizures-first-body',
+	'seizures-second-body',
+	'seizures-third-body'
+];
+
+/**
+ * Show or hide section cards based on the current filter.
+ * When `currentSectionFilter` is null, all sections are shown.
+ */
+function updateSectionVisibility() {
+	ALL_SECTIONS.forEach(sectionId => {
+		const tbody = document.getElementById(sectionId);
+		if (!tbody) return;
+		const card = tbody.closest('.section-card');
+		if (!card) return;
+
+		const shouldShow = !currentSectionFilter || currentSectionFilter.includes(sectionId);
+		card.style.display = shouldShow ? '' : 'none';
+	});
+}
+
 function getProtocol(med) {
 	return med.protocols[currentProfile] || med.protocols.standard || null;
 }
@@ -531,6 +564,106 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 			pediatric: { infusionRate: { perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10-75 mcg/kg/min (unless higher rate MD ordered). ± 5-10 mcg/kg/min Q 5-10 min to maintain sedation" },
 		},
 	},
+	/* 
+	======================================================
+		SEIZURES SECTION
+	====================================================== 
+	*/
+	Midazolam_seizure: {
+		label: "Midazolam (Versed)",
+		section: ["seizures-first-body"],
+		concentration: 5,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {absolute: true, min: 5, max: 5 }, description: "5 mg IV or 10 mg IM / IN, MR Q 2-5 min PRN" },
+			geriatric: { doseRange: {absolute: true, min: 5, max: 5 }, description: "5 mg IV or 10 mg IM / IN, MR Q 2-5 min PRN" },
+			pediatric: { doseRange: {min: 0.1, max: 0.1, maxTotal: 5 }, description: "0.1 mg/kg IV, MR Q 2-5 min PRN" },
+		},
+	},
+
+	Lorazepam_seizure: {
+		label: "Lorazepam (Ativan)",
+		section: ["seizures-first-body"],
+		concentration: 2,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {absolute: true, min: 4, max: 4 }, description: "4 mg IV over 2 min, MR Q 5 min PRN" },
+			geriatric: { doseRange: {absolute: true, min: 4, max: 4 }, description: "4 mg IV over 2 min, MR Q 5 min PRN" },
+			pediatric: { doseRange: {min: 0.1, max: 0.1, maxTotal: 4 }, description: "0.1 mg/kg IV, max dose 4 mg, MR Q 5 min PRN" },
+		},
+	},
+
+	Diazepam_seizure: {
+		label: "Diazepam (Valium)",
+		section: ["seizures-first-body"],
+		concentration: 5,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {absolute: true, min: 10, max: 10 }, description: "10 mg IV at 2.5 mg/min, MR Q 5 min PRN" },
+			geriatric: { doseRange: {absolute: true, min: 10, max: 10 }, description: "10 mg IV at 2.5 mg/min, MR Q 5 min PRN" },
+			pediatric: { doseRange: {min: 0.2, max: 0.2, maxTotal: 10 }, description: "0.2 mg/kg IV, max dose 10 mg, at 2 mg/min, MR Q 5 min PRN" },
+		},
+	},
+
+	Levetiracetam_active: {
+		label: "Levetiracetam (Keppra) - Active Seizures",
+		section: ["seizures-second-body"],
+		concentration: 100,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 60, max: 60, maxTotal: 4500 }, description: "60 mg/kg IV, over 15 min, max dose 4500 mg" },
+			geriatric: { doseRange: {min: 60, max: 60, maxTotal: 4500 }, description: "60 mg/kg IV, over 15 min, max dose 4500 mg" },
+			pediatric: { doseRange: {min: 60, max: 60, maxTotal: 4500 }, description: "60 mg/kg IV, over 15 min, max dose 4500 mg" },
+		},
+	},
+
+	Levetiracetam_prophylaxis: {
+		label: "Levetiracetam (Keppra) - Seizure Prophylaxis",
+		section: ["seizures-second-body"],
+		concentration: 100,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 20, max: 20, maxTotal: 4500 }, description: "20 mg/kg IV, over 15 min, max dose 4500 mg" },
+			geriatric: { doseRange: {min: 20, max: 20, maxTotal: 4500 }, description: "20 mg/kg IV, over 15 min, max dose 4500 mg" },
+			pediatric: { doseRange: {min: 20, max: 20, maxTotal: 4500 }, description: "20 mg/kg IV, over 15 min, max dose 4500 mg" },
+		},
+	},
+
+	Phenobarbital_seizure: {
+		label: "Phenobarbital",
+		section: ["seizures-third-body"],
+		concentration: 130,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 15, max: 15, maxTotal: 4500 }, description: "15 mg/kg IV, at 60 mg/min" },
+			geriatric: { doseRange: {min: 15, max: 15, maxTotal: 4500 }, description: "15 mg/kg IV, at 60 mg/min" },
+			pediatric: { doseRange: {min: 20, max: 20, maxTotal: 1000 }, description: "20 mg/kg IV, at 2 mg/kg/min. MR at 5 mg/kg Q 10-15 min to total of 40 mg/kg" },
+		},
+	},
+
+	Propofol_seizure_bolus: {
+		label: "Propofol - Loading Dose",
+		section: ["seizures-third-body"],
+		concentration: 10,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 2, max: 2 }, description: "For intubated patients. Indicated for refractory status epileptics. 2 mg/kg loading dose followed by infusion" },
+			geriatric: { doseRange: {min: 2, max: 2 }, description: "For intubated patients. Indicated for refractory status epileptics. 2 mg/kg loading dose followed by infusion" },
+			pediatric: { doseRange: {min: 2, max: 2 }, description: "For intubated patients. Indicated for refractory status epileptics. 2 mg/kg loading dose followed by infusion" },
+		},
+	},
+
+	Propofol_seizure_infusion: {
+		label: "Propofol - Infusion",
+		section: ["seizures-third-body"],
+		concentration: 10000,
+		unit: "mcg",
+		protocols: {
+			adult: { infusionRate: { perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10 mcg/kg/min to a max of 75 mcg/kg/min" },
+			geriatric: { infusionRate: {perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10 mcg/kg/min to a max of 75 mcg/kg/min" },
+			pediatric: { infusionRate: {perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10 mcg/kg/min to a max of 75 mcg/kg/min" },
+		},
+	},
 };
 
 /* 
@@ -549,9 +682,38 @@ document.querySelectorAll(".profile-select")
 			document.getElementById("start-page").style.display = "none";
 			document.getElementById("calculator-page").style.display = "block";
 			
+			// Reset section filter – no tables shown until a button is chosen
+			currentSectionFilter = [];
+			updateSectionVisibility();
+			clearAllOutputs();
+			// Reset section filter – no tables shown until a button is chosen
+			currentSectionFilter = [];
+			updateSectionVisibility();
+			clearAllOutputs();
 			buildTables();
 		};
 	});
+
+// Mapping of button labels to section IDs
+const SECTION_MAP = {
+	'RSI/DSI': ['supportive-body', 'induction-body', 'paralytic-body'],
+	'Pain & Sed.': ['pain-body', 'sedation-body', 'vent-bolus-body', 'vent-inf-body'],
+	'Seizures': ['seizures-first-body', 'seizures-second-body', 'seizures-third-body'],
+	'Show me Everything': ALL_SECTIONS
+};
+
+// Attach click handlers to the new section buttons
+document.querySelectorAll('.section-select').forEach(btn => {
+	btn.onclick = () => {
+		const key = btn.dataset.section;
+		currentSectionFilter = SECTION_MAP[key] ? [...SECTION_MAP[key]] : [];
+		updateSectionVisibility();
+		clearAllOutputs();
+		buildTables();
+		// Recalculate doses for the selected sections
+		calculateAll();
+	};
+});
 
 /* 
 ======================================================
@@ -616,6 +778,8 @@ function validateMedications() {
 ====================================================== 
 */
 function buildTables() {
+	// Ensure correct sections are visible before populating
+	updateSectionVisibility();
 	validateMedications();
 	// Clear existing rows
 	document.querySelectorAll("tbody")

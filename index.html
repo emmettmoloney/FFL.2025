@@ -27,6 +27,7 @@
 		------------------------------------------------------
 				- User selects patient profile
 				- Shows warning disclaimer
+				- v3v2 9.15 0545 Second try
 		====================================================== 
 		-->
 		<div id="start-page">
@@ -84,6 +85,18 @@
 				<input type="number" id="weightInput" placeholder="(kg)">
 			</div>
 
+		<!-- SECTION SELECT BUTTONS -->
+		<div id="section-buttons" style="margin: 20px 0; text-align:center;">
+			<div style="display:flex; justify-content:center; gap:10px; margin-bottom:8px;">
+				<button class="start-button section-select" data-section="RSI/DSI">RSI/DSI</button>
+				<button class="start-button section-select" data-section="Pain & Sed.">Pain & Sed.</button>
+				<button class="start-button section-select" data-section="Seizures">Seizures</button>
+			</div>
+			<div style="display:flex; justify-content:center; gap:10px;">
+				<button class="start-button section-select" data-section="Show me Everything">Show me Everything</button>
+			</div>
+		</div>
+
 			<!-- SECTION CONTAINERS -->
 			<div class="section-card supportive-agents">
 				<div class="section-title support-section-title">Support</div>
@@ -138,6 +151,34 @@
 					<tbody id="vent-inf-body"></tbody>
 				</table>
 			</div>
+
+		<!-- SEIZURES SECTION CARDS -->
+		<div class="section-card seizures" style="display:none;">
+			<div class="section-title seizures-section-title">Seizures</div>
+			<div class="section-subtitle seizures-section-title">First Line Management</div>
+			<table>
+				<thead><tr></tr></thead>
+				<tbody id="seizures-first-body"></tbody>
+			</table>
+		</div>
+
+		<div class="section-card seizures" style="display:none;">
+			<div class="section-title seizures-section-title">Seizures</div>
+			<div class="section-subtitle seizures-section-title">Second Line Managment</div>
+			<table>
+				<thead><tr></tr></thead>
+				<tbody id="seizures-second-body"></tbody>
+			</table>
+		</div>
+
+		<div class="section-card seizures" style="display:none;">
+			<div class="section-title seizures-section-title">Seizures</div>
+			<div class="section-subtitle seizures-section-title">Third Line Management</div>
+			<table>
+				<thead><tr></tr></thead>
+				<tbody id="seizures-third-body"></tbody>
+			</table>
+		</div>
 
 			<div style="text-align: center;">
 				<button class="start-button" onclick="goHome()">← Back to Start</button>

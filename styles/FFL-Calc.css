@@ -18,6 +18,7 @@
   --color-pain:      #dd625b;
   --color-sedation:  #abde52;
   --color-mechvent:  #6799ee;
+  --color-seizures:  #F14ACD;
 
   /* Typography */
   --font-body: Verdana, Geneva, Tahoma, sans-serif;
@@ -202,6 +203,7 @@ body {
 .pain-section-title      { color: var(--color-pain);      }
 .sedation-section-title  { color: var(--color-sedation);  }
 .mechvent-section-title  { color: var(--color-mechvent);  }
+.seizures-section-title  { color: var(--color-seizures);  }
 
 
 /* 
@@ -318,6 +320,7 @@ td {
 .pain-control      { border-left-color: var(--color-pain);      }
 .sedation          { border-left-color: var(--color-sedation);  }
 .mechvent          { border-left-color: var(--color-mechvent);  }
+.seizures          { border-left-color: var(--color-seizures);  }
 
 
 /* 
