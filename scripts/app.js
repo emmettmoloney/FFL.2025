@@ -1,4 +1,4 @@
-import { MAX_WEIGHT, weightStatus, computeBolus, computeInfusion, verifyInfusion } from './dose.js';
+import { MAX_WEIGHT, weightDecision, computeBolus, computeInfusion, verifyInfusion } from './dose.js';
 import { bolusView, infusionView, verifyView } from './format.js';
 import { createResultsTable } from './results-table.js';
 import { MEDICATIONS } from '../data/medications.js';
@@ -42,6 +42,7 @@ function handleSessionChange(type) {
 		document.getElementById("profileLabel").textContent = PROFILE_LABELS[session.profile];
 		document.getElementById("start-page").style.display = "none";
 		document.getElementById("calculator-page").style.display = "block";
+		confirmedWeight = null;
 
 		// No tables shown until a section button is chosen
 		updateSectionVisibility();
@@ -58,7 +59,8 @@ function handleSessionChange(type) {
 	else if (type === 'home') {
 		document.getElementById("calculator-page").style.display = "none";
 		document.getElementById("start-page").style.display = "block";
-		document.getElementById("weightInput").value = "";
+		weightInput.value = "";
+		confirmedWeight = null;
 		clearAllOutputs();
 	}
 }
@@ -106,25 +108,37 @@ function buildTables() {
 				2. Pump Rate verification engine
 ====================================================== 
 */
-document.getElementById("weightInput")
-	.addEventListener("input", calculateAll);
+const weightInput = document.getElementById("weightInput");
+
+// An over-maximum weight the user has confirmed. A different weight needs a new confirmation.
+let confirmedWeight = null;
+
+weightInput.addEventListener("input", calculateAll);
+weightInput.addEventListener("change", confirmOverMaxWeight);
+
+// Asked when the field is left or Enter is pressed, never on each keystroke.
+function confirmOverMaxWeight() {
+	const weight = parseFloat(weightInput.value);
+	if (weightDecision(session.profile, weight, confirmedWeight) !== 'needs-confirm') return;
+
+	const override = confirm(`${weight} kg exceeds the ${session.profile} profile maximum of ${MAX_WEIGHT[session.profile]} kg.\n\nPress OK to proceed with entered weight\n or\n Press Cancel to re-enter weight.`);
+	if (override) {
+		confirmedWeight = weight;
+		calculateAll();
+	} else {
+		weightInput.value = '';
+		clearAllOutputs();
+	}
+}
 
 function calculateAll() {
 
-	const weight = parseFloat(document.getElementById("weightInput").value);
+	const weight = parseFloat(weightInput.value);
 
-	if (!weight || weight <= 0) {
+	// No weight, or an over-maximum weight not yet confirmed: no calculation shows
+	if (weightDecision(session.profile, weight, confirmedWeight) !== 'ok') {
 		clearAllOutputs();
 		return;
-	}
-
-	if (weightStatus(session.profile, weight) === 'over-max') {
-		const override = confirm(`${weight} kg exceeds the ${session.profile} profile maximum of ${MAX_WEIGHT[session.profile]} kg.\n\nPress OK to proceed with entered weight\n or\n Press Cancel to re-enter weight.`);
-		if (!override) {
-			document.getElementById("weightInput").value = '';
-			clearAllOutputs();
-			return;
-		}
 	}
 
 	Object.entries(MEDICATIONS).forEach(([name, med]) => {
@@ -150,7 +164,7 @@ function verifyDose(name, dose) {
 
 	if (!protocol || !protocol.infusionRate) return;
 
-	const weight = parseFloat(document.getElementById("weightInput").value) || 0;
+	const weight = parseFloat(weightInput.value);
 	table.showVerify(name, verifyView(verifyInfusion(med, protocol, weight, dose)));
 }
 
