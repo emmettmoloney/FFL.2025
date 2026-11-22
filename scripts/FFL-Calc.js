@@ -1,4 +1,6 @@
 import { MAX_WEIGHT, weightStatus, computeBolus, computeInfusion, verifyInfusion } from './dose.js';
+import { bolusView, infusionView, verifyView } from './format.js';
+import { createResultsTable } from './results-table.js';
 
 /* 
 ======================================================
@@ -771,182 +773,45 @@ function validateMedications() {
 
 /* 
 ======================================================
-		BUILD TABLES DYNAMICALLY
+		RESULTS TABLE
 ------------------------------------------------------
-	 - Detects which columns apply per section
-	 - Builds headers dynamically
-	 - Builds rows per medication
+	 - Rows, headers and cell updates live in results-table.js
+	 - This file decides which medications appear and what they show
 ====================================================== 
 */
+const table = createResultsTable({ onVerify: (id, dose) => verifyDose(id, dose) });
+
+function entriesForProfile() {
+	return Object.entries(MEDICATIONS).flatMap(([name, med]) => {
+		const protocol = getProtocol(med);
+		if (!protocol) return [];
+		return [{
+			id: name,
+			label: med.label || name,
+			unit: protocol.unit || med.unit,
+			sections: med.section,
+			protocol,
+		}];
+	});
+}
+
 function buildTables() {
 	// Ensure correct sections are visible before populating
 	updateSectionVisibility();
 	validateMedications();
-	// Clear existing rows
-	document.querySelectorAll("tbody")
-		.forEach(t => t.innerHTML = '');
-
-	const sectionConfig = {};
-
-	/* 
-	------------------------------------------------
-			Determines column requirements per section
-	------------------------------------------------ 
-	*/
-	Object.entries(MEDICATIONS).forEach(([name, med]) => {
-		const protocol = getProtocol(med);
-
-		if (!protocol) return;
-
-		med.section.forEach(sectionId => {
-			if (!sectionConfig[sectionId]) {
-				sectionConfig[sectionId] = {
-					hasBolus: false,
-					hasInfusion: false
-				};
-			}
-
-			if (protocol.doseRange)
-				sectionConfig[sectionId].hasBolus = true;
-
-			if (protocol.infusionRate)
-				sectionConfig[sectionId].hasInfusion = true;
-		});
-	});
-
-
-	/* 
-	------------------------------------------------
-			Build table rows per section
-	------------------------------------------------ 
-	*/
-	Object.entries(MEDICATIONS).forEach(([name, med]) => {
-
-		const protocol = getProtocol(med);
-
-		if (!protocol) return;
-
-		med.section.forEach(sectionId => {
-			const config = sectionConfig[sectionId];
-			const tbody = document.getElementById(sectionId);
-			
-			const row = document.createElement('tr');
-
-			if (protocol.infusionRate) {
-				const rate = protocol.infusionRate;
-				const activeUnit = protocol.unit || med.unit;
-				
-				const doseUnit = rate.absolute
-					? `${activeUnit}/hr`
-					: rate.perMinute
-						? `${activeUnit}/kg/min`
-						: `${activeUnit}/kg/hr`;		
-				
-				row.innerHTML += `<td class="${name}-label" style="text-align: left;">
-					${med.label || name}
-					<br>
-					<span class="${name}-inf" style="font-size: 11px; font-style: italic;">--</span>
-				</td>`;
-
-				if (config.hasBolus)
-						row.innerHTML += `<td class="empty-cell"></td><td class="empty-cell"></td>`;
-
-				row.innerHTML += `
-					<td style="text-align: center;">
-						<input type="number" class="verify-input" id="verify-${name}" placeholder="${doseUnit}">
-					</td>
-					<td style="text-align: center;">
-						<span id="verify-out-${name}"></span>
-					</td>
-				`;
-
-				tbody.appendChild(row);
-
-			} else {
-				row.innerHTML += `<td class="${name}-label">${med.label || name}</td>`;
-
-				if (config.hasBolus) {
-					row.innerHTML += protocol.doseRange
-						? `<td class="${name}-dose">--</td><td class="${name}-vol">--</td>`
-						: `<td class="empty-cell"></td><td class="empty-cell"></td>`;
-				}
-
-				if (config.hasInfusion) {
-					row.innerHTML += `<td class="empty-cell"></td><td class="empty-cell"></td>`;
-				}
-			
-				tbody.appendChild(row);
-			}
-
-			if (protocol.infusionRate) {
-				document.getElementById(`verify-${name}`)
-					.addEventListener('input', () => calculateVerify(name));
-			}
-
-			if (protocol && protocol.description) {
-				const descRow = document.createElement('tr');
-				const totalCols = 1 + (config.hasBolus ? 2 : 0) + (config.hasInfusion ? 2 : 0);
-				const td = document.createElement('td');
-
-				td.colSpan = totalCols;
-				td.innerHTML = protocol.description;
-				td.style.textAlign = "center";
-				td.style.fontSize = "12px";
-
-				descRow.appendChild(td);
-				tbody.appendChild(descRow);
-			}
-		});
-	});
-
-	/* 
-	------------------------------------------------
-			Build dynamic headers per section
-	------------------------------------------------ 
-	*/
-	Object.entries(sectionConfig).forEach(([sectionId, config]) => {
-		const table = document.getElementById(sectionId).closest("table");
-
-		const thead =
-			table.querySelector("thead tr");
-
-		thead.innerHTML = "<th>Medication</th>";
-
-		if (config.hasBolus)
-			thead.innerHTML += "<th>Dose</th><th>Volume</th>";
-
-		if (config.hasInfusion)
-			thead.innerHTML += config.hasBolus
-				? '<th>Infusion</th><th>mL/hr</th>'
-				: '<th>Current Dose</th><th>Pump Rate</th>';
-	});
-}
-
-/* 
-======================================================
-		FORMAT DOSE FUNCTIONS
-====================================================== 
-*/
-function formatDose(num) {
-	return Number(num.toFixed(2)).toString();
+	table.build(entriesForProfile());
 }
 
 /* 
 ======================================================
 		CALCULATION ENGINE 
-				1. Profile Max Weights defined here
-				2. Calculation engine
-				3. Pump Rate verification engine
+				1. Calculation engine (math lives in dose.js)
+				2. Pump Rate verification engine
 ====================================================== 
 */
 document.getElementById("weightInput")
 	.addEventListener("input", calculateAll);
 
-/*
-======================================================
-		DOSE CALCULATION ENGINE
-====================================================== 
-*/
 function calculateAll() {
 
 	const weight = parseFloat(document.getElementById("weightInput").value);
@@ -969,125 +834,31 @@ function calculateAll() {
 		const protocol = getProtocol(med);
 
 		if (!protocol) return;
-		/* ----- Bolus Medications ----- */
+
 		if (protocol.doseRange) {
-			const r = computeBolus(med, protocol, weight);
-
-			const baseLabel = med.label || name;
-
-			updateHTML(`${name}-label`, r.capped
-			? `${baseLabel} || <span style="color:red;"><span style="font-size:0.9em;">⚠️</span> Dose Cap <span style="font-size:0.9em;">⚠️</span></span>`
-			: baseLabel);
-
-			if (r.min === r.max) {
-				update(`${name}-dose`,
-					`${formatDose(r.min)} ${med.unit}`);
-				update(`${name}-vol`,
-					`${formatDose(r.minMl)} mL`);
-			}
-			else {
-				update(`${name}-dose`,
-					`${formatDose(r.min)} – ${formatDose(r.max)} ${med.unit}`);
-				update(`${name}-vol`,
-					`${formatDose(r.minMl)} – ${formatDose(r.maxMl)} mL`);
-			}
+			table.showBolus(name, bolusView(med.label || name, med.unit, computeBolus(med, protocol, weight)));
 		}
-/* ----- Infusion (single or range) ----- */
+
 		if (protocol.infusionRate) {
-			const r = computeInfusion(med, protocol, weight);
-
-			update(`${name}-inf`,
-				`${formatDose(r.min)} – ${formatDose(r.max)} ${r.rateUnit}`);
-
-			update(`${name}-mlhr`,
-				`${formatDose(r.minMlHr)} – ${formatDose(r.maxMlHr)} mL/hr`);
+			table.showInfusion(name, infusionView(computeInfusion(med, protocol, weight)));
 		}
 	});
-	Object.keys(MEDICATIONS).forEach(name => {
-		const input = document.getElementById(`verify-${name}`);
-		if (input && input.value) calculateVerify(name);
-	});
+
+	table.verifyDoses().forEach(({ id, dose }) => verifyDose(id, dose));
 }
 
-/* 
-======================================================
-				PUMP RATE CALCULATOR ENGINE
-====================================================== 
-*/
-function calculateVerify(name) {
+function verifyDose(name, dose) {
 	const med = MEDICATIONS[name];
 	const protocol = getProtocol(med);
 
 	if (!protocol || !protocol.infusionRate) return;
 
-	const input = document.getElementById(`verify-${name}`);
-	const output = document.getElementById(`verify-out-${name}`);
-
-	if (!input || !output) return;
-
-	const dose = parseFloat(input.value);
-
-	if (!dose || dose <= 0) {
-		output.textContent = "--";
-		return;
-	};
-
 	const weight = parseFloat(document.getElementById("weightInput").value) || 0;
-	const r = verifyInfusion(med, protocol, weight, dose);
-
-	if (r.status === 'over-max') {
-		output.innerHTML = `
-			<span style="color:red; font-size: 14px;">
-				<span style="font-size:0.9em;">⚠️</span>
-				${formatDose(r.mlHr)} mL/hr exceeds guideline max of: ${formatDose(r.maxMlHr)} mL/hr
-				<span style="font-size:0.9em;">⚠️</span>
-			</span>
-		`;
-		return;
-	};
-
-	output.textContent = `${formatDose(r.mlHr)} mL/hr`;
+	table.showVerify(name, verifyView(verifyInfusion(med, protocol, weight, dose)));
 }
 
-/* 
-======================================================
-		CLEAR OUTPUTS
-====================================================== 
-*/
 function clearAllOutputs() {
-	Object.keys(MEDICATIONS)
-		.forEach(name => {
-			const med = MEDICATIONS[name];
-			const protocol = getProtocol(med);
-			updateHTML(`${name}-label`, (protocol && protocol.label) ? protocol.label : (med.label || name));
-			update(`${name}-dose`, "--");
-			update(`${name}-vol`, "--");
-			update(`${name}-inf`, "--");
-			update(`${name}-mlhr`, "--");
-			const verifyInput = document.getElementById(`verify-${name}`);
-			if (verifyInput) verifyInput.value = "";
-			const verifyOut = document.getElementById(`verify-out-${name}`);
-			if (verifyOut) verifyOut.textContent = "--";
-		});
-}
-
-/* 
-======================================================
-		DOM UPDATE HELPER
-====================================================== 
-*/
-function update(cls, val) {
-	const els = document.getElementsByClassName(cls);
-	for (let i = 0; i < els.length; i++) {
-		els[i].textContent = val;
-	}
-}
-
-function updateHTML(cls, val) {
-	const els = document.getElementsByClassName(cls);
-	for (let i = 0; i < els.length; i++) {
-		els[i].innerHTML = val; 
-	}
+	table.clear();
 }
 
 /* 
@@ -1097,5 +868,5 @@ function updateHTML(cls, val) {
 ====================================================== 
 */
 window.goHome = goHome;
-export { calculateAll, calculateVerify, MEDICATIONS };
+export { calculateAll, MEDICATIONS };
 export function setProfileForHarness(profile) { currentProfile = profile; }
