@@ -5,7 +5,8 @@
   Turns dose-module results into the text and markup the
   results table shows.
 
-    formatDose(number)                       -> string
+    formatDose(number)                       -> string   doses and rates: up to 3 decimals
+    formatMl(number)                         -> string   volumes and mL/hr: up to 2 decimals
     bolusView(label, unit, result)           -> {label, dose, vol}
     infusionView(result)                     -> {rate}
     verifyView(result)                       -> {text} | {html}
@@ -14,10 +15,14 @@
 */
 
 export function formatDose(num) {
+	return Number(num.toFixed(3)).toString();
+}
+
+export function formatMl(num) {
 	return Number(num.toFixed(2)).toString();
 }
 
-const range = (min, max, fmt = formatDose) =>
+const range = (min, max, fmt) =>
 	min === max ? fmt(min) : `${fmt(min)} – ${fmt(max)}`;
 
 export function bolusView(baseLabel, unit, r) {
@@ -25,8 +30,8 @@ export function bolusView(baseLabel, unit, r) {
 		label: r.capped
 			? `${baseLabel} || <span style="color:red;"><span style="font-size:0.9em;">⚠️</span> Dose Cap <span style="font-size:0.9em;">⚠️</span></span>`
 			: baseLabel,
-		dose: `${range(r.min, r.max)} ${unit}`,
-		vol: `${range(r.minMl, r.maxMl)} mL`,
+		dose: `${range(r.min, r.max, formatDose)} ${unit}`,
+		vol: `${range(r.minMl, r.maxMl, formatMl)} mL`,
 	};
 }
 
@@ -41,10 +46,10 @@ export function verifyView(r) {
 		return { html: `
 			<span style="color:red; font-size: 14px;">
 				<span style="font-size:0.9em;">⚠️</span>
-				${formatDose(r.mlHr)} mL/hr exceeds guideline max of: ${formatDose(r.maxMlHr)} mL/hr
+				${formatMl(r.mlHr)} mL/hr exceeds guideline max of: ${formatMl(r.maxMlHr)} mL/hr
 				<span style="font-size:0.9em;">⚠️</span>
 			</span>
 		` };
 	}
-	return { text: `${formatDose(r.mlHr)} mL/hr` };
+	return { text: `${formatMl(r.mlHr)} mL/hr` };
 }
