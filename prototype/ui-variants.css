@@ -1,0 +1,207 @@
+/*
+ PROTOTYPE (throwaway, wipe me). See ui-variants.js.
+ Every variant rule is scoped to body[data-variant="A|B|C"], so ?variant=0 or no param = original look.
+ A Stacked cards   B Ledger rows   C Banded tiles
+*/
+
+/* ---------- markup fallback (also the "0 Original" look) ---------- */
+.title-org, .title-name, .title-year { display: block; }
+.title-year { font-size: 24px; }
+.profile-grid { display: flex; flex-direction: column; align-items: center; }
+.profile-grid .start-button { margin: 10px; }
+
+.supportive-agents { --sec: var(--color-support); }
+.induction-agents  { --sec: var(--color-induction); }
+.paralytic-agents  { --sec: var(--color-paralytic); }
+.pain-control      { --sec: var(--color-pain); }
+.sedation          { --sec: var(--color-sedation); }
+.mechvent          { --sec: var(--color-mechvent); }
+.seizures          { --sec: var(--color-seizures); }
+
+#proto-bar {
+	position: fixed; left: 50%; bottom: 34px; transform: translateX(-50%); z-index: 10000;
+	display: flex; align-items: center; gap: 14px;
+	background: #000; color: #fff; border: 2px solid #fff; border-radius: 999px;
+	padding: 6px 10px; font: 600 14px/1 system-ui, sans-serif; box-shadow: 0 4px 18px rgba(0,0,0,.6);
+}
+#proto-bar button { background: #333; color: #fff; border: 0; border-radius: 50%; width: 34px; height: 34px; font-size: 18px; cursor: pointer; }
+#proto-bar span { min-width: 150px; text-align: center; }
+
+
+/* =========================================================
+   START PAGE
+   ========================================================= */
+
+/* ---- A: centered, ruled title, stacked equal bars ---- */
+body[data-variant="A"] .page-title { margin: 28px 0 22px; }
+body[data-variant="A"] .title-org {
+	display: flex; align-items: center; gap: 16px; max-width: 640px; margin: 0 auto;
+	font: 600 14px var(--font-body); letter-spacing: .34em; text-transform: uppercase; color: var(--color-accent);
+}
+body[data-variant="A"] .title-org::before, body[data-variant="A"] .title-org::after {
+	content: ""; flex: 1; height: 1px; background: var(--color-accent); opacity: .6;
+}
+body[data-variant="A"] .title-name { font-size: 48px; color: #fff; margin: 10px 0 14px; letter-spacing: .01em; }
+body[data-variant="A"] .title-year {
+	display: table; margin: 0 auto; border: 1px solid var(--color-accent); border-radius: 999px;
+	padding: 5px 18px; font: 600 13px var(--font-body); letter-spacing: .14em; text-transform: uppercase;
+}
+body[data-variant="A"] .title-year img { width: 1.5em !important; height: 1.5em !important; }
+body[data-variant="A"] .warning-box { max-width: 640px; margin: 0 auto 26px; font-size: 16px; }
+body[data-variant="A"] .profile-grid { display: grid; grid-template-columns: 1fr; gap: 14px; max-width: 420px; margin: 0 auto; }
+body[data-variant="A"] .profile-grid .start-button { margin: 0; width: 100%; height: 68px; font-size: 24px; }
+
+/* ---- B: left-aligned banner, row of three tall tiles ---- */
+body[data-variant="B"] .page-title { text-align: left; max-width: 760px; margin: 24px auto; border-left: 8px solid var(--color-accent); padding-left: 20px; }
+body[data-variant="B"] .title-org { font: 600 15px var(--font-body); letter-spacing: .3em; text-transform: uppercase; color: var(--color-accent); }
+body[data-variant="B"] .title-name { font-size: 52px; line-height: 1.05; color: #fff; margin: 6px 0 10px; }
+body[data-variant="B"] .title-year { font: 400 16px var(--font-body); color: #c9cde0; letter-spacing: .06em; }
+body[data-variant="B"] .warning-box { max-width: 760px; margin: 0 auto 26px; font-size: 16px; }
+body[data-variant="B"] .profile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 760px; margin: 0 auto; }
+body[data-variant="B"] .profile-grid .start-button {
+	margin: 0; height: 150px; font-size: 26px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+	background: #14183a; color: #fff; border: 3px solid var(--color-accent);
+}
+body[data-variant="B"] .profile-grid .start-button::after { content: "Select \2192"; font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--color-accent); }
+body[data-variant="B"] .profile-grid .start-button:hover { background: var(--color-accent); color: #000; }
+body[data-variant="B"] .profile-grid .start-button:hover::after { color: #000; }
+
+/* ---- C: emblem on top, colour-coded profile buttons ---- */
+body[data-variant="C"] .page-title { margin: 20px 0 22px; }
+body[data-variant="C"] .page-title::before {
+	content: ""; display: block; width: 92px; height: 92px; margin: 0 auto 14px; border-radius: 50%;
+	background: url("../icons/icon-192.png") center / cover; border: 3px solid var(--color-accent);
+}
+body[data-variant="C"] .title-org { font: 700 17px var(--font-body); letter-spacing: .24em; text-transform: uppercase; color: var(--color-accent); }
+body[data-variant="C"] .title-name { font: 800 44px var(--font-body); color: #fff; margin: 4px 0 8px; }
+body[data-variant="C"] .title-year { font: 400 15px var(--font-body); letter-spacing: .1em; color: #c9cde0; }
+body[data-variant="C"] .title-year img { display: none; }
+body[data-variant="C"] .warning-box { max-width: 640px; margin: 0 auto 26px; font-size: 16px; }
+body[data-variant="C"] .profile-grid { display: grid; grid-template-columns: 1fr; gap: 14px; max-width: 420px; margin: 0 auto; }
+body[data-variant="C"] .profile-grid .start-button { margin: 0; width: 100%; height: 68px; font-size: 24px; border-radius: 34px; }
+body[data-variant="C"] .pf-adult      { background: #5b9bff; }
+body[data-variant="C"] .pf-geriatric  { background: #2cc3b5; }
+body[data-variant="C"] .pf-pediatric  { background: #ffc857; }
+body[data-variant="C"] .profile-grid .start-button:hover { filter: brightness(1.15); color: #000; }
+body[data-variant="C"] .pf-adult:hover     { background: #8bb9ff; }
+body[data-variant="C"] .pf-geriatric:hover { background: #63ddd0; }
+body[data-variant="C"] .pf-pediatric:hover { background: #ffdc8f; }
+
+@media (max-width: 600px) {
+	body[data-variant="A"] .title-name, body[data-variant="B"] .title-name { font-size: 34px; }
+	body[data-variant="C"] .title-name { font-size: 32px; }
+	body[data-variant="A"] .title-org { letter-spacing: .18em; font-size: 12px; }
+	body[data-variant="B"] .profile-grid { grid-template-columns: 1fr; }
+	body[data-variant="B"] .profile-grid .start-button { height: 84px; }
+}
+
+
+/* =========================================================
+   CALCULATOR PAGE BUTTONS (A tinted outline, B solid + dim, C slate + colour bar)
+   ========================================================= */
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) {
+	--c-rsi: var(--color-induction); --c-pain: var(--color-pain); --c-sz: var(--color-seizures); --c-all: var(--color-accent);
+}
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .sb-row { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 10px !important; margin-bottom: 10px !important; }
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .sb-row-all { display: grid !important; grid-template-columns: 1fr; }
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .section-select {
+	margin: 0; width: 100%; min-height: 58px; padding: 8px 6px; font-size: 18px; line-height: 1.15; border-radius: 10px;
+}
+.sb-rsi { --c: var(--c-rsi); } .sb-pain { --c: var(--c-pain); } .sb-sz { --c: var(--c-sz); } .sb-all { --c: var(--c-all); }
+
+/* Back to Start: quiet ghost button, same in all three */
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .back-button {
+	background: transparent; color: var(--color-accent); border: 2px solid var(--color-accent); font-size: 16px; padding: 8px 20px; margin: 4px 0;
+}
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .back-button:hover { background: rgba(234,155,86,.22); color: #fff; }
+
+/* A: tinted outline, fills solid when selected */
+body[data-variant="A"] .section-select { background: color-mix(in srgb, var(--c) 16%, #151827); color: #fff; border: 2px solid var(--c); }
+body[data-variant="A"] .section-select:hover { background: color-mix(in srgb, var(--c) 34%, #151827); color: #fff; }
+body[data-variant="A"] .section-select.selected { background: var(--c); color: #000; }
+
+/* B: solid colour; unselected ones dim once something is selected */
+body[data-variant="B"] .section-select { background: var(--c); color: #000; border: 3px solid transparent; }
+body[data-variant="B"] .section-select:hover { background: var(--c); color: #000; filter: brightness(1.12); }
+body[data-variant="B"] #section-buttons:has(.selected) .section-select:not(.selected) { opacity: .45; }
+body[data-variant="B"] .section-select.selected { border-color: #fff; box-shadow: 0 0 0 2px #000, 0 0 14px var(--c); }
+
+/* C: neutral slate with a colour bar underneath */
+body[data-variant="C"] .section-select { background: #2b3146; color: #fff; border: 0; border-bottom: 8px solid var(--c); border-radius: 10px 10px 6px 6px; }
+body[data-variant="C"] .section-select:hover { background: #3a4260; color: #fff; }
+body[data-variant="C"] .section-select.selected { background: #fff; color: #000; }
+
+@media (max-width: 480px) {
+	body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .section-select { font-size: 14px; min-height: 54px; }
+}
+
+
+/* =========================================================
+   MEDICATION TABLES -> INDEPENDENT ENTRIES
+   Shared structure: each entry is a grid: name across the top, then labelled value tiles.
+   ========================================================= */
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .section-card table,
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .section-card tbody {
+	display: block; background: none; border: 0; margin: 0; padding: 0;
+}
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .section-card thead { display: none; }
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .section-title { text-indent: 0; font-size: 24px; }
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .section-subtitle { text-indent: 0; font-size: 17px; margin-top: 12px; }
+
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .med-row {
+	display: grid; grid-template-columns: 1fr 1fr; margin-top: 12px; overflow: hidden;
+}
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .med-row td {
+	display: block; border: 0; padding: 0; text-align: left; overflow-wrap: anywhere;
+}
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .med-row td.empty-cell { display: none; }
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .med-row td[data-role="name"] { grid-column: 1 / -1; font-size: 21px; font-weight: 700; line-height: 1.2; }
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .med-row td[data-role="name"] span[class$="-inf"] {
+	display: block; margin-top: 4px; font-size: 15px !important; font-style: normal !important; font-weight: 600; opacity: .8;
+}
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .med-row td[data-label]::before {
+	content: attr(data-label); display: block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .7; margin-bottom: 2px;
+}
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .med-row td[data-label] { font-size: 24px; font-weight: 700; line-height: 1.15; }
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .med-row .verify-input {
+	display: block; width: 100%; max-width: 150px; height: 44px; margin: 4px 0 0; font-size: 20px; text-align: left; padding: 0 8px;
+}
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .med-row td[data-label] span[id^="verify-out"] { font-size: 22px; }
+body:is([data-variant="A"], [data-variant="B"], [data-variant="C"]) .med-row .desc-cell {
+	grid-column: 1 / -1; order: 9; font-size: 13px !important; font-weight: 400; line-height: 1.4; text-align: left !important;
+}
+
+/* ---- A: light stacked cards, white value tiles ---- */
+body[data-variant="A"] .med-row { background: #f3f5fb; color: #10142a; border-radius: 12px; padding: 12px 14px; gap: 10px; border-left: 6px solid var(--sec); }
+body[data-variant="A"] .med-row td[data-label] { background: #fff; border-radius: 8px; padding: 8px 10px; border: 2px solid color-mix(in srgb, var(--sec) 55%, #fff); }
+body[data-variant="A"] .med-row .desc-cell { background: transparent; color: #3b4160; padding-top: 4px; border-top: 1px dashed #b9bfd6; margin-top: 2px; padding-left: 0; }
+
+/* ---- B: dark ledger line, name left, big numbers right ---- */
+body[data-variant="B"] .med-row {
+	grid-template-columns: 1fr auto auto; align-items: center; column-gap: 18px; row-gap: 6px;
+	background: #0d1020; color: #fff; border: 1px solid #39405c; border-left: 8px solid var(--sec); border-radius: 8px; padding: 12px 14px;
+}
+body[data-variant="B"] .med-row td[data-role="name"] { grid-column: 1; grid-row: 1; }
+body[data-variant="B"] .med-row td[data-label] { grid-row: 1; text-align: right; min-width: 92px; }
+body[data-variant="B"] .med-row td[data-label="Volume"],
+body[data-variant="B"] .med-row td[data-label="mL/hr"],
+body[data-variant="B"] .med-row td[data-label="Pump Rate"] { color: var(--sec); font-size: 28px; }
+body[data-variant="B"] .med-row .verify-input { margin-left: auto; text-align: right; }
+body[data-variant="B"] .med-row .desc-cell { grid-row: 2; color: #aeb4cf; border-top: 1px solid #2b3150; padding-top: 6px; }
+@media (max-width: 520px) {
+	body[data-variant="B"] .med-row { grid-template-columns: 1fr 1fr; }
+	body[data-variant="B"] .med-row td[data-role="name"] { grid-column: 1 / -1; }
+	body[data-variant="B"] .med-row td[data-label] { grid-row: auto; text-align: left; }
+	body[data-variant="B"] .med-row .verify-input { margin-left: 0; text-align: left; }
+	body[data-variant="B"] .med-row .desc-cell { grid-row: auto; }
+}
+
+/* ---- C: coloured name band, split value panels, tiles flow two across on wide screens ---- */
+body[data-variant="C"] .section-card tbody { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+body[data-variant="C"] .med-row { margin-top: 0; align-content: start; background: #f4f5fa; color: #10142a; border: 2px solid var(--sec); border-radius: 14px; }
+body[data-variant="C"] .med-row td[data-role="name"] { background: var(--sec); color: #000; padding: 10px 14px; }
+body[data-variant="C"] .med-row td[data-label] { padding: 10px 14px; font-size: 28px; }
+body[data-variant="C"] .med-row td[data-label="Volume"],
+body[data-variant="C"] .med-row td[data-label="mL/hr"],
+body[data-variant="C"] .med-row td[data-label="Pump Rate"] { border-left: 2px solid #d3d7e6; }
+body[data-variant="C"] .med-row .desc-cell { background: #e4e7f1; color: #3b4160; padding: 8px 14px; border-top: 2px solid #d3d7e6; }

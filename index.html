@@ -15,6 +15,8 @@
 <title>FFL CO Medication Calculator (2025 Guidelines)</title>
 
 <link rel="stylesheet" href="styles/FFL-Calc.css">
+<!-- PROTOTYPE (throwaway): inert unless the URL has ?variant= -->
+<link rel="stylesheet" href="prototype/ui-variants.css">
 
 </head>
 
@@ -32,11 +34,9 @@
 		-->
 		<div id="start-page">
 			<h2 class="page-title">
-				Flight for Life Colorado
-				<br>
-				Dose Calculator
-				<br>
-				<span style="font-size: 24px">
+				<span class="title-org">Flight for Life Colorado</span>
+				<span class="title-name">Dose Calculator</span>
+				<span class="title-year">
 					<img src="icons/icon-192.png" alt="" style="width:1em; height:1em; vertical-align:middle;">
 					2025 Guidelines
 					<img src="icons/icon-192.png" alt="" style="width:1em; height:1em; vertical-align:middle;">
@@ -54,13 +54,9 @@
 				This calculator’s doses are specific and limited to IV/IO guidelines unless explicitly stated.
 			</div>
 
-			<div style="text-align: center;">
+			<div class="profile-grid">
 				<button class="start-button profile-select" data-profile="adult">Adult</button>
-				<br>
-				<br>
 				<button class="start-button profile-select" data-profile="geriatric">Geriatric</button>
-				<br>
-				<br>
 				<button class="start-button profile-select" data-profile="pediatric">Pediatric</button>
 			</div>
 		</div>
@@ -188,6 +184,7 @@
 	</div>
 
 	<script type="module" src="scripts/app.js"></script>
+	<script src="prototype/ui-variants.js"></script>
 
 	<div id="version-footer" class="footer">
 		Version --
