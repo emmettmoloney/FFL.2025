@@ -18,6 +18,7 @@
   --color-pain:      #dd625b;
   --color-sedation:  #abde52;
   --color-mechvent:  #6799ee;
+  --color-seizures:  #F14ACD;
 
   /* Typography */
   --font-body: Verdana, Geneva, Tahoma, sans-serif;
@@ -62,6 +63,7 @@ body {
 .container {
   max-width: 1100px;
   margin: auto;
+  padding-bottom: 40px; /* keeps the fixed version footer clear of the last button */
 }
 
 
@@ -202,6 +204,7 @@ body {
 .pain-section-title      { color: var(--color-pain);      }
 .sedation-section-title  { color: var(--color-sedation);  }
 .mechvent-section-title  { color: var(--color-mechvent);  }
+.seizures-section-title  { color: var(--color-seizures);  }
 
 
 /* 
@@ -318,6 +321,7 @@ td {
 .pain-control      { border-left-color: var(--color-pain);      }
 .sedation          { border-left-color: var(--color-sedation);  }
 .mechvent          { border-left-color: var(--color-mechvent);  }
+.seizures          { border-left-color: var(--color-seizures);  }
 
 
 /* 
@@ -328,8 +332,8 @@ td {
 
 .verify-input {
   width: 100px;
-  height: 22px;
-  font-size: 14px;
+  height: 28px;
+  font-size: 16px; /* below 16px iOS zooms the page when the field is focused */
   text-align: center;
   margin-top: 0;
   margin-left: 6px;

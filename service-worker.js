@@ -1,11 +1,18 @@
 // service-worker.js
-const CACHE_NAME = 'ffl-calc-v2.0'        /* UPDATE CACHE NAME		'ffl-calc-vX.X' */
-const VERSION =  '2.0'                    /* UPDATE VERSION		'X.X'		*/
-const UPDATE_DATE = '5/22/26 1820'     /*  'DATE OF UPLOAD'		*/
+const VERSION =              '3.1.0'          /* UPDATE VERSION		    'X.X'		        */
+const CACHE_NAME = `ffl-calc-v${VERSION}`      /* built from VERSION: one edit per release */
+const UPDATE_DATE = '11.22 1017'               /*  'DATE OF UPLOAD'		                */
 const urlsToCache = [
   './',
   './index.html',
-  './scripts/FFL-Calc.js',
+  './scripts/app.js',
+  './scripts/dose.js',
+  './scripts/format.js',
+  './scripts/results-table.js',
+  './scripts/registry.js',
+  './scripts/release.js',
+  './scripts/session.js',
+  './data/medications.js',
   './styles/FFL-Calc.css',
   './manifest.json',
   './icons/icon-192.png',
@@ -14,17 +21,10 @@ const urlsToCache = [
 
 self.addEventListener('install', (event) => {
   console.log('[SW] Installing, will cache:', urlsToCache);
+  // addAll rejects if any file fails, so a half-cached version never installs
+  // and the previous version (and its cache) stays in use.
   event.waitUntil(
-    caches.open(CACHE_NAME).then(async cache => {
-      for (let url of urlsToCache) {
-        try {
-          await cache.add(url);
-          console.log('[SW] Cached:', url);
-        } catch (err) {
-          console.error('[SW] Failed to cache:', url, err);
-        }
-      }
-    })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
 });
 

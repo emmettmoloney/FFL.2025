@@ -27,6 +27,7 @@
 		------------------------------------------------------
 				- User selects patient profile
 				- Shows warning disclaimer
+				- v3v2 9.15 0545 Second try
 		====================================================== 
 		-->
 		<div id="start-page">
@@ -36,9 +37,9 @@
 				Dose Calculator
 				<br>
 				<span style="font-size: 24px">
-					<img src="icons/icon-192.png" alt="custom emoji" style="width:1em; height:1em; vertical-align:middle;">
+					<img src="icons/icon-192.png" alt="" style="width:1em; height:1em; vertical-align:middle;">
 					2025 Guidelines
-					<img src="icons/icon-192.png" alt="custom emoji" style="width:1em; height:1em; vertical-align:middle;">
+					<img src="icons/icon-192.png" alt="" style="width:1em; height:1em; vertical-align:middle;">
 				</span>
 			</h2>
 
@@ -75,14 +76,26 @@
 		<div id="calculator-page" class="page-section">
 
 			<div style="text-align: center;">
-				<button class="start-button" onclick="goHome()">← Back to Start</button>
+				<button class="start-button" data-action="home">← Back to Start</button>
 			</div>
 
 			<!-- PATIENT WEIGHT INPUT -->
 			<div class="patient-weight">
 				<span id="profileLabel"></span> Patient Weight<br>
-				<input type="number" id="weightInput" placeholder="(kg)">
+				<input type="number" id="weightInput" placeholder="(kg)" step="any" inputmode="decimal">
 			</div>
+
+		<!-- SECTION SELECT BUTTONS -->
+		<div id="section-buttons" style="margin: 20px 0; text-align:center;">
+			<div style="display:flex; justify-content:center; gap:10px; margin-bottom:8px;">
+				<button class="start-button section-select" data-section="RSI/DSI">RSI/DSI</button>
+				<button class="start-button section-select" data-section="Pain & Sed.">Pain & Sed.</button>
+				<button class="start-button section-select" data-section="Seizures">Seizures</button>
+			</div>
+			<div style="display:flex; justify-content:center; gap:10px;">
+				<button class="start-button section-select" data-section="Show me Everything">Show me Everything</button>
+			</div>
+		</div>
 
 			<!-- SECTION CONTAINERS -->
 			<div class="section-card supportive-agents">
@@ -139,74 +152,42 @@
 				</table>
 			</div>
 
+		<!-- SEIZURES SECTION CARDS -->
+		<div class="section-card seizures" style="display:none;">
+			<div class="section-title seizures-section-title">Seizures</div>
+			<div class="section-subtitle seizures-section-title">First Line Management</div>
+			<table>
+				<thead><tr></tr></thead>
+				<tbody id="seizures-first-body"></tbody>
+			</table>
+		</div>
+
+		<div class="section-card seizures" style="display:none;">
+			<div class="section-title seizures-section-title">Seizures</div>
+			<div class="section-subtitle seizures-section-title">Second Line Management</div>
+			<table>
+				<thead><tr></tr></thead>
+				<tbody id="seizures-second-body"></tbody>
+			</table>
+		</div>
+
+		<div class="section-card seizures" style="display:none;">
+			<div class="section-title seizures-section-title">Seizures</div>
+			<div class="section-subtitle seizures-section-title">Third Line Management</div>
+			<table>
+				<thead><tr></tr></thead>
+				<tbody id="seizures-third-body"></tbody>
+			</table>
+		</div>
+
 			<div style="text-align: center;">
-				<button class="start-button" onclick="goHome()">← Back to Start</button>
+				<button class="start-button" data-action="home">← Back to Start</button>
 			</div>
 
 		</div>
 	</div>
 
-	<script src="scripts/FFL-Calc.js"></script>
-	<script> 
-/* 
-======================================================
-		Version Update Code
-====================================================== 
-*/
-		if ('serviceWorker' in navigator) {
-			window.addEventListener('load', () => {
-				navigator.serviceWorker.register('./service-worker.js')
-					.then(reg => {
-						console.log('[SW] Registered:', reg.scope);
-
-						// Check for updates every time the page loads
-						reg.update();
-
-						// Store reference to waiting worker and wire up banner
-						function setWaitingWorker(worker) {
-							document.getElementById('update-banner').style.display = 'block';
-							document.getElementById('update-banner').onclick = () => {
-								worker.postMessage('skipWaiting');
-							};
-						}
-
-						// If a new service worker is already waiting on load
-						if (reg.waiting) {
-							setWaitingWorker(reg.waiting);
-						}
-
-						// Watch for a new service worker installing then waiting
-						reg.addEventListener('updatefound', () => {
-							const newWorker = reg.installing;
-							newWorker.addEventListener('statechange', () => {
-								if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-									setWaitingWorker(newWorker);
-								};
-							});
-						});
-					})
-					.catch(err => console.error('[SW] Registration failed:', err));
-			});
-
-			// When new service worker takes control, reload to use it
-			navigator.serviceWorker.addEventListener('controllerchange', () => {
-				window.location.reload();
-			});
-
-			// Request version info from service worker
-			navigator.serviceWorker.addEventListener('message', event => {
-				if (event.data.version) {
-					document.getElementById('version-footer').textContent =
-						`Version ${event.data.version}  |  Updated ${event.data.date}`;
-				}
-			});
-
-			// Send the request once the service worker is active
-			navigator.serviceWorker.ready.then(reg => {
-				reg.active.postMessage('getVersion');
-			});
-		}
-	</script>
+	<script type="module" src="scripts/app.js"></script>
 
 	<div id="version-footer" class="footer">
 		Version --

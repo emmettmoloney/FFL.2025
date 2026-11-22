@@ -1,22 +1,14 @@
-
-/* 
+/*
 ======================================================
-	 GLOBAL PROFILE STATE
-====================================================== 
-*/
-let currentProfile = null;
-
-function getProtocol(med) {
-	return med.protocols[currentProfile] || med.protocols.standard || null;
-}
-
-/* 
-======================================================
-	 MEDICATION REGISTRY ARRAY
+	 MEDICATION REGISTRY (data only)
+------------------------------------------------------
+	 Edit this file for guideline updates.
+	 Lookup and validation live in scripts/registry.js;
+	 `node --test tests/` checks every entry.
 ======================================================
 */
 
-/* USER UPDATE GUIDE, ACTIVE CODE RESUMES LINE 161 */
+/* USER UPDATE GUIDE: the medication registry follows the guide comments below */
 
 /*
 ------------------------------------------------------
@@ -158,7 +150,7 @@ NOTES:
 ======================================================
 */
 
-const MEDICATIONS = {
+export const MEDICATIONS = {
 
 	Epinephrine: {
 		section: ["supportive-body"],
@@ -474,9 +466,9 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 		concentration: 10,
 		unit: "mg",
 		protocols: {
-			adult: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg, Repeat dose: 0.5 mg-kg IV Q 20-30 min PRN to maintain paralysis" },
-			geriatric: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg, Repeat dose: 0.5 mg-kg IV Q 20-30 min PRN to maintain paralysis"},
-			pediatric: { doseRange: { min: 0.5, max: 0.5 }, description: "0.5 mg/kg, Repeat dose: 0.5 mg-kg IV Q 20-30 min PRN to maintain paralysis"},
+			adult: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg, Repeat dose: 0.5 mg/kg IV Q 20-30 min PRN to maintain paralysis" },
+			geriatric: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg, Repeat dose: 0.5 mg/kg IV Q 20-30 min PRN to maintain paralysis"},
+			pediatric: { doseRange: { min: 0.5, max: 0.5 }, description: "0.5 mg/kg, Repeat dose: 0.5 mg/kg IV Q 20-30 min PRN to maintain paralysis"},
 		},
 	},
 
@@ -531,466 +523,104 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 			pediatric: { infusionRate: { perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10-75 mcg/kg/min (unless higher rate MD ordered). ± 5-10 mcg/kg/min Q 5-10 min to maintain sedation" },
 		},
 	},
+	/* 
+	======================================================
+		SEIZURES SECTION
+	====================================================== 
+	*/
+	Midazolam_seizure: {
+		label: "Midazolam (Versed)",
+		section: ["seizures-first-body"],
+		concentration: 5,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {absolute: true, min: 5, max: 5 }, description: "5 mg IV or 10 mg IM / IN, MR Q 2-5 min PRN" },
+			geriatric: { doseRange: {absolute: true, min: 5, max: 5 }, description: "5 mg IV or 10 mg IM / IN, MR Q 2-5 min PRN" },
+			pediatric: { doseRange: {min: 0.1, max: 0.1, maxTotal: 5 }, description: "0.1 mg/kg IV, MR Q 2-5 min PRN" },
+		},
+	},
+
+	Lorazepam_seizure: {
+		label: "Lorazepam (Ativan)",
+		section: ["seizures-first-body"],
+		concentration: 2,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {absolute: true, min: 4, max: 4 }, description: "4 mg IV over 2 min, MR Q 5 min PRN" },
+			geriatric: { doseRange: {absolute: true, min: 4, max: 4 }, description: "4 mg IV over 2 min, MR Q 5 min PRN" },
+			pediatric: { doseRange: {min: 0.1, max: 0.1, maxTotal: 4 }, description: "0.1 mg/kg IV, max dose 4 mg, MR Q 5 min PRN" },
+		},
+	},
+
+	Diazepam_seizure: {
+		label: "Diazepam (Valium)",
+		section: ["seizures-first-body"],
+		concentration: 5,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {absolute: true, min: 10, max: 10 }, description: "10 mg IV at 2.5 mg/min, MR Q 5 min PRN" },
+			geriatric: { doseRange: {absolute: true, min: 10, max: 10 }, description: "10 mg IV at 2.5 mg/min, MR Q 5 min PRN" },
+			pediatric: { doseRange: {min: 0.2, max: 0.2, maxTotal: 10 }, description: "0.2 mg/kg IV, max dose 10 mg, at 2 mg/min, MR Q 5 min PRN" },
+		},
+	},
+
+	Levetiracetam_active: {
+		label: "Levetiracetam (Keppra) - Active Seizures",
+		section: ["seizures-second-body"],
+		concentration: 100,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 60, max: 60, maxTotal: 4500 }, description: "60 mg/kg IV, over 15 min, max dose 4500 mg" },
+			geriatric: { doseRange: {min: 60, max: 60, maxTotal: 4500 }, description: "60 mg/kg IV, over 15 min, max dose 4500 mg" },
+			pediatric: { doseRange: {min: 60, max: 60, maxTotal: 4500 }, description: "60 mg/kg IV, over 15 min, max dose 4500 mg" },
+		},
+	},
+
+	Levetiracetam_prophylaxis: {
+		label: "Levetiracetam (Keppra) - Seizure Prophylaxis",
+		section: ["seizures-second-body"],
+		concentration: 100,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 20, max: 20, maxTotal: 4500 }, description: "20 mg/kg IV, over 15 min, max dose 4500 mg" },
+			geriatric: { doseRange: {min: 20, max: 20, maxTotal: 4500 }, description: "20 mg/kg IV, over 15 min, max dose 4500 mg" },
+			pediatric: { doseRange: {min: 20, max: 20, maxTotal: 4500 }, description: "20 mg/kg IV, over 15 min, max dose 4500 mg" },
+		},
+	},
+
+	Phenobarbital_seizure: {
+		label: "Phenobarbital",
+		section: ["seizures-third-body"],
+		concentration: 130,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 15, max: 15 }, description: "15 mg/kg IV, at 60 mg/min" },
+			geriatric: { doseRange: {min: 15, max: 15 }, description: "15 mg/kg IV, at 60 mg/min" },
+			pediatric: { doseRange: {min: 20, max: 20, maxTotal: 1000 }, description: "20 mg/kg IV, at 2 mg/kg/min. MR at 5 mg/kg Q 10-15 min to total of 40 mg/kg" },
+		},
+	},
+
+	Propofol_seizure_bolus: {
+		label: "Propofol - Loading Dose",
+		section: ["seizures-third-body"],
+		concentration: 10,
+		unit: "mg",
+		protocols: {
+			adult: { doseRange: {min: 2, max: 2 }, description: "For intubated patients. Indicated for refractory status epileptics. 2 mg/kg loading dose followed by infusion" },
+			geriatric: { doseRange: {min: 2, max: 2 }, description: "For intubated patients. Indicated for refractory status epileptics. 2 mg/kg loading dose followed by infusion" },
+			pediatric: { doseRange: {min: 2, max: 2 }, description: "For intubated patients. Indicated for refractory status epileptics. 2 mg/kg loading dose followed by infusion" },
+		},
+	},
+
+	Propofol_seizure_infusion: {
+		label: "Propofol - Infusion",
+		section: ["seizures-third-body"],
+		concentration: 10000,
+		unit: "mcg",
+		protocols: {
+			adult: { infusionRate: { perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10 mcg/kg/min to a max of 75 mcg/kg/min" },
+			geriatric: { infusionRate: {perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10 mcg/kg/min to a max of 75 mcg/kg/min" },
+			pediatric: { infusionRate: {perMinute: true, min: 10, max: 75, maxRate: 75 }, description: "10 mcg/kg/min to a max of 75 mcg/kg/min" },
+		},
+	},
 };
-
-/* 
-======================================================
-		PROFILE SELECTION FUNCTION
-====================================================== 
-*/
-document.querySelectorAll(".profile-select")
-	.forEach(btn => {
-		btn.onclick = () => {
-			currentProfile = btn.dataset.profile;
-
-			const labels = {adult: "Adult", geriatric: "Geriatric", pediatric: "Pediatric"};
-
-			document.getElementById("profileLabel").textContent = labels[currentProfile];
-			document.getElementById("start-page").style.display = "none";
-			document.getElementById("calculator-page").style.display = "block";
-			
-			buildTables();
-		};
-	});
-
-/* 
-======================================================
-		RETURN TO START PAGE
-====================================================== 
-*/
-function goHome() {
-	const calc = document.getElementById("calculator-page");
-	if (calc) calc.style.display="none";
-
-	const start = document.getElementById("start-page");
-	if (start) start.style.display = "block";
-
-	const weightInput = document.getElementById("weightInput");
-	if (weightInput) weightInput.value = "";
-
-	clearAllOutputs();
-}
-
-/*
-======================================================
-		CONSOLE ERROR LOG: VALIDATE MEDICATIONS
-====================================================== 
-*/
-function validateMedications() {
-	const requiredFields = ["section", "concentration", "unit", "protocols"];
-	
-	Object.entries(MEDICATIONS).forEach(([name, med]) => {
-		requiredFields.forEach(field => {
-			if (med[field] === undefined) {
-				console.warn(`⚠️ MEDICATIONS["${name}"] missing: "${field}"`);
-			}
-		});
-
-		if (med.protocols) {
-			Object.entries(med.protocols).forEach(([profile, protocol]) => {
-				if (!protocol.doseRange && !protocol.infusionRate) {
-					console.warn(`⚠️ MEDICATIONS["${name}"].protocols.${profile} has neither doseRange nor infusionRate`);
-				}
-				
-				if (!protocol.description) {
-					console.warn(`⚠️ MEDICATIONS["${name}"].protocols.${profile} is missing description — verify row will not render`);
-				}
-				const knownKeys = ["doseRange", "infusionRate", "description", "label", "unit"];
-				Object.keys(protocol).forEach(key => {
-					if (!knownKeys.includes(key)) {
-						console.warn(`⚠️ MEDICATIONS["${name}"].protocols.${profile} has unrecognized key: "${key}" — possible typo`);
-					}
-				});
-			});
-		}
-	});
-}
-
-/* 
-======================================================
-		BUILD TABLES DYNAMICALLY
-------------------------------------------------------
-	 - Detects which columns apply per section
-	 - Builds headers dynamically
-	 - Builds rows per medication
-====================================================== 
-*/
-function buildTables() {
-	validateMedications();
-	// Clear existing rows
-	document.querySelectorAll("tbody")
-		.forEach(t => t.innerHTML = '');
-
-	const sectionConfig = {};
-
-	/* 
-	------------------------------------------------
-			Determines column requirements per section
-	------------------------------------------------ 
-	*/
-	Object.entries(MEDICATIONS).forEach(([name, med]) => {
-		const protocol = getProtocol(med);
-
-		if (!protocol) return;
-
-		med.section.forEach(sectionId => {
-			if (!sectionConfig[sectionId]) {
-				sectionConfig[sectionId] = {
-					hasBolus: false,
-					hasInfusion: false
-				};
-			}
-
-			if (protocol.doseRange)
-				sectionConfig[sectionId].hasBolus = true;
-
-			if (protocol.infusionRate)
-				sectionConfig[sectionId].hasInfusion = true;
-		});
-	});
-
-
-	/* 
-	------------------------------------------------
-			Build table rows per section
-	------------------------------------------------ 
-	*/
-	Object.entries(MEDICATIONS).forEach(([name, med]) => {
-
-		const protocol = getProtocol(med);
-
-		if (!protocol) return;
-
-		med.section.forEach(sectionId => {
-			const config = sectionConfig[sectionId];
-			const tbody = document.getElementById(sectionId);
-			
-			const row = document.createElement('tr');
-
-			if (protocol.infusionRate) {
-				const rate = protocol.infusionRate;
-				const activeUnit = protocol.unit || med.unit;
-				
-				const doseUnit = rate.absolute
-					? `${activeUnit}/hr`
-					: rate.perMinute
-						? `${activeUnit}/kg/min`
-						: `${activeUnit}/kg/hr`;		
-				
-				row.innerHTML += `<td class="${name}-label" style="text-align: left;">
-					${med.label || name}
-					<br>
-					<span class="${name}-inf" style="font-size: 11px; font-style: italic;">--</span>
-				</td>`;
-
-				if (config.hasBolus)
-						row.innerHTML += `<td class="empty-cell"></td><td class="empty-cell"></td>`;
-
-				row.innerHTML += `
-					<td style="text-align: center;">
-						<input type="number" class="verify-input" id="verify-${name}" placeholder="${doseUnit}">
-					</td>
-					<td style="text-align: center;">
-						<span id="verify-out-${name}"></span>
-					</td>
-				`;
-
-				tbody.appendChild(row);
-
-			} else {
-				row.innerHTML += `<td class="${name}-label">${med.label || name}</td>`;
-
-				if (config.hasBolus) {
-					row.innerHTML += protocol.doseRange
-						? `<td class="${name}-dose">--</td><td class="${name}-vol">--</td>`
-						: `<td class="empty-cell"></td><td class="empty-cell"></td>`;
-				}
-
-				if (config.hasInfusion) {
-					row.innerHTML += `<td class="empty-cell"></td><td class="empty-cell"></td>`;
-				}
-			
-				tbody.appendChild(row);
-			}
-
-			if (protocol.infusionRate) {
-				document.getElementById(`verify-${name}`)
-					.addEventListener('input', () => calculateVerify(name));
-			}
-
-			if (protocol && protocol.description) {
-				const descRow = document.createElement('tr');
-				const totalCols = 1 + (config.hasBolus ? 2 : 0) + (config.hasInfusion ? 2 : 0);
-				const td = document.createElement('td');
-
-				td.colSpan = totalCols;
-				td.innerHTML = protocol.description;
-				td.style.textAlign = "center";
-				td.style.fontSize = "12px";
-
-				descRow.appendChild(td);
-				tbody.appendChild(descRow);
-			}
-		});
-	});
-
-	/* 
-	------------------------------------------------
-			Build dynamic headers per section
-	------------------------------------------------ 
-	*/
-	Object.entries(sectionConfig).forEach(([sectionId, config]) => {
-		const table = document.getElementById(sectionId).closest("table");
-
-		const thead =
-			table.querySelector("thead tr");
-
-		thead.innerHTML = "<th>Medication</th>";
-
-		if (config.hasBolus)
-			thead.innerHTML += "<th>Dose</th><th>Volume</th>";
-
-		if (config.hasInfusion)
-			thead.innerHTML += config.hasBolus
-				? '<th>Infusion</th><th>mL/hr</th>'
-				: '<th>Current Dose</th><th>Pump Rate</th>';
-	});
-}
-
-/* 
-======================================================
-		FORMAT DOSE FUNCTIONS
-====================================================== 
-*/
-function formatDose(num) {
-	return Number(num.toFixed(2)).toString();
-}
-
-/* 
-======================================================
-		CALCULATION ENGINE 
-				1. Profile Max Weights defined here
-				2. Calculation engine
-				3. Pump Rate verification engine
-====================================================== 
-*/
-document.getElementById("weightInput")
-	.addEventListener("input", calculateAll);
-
-/* 
-======================================================
-		MAXIMUM WEIGHTS PER PROFILE
-====================================================== 
-*/
-const MAX_WEIGHT = {
-	adult: 200,
-	geriatric: 150,
-	pediatric: 90,
-};
-
-/* 
-======================================================
-		DOSE CALCULATION ENGINE
-====================================================== 
-*/
-function calculateAll() {
-
-	const weight = parseFloat(document.getElementById("weightInput").value);
-
-	if (!weight || weight <= 0) {
-		clearAllOutputs();
-		return;
-	}
-
-	const maxWeight = MAX_WEIGHT[currentProfile];
-	if (weight > maxWeight) {
-		const override = confirm(`${weight} kg exceeds the ${currentProfile} profile maximum of ${maxWeight} kg.\n\nPress OK to proceed with entered weight\n or\n Press Cancel to re-enter weight.`);
-		if (!override) {
-			document.getElementById("weightInput").value = '';
-			clearAllOutputs();
-			return;
-		}
-	}
-
-	Object.entries(MEDICATIONS).forEach(([name, med]) => {
-		const protocol = getProtocol(med);
-
-		if (!protocol) return;
-		/* ----- Bolus Medications ----- */
-		if (protocol.doseRange) {
-			const dr = protocol.doseRange;
-
-			let minDose = dr.min;
-			let maxDose = dr.max;
-
-			if (dr.absolute) {
-				minDose = dr.min;
-				maxDose = dr.max;
-			}
-			else {
-				minDose = weight * dr.min;
-				maxDose = weight * dr.max;
-			}
-
-			let capped = false;
-
-			if (typeof dr.maxTotal === "number") {
-				if (minDose > dr.maxTotal) { minDose = dr.maxTotal; capped = true; }
-				if (maxDose > dr.maxTotal) { maxDose = dr.maxTotal; capped = true; }
-			}
-
-			const baseLabel = med.label || name;
-			
-			updateHTML(`${name}-label`, capped
-			? `${baseLabel} || <span style="color:red;"><span style="font-size:0.9em;">⚠️</span> Dose Cap <span style="font-size:0.9em;">⚠️</span></span>`
-			: baseLabel);
-
-			if (minDose === maxDose) {
-				update(`${name}-dose`,
-					`${formatDose(minDose)} ${med.unit}`);
-				update(`${name}-vol`,
-					`${formatDose(minDose/med.concentration)} mL`);
-			}
-			else {
-				update(`${name}-dose`,
-					`${formatDose(minDose)} – ${formatDose(maxDose)} ${med.unit}`);
-				update(`${name}-vol`,
-					`${formatDose(minDose/med.concentration)} – ${formatDose(maxDose/med.concentration)} mL`);
-			}
-		}
-/* ----- Infusion (single or range) ----- */
-		if (protocol.infusionRate) {
-			const rate = protocol.infusionRate;
-
-			let minDose = rate.min;
-			let maxDose = rate.max;
-
-			if (!rate.absolute) {
-				minDose = weight * rate.min;
-				maxDose = weight * rate.max;
-			}
-
-			const activeUnit = protocol.unit || med.unit;
-			const scalar = rate.perMinute ? 60 : 1;
-			const minDoseHr = rate.absolute ? minDose : minDose * scalar;
-			const maxDoseHr = rate.absolute ? maxDose : maxDose * scalar;
-			const doseUnit = rate.perMinute ? `${activeUnit}/min` : `${activeUnit}/hr`;
-			const unitConversion = ((activeUnit === "mcg") && (med.unit === "mg")) ? 0.001 : 1;
-
-			update(`${name}-inf`,
-				`${formatDose(minDose)} – ${formatDose(maxDose)} ${doseUnit}`);
-
-			update(`${name}-mlhr`,
-				`${formatDose((minDoseHr * unitConversion)/med.concentration)} – ${formatDose((maxDoseHr * unitConversion)/med.concentration)} mL/hr`);
-		}
-	});
-	Object.keys(MEDICATIONS).forEach(name => {
-		const input = document.getElementById(`verify-${name}`);
-		if (input && input.value) calculateVerify(name);
-	});
-}
-
-/* 
-======================================================
-				PUMP RATE CALCULATOR ENGINE
-====================================================== 
-*/
-function calculateVerify(name) {
-	const med = MEDICATIONS[name];
-	const protocol = getProtocol(med);
-
-	if (!protocol || !protocol.infusionRate) return;
-
-	const input = document.getElementById(`verify-${name}`);
-	const output = document.getElementById(`verify-out-${name}`);
-
-	if (!input || !output) return;
-
-	const dose = parseFloat(input.value);
-
-	if (!dose || dose <= 0) {
-		output.textContent = "--";
-		return;
-	};
-
-	const rate = protocol.infusionRate;
-	const activeUnit = protocol.unit || med.unit;
-	const weight = parseFloat(document.getElementById("weightInput").value) || 0;  
-	const unitConversion = (activeUnit === "mcg" && med.unit === "mg") ? 0.001 : 1;
-
-	let mlHr;
-
-	if (rate.absolute) {
-		mlHr = (dose * unitConversion) / med.concentration;
-	} else if (rate.perMinute) {
-		mlHr = (dose * unitConversion * weight * 60) / med.concentration;
-	} else {
-		mlHr = (dose * unitConversion * weight) / med.concentration;
-	};
-
-	if (typeof rate.maxRate === "number") {
-		let maxMlHr = rate.absolute;
-
-		if (rate.absolute) {
-			maxMlHr = (rate.maxRate * unitConversion) / med.concentration;
-		} else if (rate.perMinute) {
-			maxMlHr = (rate.maxRate * unitConversion * weight * 60) / med.concentration;
-		} else {
-			maxMlHr = (rate.maxRate * unitConversion * weight) / med.concentration;
-		};
-	
-		if (dose > rate.maxRate) {
-			output.innerHTML = `
-				<span style="color:red; font-size: 14px;">
-					<span style="font-size:0.9em;">⚠️</span>
-					${formatDose(mlHr)} mL/hr exceeds guideline max of: ${formatDose(maxMlHr)} mL/hr
-					<span style="font-size:0.9em;">⚠️</span>
-				</span>
-			`;
-			return;
-		};
-	};
-
-	output.textContent = `${formatDose(mlHr)} mL/hr`;
-}
-
-/* 
-======================================================
-		CLEAR OUTPUTS
-====================================================== 
-*/
-function clearAllOutputs() {
-	Object.keys(MEDICATIONS)
-		.forEach(name => {
-			const med = MEDICATIONS[name];
-			const protocol = getProtocol(med);
-			updateHTML(`${name}-label`, (protocol && protocol.label) ? protocol.label : (med.label || name));
-			update(`${name}-dose`, "--");
-			update(`${name}-vol`, "--");
-			update(`${name}-inf`, "--");
-			update(`${name}-mlhr`, "--");
-			const verifyInput = document.getElementById(`verify-${name}`);
-			if (verifyInput) verifyInput.value = "";
-			const verifyOut = document.getElementById(`verify-out-${name}`);
-			if (verifyOut) verifyOut.textContent = "--";
-		});
-}
-
-/* 
-======================================================
-		DOM UPDATE HELPER
-====================================================== 
-*/
-function update(cls, val) {
-	const els = document.getElementsByClassName(cls);
-	for (let i = 0; i < els.length; i++) {
-		els[i].textContent = val;
-	}
-}
-
-function updateHTML(cls, val) {
-	const els = document.getElementsByClassName(cls);
-	for (let i = 0; i < els.length; i++) {
-		els[i].innerHTML = val; 
-	}
-}
