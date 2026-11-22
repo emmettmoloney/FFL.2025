@@ -9,6 +9,8 @@ const urlsToCache = [
   './scripts/dose.js',
   './scripts/format.js',
   './scripts/results-table.js',
+  './scripts/registry.js',
+  './data/medications.js',
   './styles/FFL-Calc.css',
   './manifest.json',
   './icons/icon-192.png',
