@@ -21,17 +21,10 @@ const urlsToCache = [
 
 self.addEventListener('install', (event) => {
   console.log('[SW] Installing, will cache:', urlsToCache);
+  // addAll rejects if any file fails, so a half-cached version never installs
+  // and the previous version (and its cache) stays in use.
   event.waitUntil(
-    caches.open(CACHE_NAME).then(async cache => {
-      for (let url of urlsToCache) {
-        try {
-          await cache.add(url);
-          console.log('[SW] Cached:', url);
-        } catch (err) {
-          console.error('[SW] Failed to cache:', url, err);
-        }
-      }
-    })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
 });
 

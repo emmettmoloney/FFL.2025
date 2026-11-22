@@ -36,3 +36,27 @@ test('index.html loads only scripts that exist', () => {
   assert.ok(srcs.length > 0);
   srcs.forEach(src => assert.ok(fs.existsSync(path.join(root, src)), src));
 });
+
+/* ---- install ---- */
+function runInstall(addAll) {
+  const handlers = {};
+  const opened = [];
+  const caches = { open: async name => { opened.push(name); return { addAll }; } };
+  vm.runInNewContext(swSource, { self: { addEventListener: (t, fn) => { handlers[t] = fn; } }, caches, console: { log() {}, error() {} } });
+  let installing;
+  handlers.install({ waitUntil: p => { installing = p; } });
+  return { installing, opened };
+}
+
+test('install succeeds when every file caches, using the versioned cache', async () => {
+  let cached;
+  const { installing, opened } = runInstall(async urls => { cached = Array.from(urls); });
+  await installing;
+  assert.deepEqual(cached, sw.urlsToCache);
+  assert.deepEqual(opened, [sw.CACHE_NAME]);
+});
+
+test('install fails when any file fails to cache, so the old version stays in use', async () => {
+  const { installing } = runInstall(async () => { throw new Error('offline'); });
+  await assert.rejects(installing, /offline/);
+});
