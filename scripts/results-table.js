@@ -27,14 +27,15 @@ export function createResultsTable({ onVerify }) {
 		const config = {};
 		entries.forEach(({ sections, protocol }) => {
 			sections.forEach(sectionId => {
-				config[sectionId] = config[sectionId] || { hasBolus: false, hasInfusion: false };
+				config[sectionId] = config[sectionId] || { hasBolus: false };
 				if (protocol.doseRange) config[sectionId].hasBolus = true;
-				if (protocol.infusionRate) config[sectionId].hasInfusion = true;
 			});
 		});
 		return config;
 	}
 
+	// One medication entry is one row: name, then labelled value cells, then the description.
+	// The labels are shown by the stylesheet (data-label), so a row reads without a header line.
 	function buildRow(entry, config) {
 		const { id, label, unit, protocol } = entry;
 		const row = document.createElement('tr');
@@ -47,36 +48,23 @@ export function createResultsTable({ onVerify }) {
 				: rate.perMinute
 					? `${unit}/kg/min`
 					: `${unit}/kg/hr`;
+			const [doseLabel, pumpLabel] = config.hasBolus ? ['Infusion', 'mL/hr'] : ['Current Dose', 'Pump Rate'];
 
-			row.innerHTML += `<td class="${id}-label" style="text-align: left;">
+			row.innerHTML = `<td class="${id}-label name-cell">
 				${label}
-				<br>
-				<span class="${id}-inf" style="font-size: 11px; font-style: italic;">--</span>
+				<span class="${id}-inf current-dose">--</span>
+			</td>
+			<td data-label="${doseLabel}">
+				<input type="number" class="verify-input" id="verify-${id}" placeholder="${doseUnit}" step="any" inputmode="decimal">
+			</td>
+			<td data-label="${pumpLabel}">
+				<span id="verify-out-${id}"></span>
 			</td>`;
-
-			if (config.hasBolus)
-				row.innerHTML += `<td class="empty-cell"></td><td class="empty-cell"></td>`;
-
-			row.innerHTML += `
-				<td style="text-align: center;">
-					<input type="number" class="verify-input" id="verify-${id}" placeholder="${doseUnit}" step="any" inputmode="decimal">
-				</td>
-				<td style="text-align: center;">
-					<span id="verify-out-${id}"></span>
-				</td>
-			`;
 		} else {
-			row.innerHTML += `<td class="${id}-label">${label}</td>`;
+			row.innerHTML = `<td class="${id}-label name-cell">${label}</td>`;
 
-			if (config.hasBolus) {
-				row.innerHTML += protocol.doseRange
-					? `<td class="${id}-dose">--</td><td class="${id}-vol">--</td>`
-					: `<td class="empty-cell"></td><td class="empty-cell"></td>`;
-			}
-
-			if (config.hasInfusion) {
-				row.innerHTML += `<td class="empty-cell"></td><td class="empty-cell"></td>`;
-			}
+			if (protocol.doseRange)
+				row.innerHTML += `<td class="${id}-dose" data-label="Dose">--</td><td class="${id}-vol" data-label="Volume">--</td>`;
 		}
 
 		ref.labelCell = row.getElementsByClassName(`${id}-label`)[0];
@@ -86,37 +74,14 @@ export function createResultsTable({ onVerify }) {
 		ref.verifyInput = row.querySelector('.verify-input');
 		ref.verifyOut = row.querySelector('span[id^="verify-out-"]');
 
+		if (protocol.description) {
+			const desc = document.createElement('td');
+			desc.className = 'desc-cell';
+			desc.innerHTML = protocol.description;
+			row.appendChild(desc);
+		}
+
 		return { row, ref };
-	}
-
-	function descriptionRow(protocol, config) {
-		const descRow = document.createElement('tr');
-		const totalCols = 1 + (config.hasBolus ? 2 : 0) + (config.hasInfusion ? 2 : 0);
-		const td = document.createElement('td');
-
-		td.colSpan = totalCols;
-		td.innerHTML = protocol.description;
-		td.style.textAlign = 'center';
-		td.style.fontSize = '12px';
-
-		descRow.appendChild(td);
-		return descRow;
-	}
-
-	function buildHeaders(config) {
-		Object.entries(config).forEach(([sectionId, c]) => {
-			const thead = document.getElementById(sectionId).closest('table').querySelector('thead tr');
-
-			thead.innerHTML = '<th>Medication</th>';
-
-			if (c.hasBolus)
-				thead.innerHTML += '<th>Dose</th><th>Volume</th>';
-
-			if (c.hasInfusion)
-				thead.innerHTML += c.hasBolus
-					? '<th>Infusion</th><th>mL/hr</th>'
-					: '<th>Current Dose</th><th>Pump Rate</th>';
-		});
 	}
 
 	function build(entries) {
@@ -136,14 +101,9 @@ export function createResultsTable({ onVerify }) {
 				if (ref.verifyInput) {
 					ref.verifyInput.addEventListener('input', () => onVerify(entry.id, parseFloat(ref.verifyInput.value)));
 				}
-
-				if (entry.protocol.description) {
-					tbody.appendChild(descriptionRow(entry.protocol, config[sectionId]));
-				}
 			});
 		});
 
-		buildHeaders(config);
 		clear();
 	}
 

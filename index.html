@@ -32,11 +32,9 @@
 		-->
 		<div id="start-page">
 			<h2 class="page-title">
-				Flight for Life Colorado
-				<br>
-				Dose Calculator
-				<br>
-				<span style="font-size: 24px">
+				<span class="title-org">Flight for Life Colorado</span>
+				<span class="title-name">Dose Calculator</span>
+				<span class="title-year">
 					<img src="icons/icon-192.png" alt="" style="width:1em; height:1em; vertical-align:middle;">
 					2025 Guidelines
 					<img src="icons/icon-192.png" alt="" style="width:1em; height:1em; vertical-align:middle;">
@@ -54,13 +52,9 @@
 				This calculator’s doses are specific and limited to IV/IO guidelines unless explicitly stated.
 			</div>
 
-			<div style="text-align: center;">
+			<div class="profile-grid">
 				<button class="start-button profile-select" data-profile="adult">Adult</button>
-				<br>
-				<br>
 				<button class="start-button profile-select" data-profile="geriatric">Geriatric</button>
-				<br>
-				<br>
 				<button class="start-button profile-select" data-profile="pediatric">Pediatric</button>
 			</div>
 		</div>
@@ -76,7 +70,7 @@
 		<div id="calculator-page" class="page-section">
 
 			<div style="text-align: center;">
-				<button class="start-button" data-action="home">← Back to Start</button>
+				<button class="start-button back-button" data-action="home">← Back to Start</button>
 			</div>
 
 			<!-- PATIENT WEIGHT INPUT -->
@@ -87,12 +81,12 @@
 
 		<!-- SECTION SELECT BUTTONS -->
 		<div id="section-buttons" style="margin: 20px 0; text-align:center;">
-			<div style="display:flex; justify-content:center; gap:10px; margin-bottom:8px;">
-				<button class="start-button section-select" data-section="RSI/DSI">RSI/DSI</button>
-				<button class="start-button section-select" data-section="Pain & Sed.">Pain & Sed.</button>
-				<button class="start-button section-select" data-section="Seizures">Seizures</button>
+			<div class="sb-row">
+				<button class="start-button section-select sb-rsi" data-section="RSI/DSI">RSI/DSI</button>
+				<button class="start-button section-select sb-pain" data-section="Pain & Sed.">Pain & Sed.</button>
+				<button class="start-button section-select sb-sz" data-section="Seizures">Seizures</button>
 			</div>
-			<div style="display:flex; justify-content:center; gap:10px;">
+			<div class="sb-row-all">
 				<button class="start-button section-select" data-section="Show me Everything">Show me Everything</button>
 			</div>
 		</div>
@@ -101,7 +95,6 @@
 			<div class="section-card supportive-agents">
 				<div class="section-title support-section-title">Support</div>
 				<table>
-					<thead><tr></tr></thead>
 					<tbody id="supportive-body"></tbody>
 				</table>
 			</div>
@@ -109,7 +102,6 @@
 			<div class="section-card induction-agents">
 				<div class="section-title induction-section-title">Induction</div>
 				<table>
-					<thead><tr></tr></thead>
 					<tbody id="induction-body"></tbody>
 				</table>
 			</div>
@@ -117,7 +109,6 @@
 			<div class="section-card paralytic-agents">
 				<div class="section-title paralytic-section-title">Paralytic</div>
 				<table>
-					<thead><tr></tr></thead>
 					<tbody id="paralytic-body"></tbody>
 				</table>
 			</div>
@@ -125,7 +116,6 @@
 			<div class="section-card pain-control">
 				<div class="section-title pain-section-title">Pain Control</div>
 				<table>
-					<thead><tr></tr></thead>
 					<tbody id="pain-body"></tbody>
 				</table>
 			</div>
@@ -133,7 +123,6 @@
 			<div class="section-card sedation">
 				<div class="section-title sedation-section-title">Sedation</div>
 				<table>
-					<thead><tr></tr></thead>
 					<tbody id="sedation-body"></tbody>
 				</table>
 			</div>
@@ -142,12 +131,10 @@
 				<div class="section-title mechvent-section-title">Mechanical Ventilation & Infusions</div>
 				<div class="section-subtitle mechvent-section-title">Bolus Medications</div>
 				<table>
-					<thead><tr></tr></thead>
 					<tbody id="vent-bolus-body"></tbody>
 				</table>
 				<div class="section-subtitle mechvent-section-title">Continuous Infusions</div>
 				<table>
-					<thead><tr></tr></thead>
 					<tbody id="vent-inf-body"></tbody>
 				</table>
 			</div>
@@ -157,7 +144,6 @@
 			<div class="section-title seizures-section-title">Seizures</div>
 			<div class="section-subtitle seizures-section-title">First Line Management</div>
 			<table>
-				<thead><tr></tr></thead>
 				<tbody id="seizures-first-body"></tbody>
 			</table>
 		</div>
@@ -166,7 +152,6 @@
 			<div class="section-title seizures-section-title">Seizures</div>
 			<div class="section-subtitle seizures-section-title">Second Line Management</div>
 			<table>
-				<thead><tr></tr></thead>
 				<tbody id="seizures-second-body"></tbody>
 			</table>
 		</div>
@@ -175,13 +160,12 @@
 			<div class="section-title seizures-section-title">Seizures</div>
 			<div class="section-subtitle seizures-section-title">Third Line Management</div>
 			<table>
-				<thead><tr></tr></thead>
 				<tbody id="seizures-third-body"></tbody>
 			</table>
 		</div>
 
 			<div style="text-align: center;">
-				<button class="start-button" data-action="home">← Back to Start</button>
+				<button class="start-button back-button" data-action="home">← Back to Start</button>
 			</div>
 
 		</div>

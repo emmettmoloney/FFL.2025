@@ -61,6 +61,7 @@ function handleSessionChange(type) {
 		document.getElementById("start-page").style.display = "block";
 		weightInput.value = "";
 		confirmedWeight = null;
+		sectionButtons.forEach(b => b.classList.remove('selected'));
 		clearAllOutputs();
 	}
 }
@@ -68,8 +69,11 @@ function handleSessionChange(type) {
 document.querySelectorAll(".profile-select")
 	.forEach(btn => btn.addEventListener('click', () => session.start(btn.dataset.profile)));
 
-document.querySelectorAll('.section-select')
-	.forEach(btn => btn.addEventListener('click', () => session.showSections(btn.dataset.section)));
+const sectionButtons = document.querySelectorAll('.section-select');
+sectionButtons.forEach(btn => btn.addEventListener('click', () => {
+	sectionButtons.forEach(b => b.classList.toggle('selected', b === btn));
+	session.showSections(btn.dataset.section);
+}));
 
 document.querySelectorAll('[data-action="home"]')
 	.forEach(btn => btn.addEventListener('click', () => session.home()));
@@ -155,7 +159,12 @@ function calculateAll() {
 		}
 	});
 
-	table.verifyDoses().forEach(({ id, dose }) => verifyDose(id, dose));
+	// Every infusion row shows its pump rate, or asks for the dose that is still missing
+	const entered = new Map(table.verifyDoses().map(({ id, dose }) => [id, dose]));
+	Object.entries(MEDICATIONS).forEach(([name, med]) => {
+		const protocol = getProtocol(med);
+		if (protocol && protocol.infusionRate) verifyDose(name, entered.has(name) ? entered.get(name) : NaN);
+	});
 }
 
 function verifyDose(name, dose) {

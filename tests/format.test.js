@@ -23,9 +23,9 @@ test('infusion view shows the rate range with its unit', () => {
   assert.equal(v.rate, '700 – 5250 mcg/min');
 });
 
-test('verify view: ok gives text, no-dose gives dashes, over-max gives a warning', () => {
+test('verify view: ok gives text, no-dose asks for a dose, over-max gives a warning', () => {
   assert.deepEqual(verifyView({ status: 'ok', mlHr: 21 }), { text: '21 mL/hr' });
-  assert.deepEqual(verifyView({ status: 'no-dose' }), { text: '--' });
+  assert.deepEqual(verifyView({ status: 'no-dose' }), { text: 'Enter dose' });
   const w = verifyView({ status: 'over-max', mlHr: 42, maxMlHr: 31.5 });
   assert.match(w.html, /42 mL\/hr exceeds guideline max of: 31\.5 mL\/hr/);
 });

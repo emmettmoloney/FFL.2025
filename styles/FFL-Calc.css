@@ -78,6 +78,64 @@ body {
   font-weight: bold;
   text-align: center;
   color: var(--color-accent);
+  margin: 28px 0 22px;
+}
+
+/* Logo in a ring above the title; image sits a little low so the artwork looks centred */
+.page-title::before {
+  content: "";
+  display: block;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  border: 3px solid var(--color-accent);
+  background: #fff url("../icons/icon-192.png") 50% 30% / 120% auto no-repeat;
+}
+
+.title-org {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 640px;
+  margin: 0 auto;
+  font: 600 14px var(--font-body);
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.title-org::before,
+.title-org::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-accent);
+  opacity: .6;
+}
+
+.title-name {
+  display: block;
+  font-size: 48px;
+  color: #fff;
+  margin: 10px 0 14px;
+  letter-spacing: .01em;
+}
+
+.title-year {
+  display: table;
+  margin: 0 auto;
+  border: 1px solid var(--color-accent);
+  border-radius: 999px;
+  padding: 5px 18px;
+  font: 600 13px var(--font-body);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.title-year img {
+  width: 1.5em !important;
+  height: 1.5em !important;
 }
 
 
@@ -138,7 +196,9 @@ body {
   text-align: center;
   font-size: 18px;
   border-radius: 10px;
-  margin-bottom: 20px;
+  max-width: 640px;
+  margin: 0 auto 26px;
+  font-size: 16px;
 }
 
 
@@ -172,6 +232,84 @@ body {
   outline-offset: 2px;
 }
 
+/* Profile buttons: three equal tiles, stacked */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.profile-grid .start-button {
+  margin: 0;
+  height: 110px;
+  font-size: 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #14183a;
+  color: #fff;
+  border: 3px solid var(--color-accent);
+}
+
+.profile-grid .start-button::after {
+  content: "Select \2192";
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.profile-grid .start-button:hover { background: var(--color-accent); color: #000; }
+.profile-grid .start-button:hover::after { color: #000; }
+
+/* Section buttons: even grid, tinted outline, solid when selected */
+.sb-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.sb-row-all { display: grid; grid-template-columns: 1fr; }
+
+.section-select {
+  --c: var(--color-accent);
+  margin: 0;
+  width: 100%;
+  min-height: 58px;
+  padding: 8px 6px;
+  font-size: 18px;
+  line-height: 1.15;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--c) 16%, #151827);
+  color: #fff;
+  border: 2px solid var(--c);
+}
+
+.section-select:hover { background: color-mix(in srgb, var(--c) 34%, #151827); color: #fff; }
+.section-select.selected { background: var(--c); color: #000; }
+
+.sb-rsi  { --c: var(--color-induction); }
+.sb-pain { --c: var(--color-pain); }
+.sb-sz   { --c: var(--color-seizures); }
+
+/* Back to Start: quiet ghost button */
+.back-button {
+  background: transparent;
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
+  font-size: 16px;
+  padding: 8px 20px;
+  margin: 4px 0;
+}
+
+.back-button:hover { background: rgba(234, 155, 86, .22); color: #fff; }
+
 
 /* 
 ------------------------------------------------------------
@@ -194,7 +332,6 @@ body {
   font-weight: bold;
   letter-spacing: 0.1rem;
   text-align: left;
-  text-indent: 25px;
   margin-bottom: 10px;
 }
 
@@ -216,8 +353,7 @@ body {
   font-family: var(--font-mono);
   font-size: 18px;
   text-align: left;
-  text-indent: 100px;
-  margin-top: 10px;
+  margin-top: 12px;
   margin-bottom: 3px;
 }
 
@@ -278,24 +414,83 @@ input[type="number"]::-webkit-inner-spin-button {
    14. Tables
 ------------------------------------------------------------ 
 */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 8px;
-  background-color: rgba(255, 255, 255, 0.8);
-}
-
+/* One medication = one card: name centred on top, then labelled value tiles, then the description. */
 table,
-th,
-td {
-  border: 1px solid black;
-  padding: 6px;
-  font-size: 16px;
-  text-align: center;
+tbody {
+  display: block;
+  margin: 0;
+  padding: 0;
 }
 
-.empty-cell {
-  border: none;
+tbody > tr {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: #f3f5fb;
+  color: #10142a;
+  border-radius: 12px;
+  border-left: 6px solid var(--sec);
+  overflow: hidden;
+}
+
+tbody > tr > td {
+  display: block;
+  padding: 0;
+  border: 0;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.name-cell {
+  grid-column: 1 / -1;
+  text-align: center !important;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.current-dose {
+  display: block;
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  opacity: .8;
+}
+
+td[data-label] {
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 10px !important;
+  border: 2px solid color-mix(in srgb, var(--sec) 55%, #fff) !important;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+td[data-label]::before {
+  content: attr(data-label);
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  opacity: .7;
+  margin-bottom: 2px;
+}
+
+td[data-label] span[id^="verify-out"] { font-size: 22px; }
+
+.desc-cell {
+  grid-column: 1 / -1;
+  order: 9;
+  margin-top: 2px;
+  padding-top: 4px !important;
+  border-top: 1px dashed #b9bfd6 !important;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #3b4160;
 }
 
 
@@ -315,13 +510,13 @@ td {
   margin-top: var(--section-gap);
 }
 
-.supportive-agents { border-left-color: var(--color-support);   }
-.induction-agents  { border-left-color: var(--color-induction); }
-.paralytic-agents  { border-left-color: var(--color-paralytic); }
-.pain-control      { border-left-color: var(--color-pain);      }
-.sedation          { border-left-color: var(--color-sedation);  }
-.mechvent          { border-left-color: var(--color-mechvent);  }
-.seizures          { border-left-color: var(--color-seizures);  }
+.supportive-agents { --sec: var(--color-support); border-left-color: var(--color-support);   }
+.induction-agents  { --sec: var(--color-induction); border-left-color: var(--color-induction); }
+.paralytic-agents  { --sec: var(--color-paralytic); border-left-color: var(--color-paralytic); }
+.pain-control      { --sec: var(--color-pain); border-left-color: var(--color-pain);      }
+.sedation          { --sec: var(--color-sedation); border-left-color: var(--color-sedation);  }
+.mechvent          { --sec: var(--color-mechvent); border-left-color: var(--color-mechvent);  }
+.seizures          { --sec: var(--color-seizures); border-left-color: var(--color-seizures);  }
 
 
 /* 
@@ -331,12 +526,14 @@ td {
 */
 
 .verify-input {
-  width: 100px;
-  height: 28px;
-  font-size: 16px; /* below 16px iOS zooms the page when the field is focused */
-  text-align: center;
-  margin-top: 0;
-  margin-left: 6px;
+  display: block;
+  width: 100%;
+  max-width: 150px;
+  height: 44px;
+  font-size: 20px; /* below 16px iOS zooms the page when the field is focused */
+  text-align: left;
+  padding: 0 8px;
+  margin: 4px 0 0;
 }
 
 .verify-input:focus {
@@ -357,13 +554,14 @@ td {
 
   .section-title {
     font-size: 18px;
-    text-indent: 12px;
   }
 
   .section-subtitle {
     font-size: 15px;
-    text-indent: 20px;
   }
+
+  .title-name { font-size: 34px; }
+  .title-org  { letter-spacing: .18em; font-size: 12px; }
 
   .start-button {
     font-size: 16px;
@@ -379,13 +577,6 @@ td {
   input {
     width: 100px;
     font-size: 18px;
-  }
-
-  table,
-  th,
-  td {
-    font-size: 13px;
-    padding: 4px;
   }
 
   .warning-box {
@@ -404,13 +595,9 @@ td {
 
   .section-title {
     font-size: 16px;
-    text-indent: 8px;
   }
 
-  table,
-  th,
-  td {
-    font-size: 11px;
-    padding: 3px;
-  }
+  .title-name { font-size: 30px; }
+
+  .section-select { font-size: 14px; min-height: 54px; }
 }
