@@ -63,6 +63,7 @@ body {
 .container {
   max-width: 1100px;
   margin: auto;
+  padding-bottom: 40px; /* keeps the fixed version footer clear of the last button */
 }
 
 
@@ -331,8 +332,8 @@ td {
 
 .verify-input {
   width: 100px;
-  height: 22px;
-  font-size: 14px;
+  height: 28px;
+  font-size: 16px; /* below 16px iOS zooms the page when the field is focused */
   text-align: center;
   margin-top: 0;
   margin-left: 6px;

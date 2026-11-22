@@ -59,7 +59,7 @@ export function createResultsTable({ onVerify }) {
 
 			row.innerHTML += `
 				<td style="text-align: center;">
-					<input type="number" class="verify-input" id="verify-${id}" placeholder="${doseUnit}">
+					<input type="number" class="verify-input" id="verify-${id}" placeholder="${doseUnit}" step="any" inputmode="decimal">
 				</td>
 				<td style="text-align: center;">
 					<span id="verify-out-${id}"></span>
