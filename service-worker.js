@@ -6,6 +6,7 @@ const urlsToCache = [
   './',
   './index.html',
   './scripts/FFL-Calc.js',
+  './scripts/dose.js',
   './styles/FFL-Calc.css',
   './manifest.json',
   './icons/icon-192.png',

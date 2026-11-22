@@ -1,3 +1,4 @@
+import { MAX_WEIGHT, weightStatus, computeBolus, computeInfusion, verifyInfusion } from './dose.js';
 
 /* 
 ======================================================
@@ -941,18 +942,7 @@ function formatDose(num) {
 document.getElementById("weightInput")
 	.addEventListener("input", calculateAll);
 
-/* 
-======================================================
-		MAXIMUM WEIGHTS PER PROFILE
-====================================================== 
-*/
-const MAX_WEIGHT = {
-	adult: 200,
-	geriatric: 150,
-	pediatric: 90,
-};
-
-/* 
+/*
 ======================================================
 		DOSE CALCULATION ENGINE
 ====================================================== 
@@ -966,9 +956,8 @@ function calculateAll() {
 		return;
 	}
 
-	const maxWeight = MAX_WEIGHT[currentProfile];
-	if (weight > maxWeight) {
-		const override = confirm(`${weight} kg exceeds the ${currentProfile} profile maximum of ${maxWeight} kg.\n\nPress OK to proceed with entered weight\n or\n Press Cancel to re-enter weight.`);
+	if (weightStatus(currentProfile, weight) === 'over-max') {
+		const override = confirm(`${weight} kg exceeds the ${currentProfile} profile maximum of ${MAX_WEIGHT[currentProfile]} kg.\n\nPress OK to proceed with entered weight\n or\n Press Cancel to re-enter weight.`);
 		if (!override) {
 			document.getElementById("weightInput").value = '';
 			clearAllOutputs();
@@ -982,70 +971,36 @@ function calculateAll() {
 		if (!protocol) return;
 		/* ----- Bolus Medications ----- */
 		if (protocol.doseRange) {
-			const dr = protocol.doseRange;
-
-			let minDose = dr.min;
-			let maxDose = dr.max;
-
-			if (dr.absolute) {
-				minDose = dr.min;
-				maxDose = dr.max;
-			}
-			else {
-				minDose = weight * dr.min;
-				maxDose = weight * dr.max;
-			}
-
-			let capped = false;
-
-			if (typeof dr.maxTotal === "number") {
-				if (minDose > dr.maxTotal) { minDose = dr.maxTotal; capped = true; }
-				if (maxDose > dr.maxTotal) { maxDose = dr.maxTotal; capped = true; }
-			}
+			const r = computeBolus(med, protocol, weight);
 
 			const baseLabel = med.label || name;
-			
-			updateHTML(`${name}-label`, capped
+
+			updateHTML(`${name}-label`, r.capped
 			? `${baseLabel} || <span style="color:red;"><span style="font-size:0.9em;">⚠️</span> Dose Cap <span style="font-size:0.9em;">⚠️</span></span>`
 			: baseLabel);
 
-			if (minDose === maxDose) {
+			if (r.min === r.max) {
 				update(`${name}-dose`,
-					`${formatDose(minDose)} ${med.unit}`);
+					`${formatDose(r.min)} ${med.unit}`);
 				update(`${name}-vol`,
-					`${formatDose(minDose/med.concentration)} mL`);
+					`${formatDose(r.minMl)} mL`);
 			}
 			else {
 				update(`${name}-dose`,
-					`${formatDose(minDose)} – ${formatDose(maxDose)} ${med.unit}`);
+					`${formatDose(r.min)} – ${formatDose(r.max)} ${med.unit}`);
 				update(`${name}-vol`,
-					`${formatDose(minDose/med.concentration)} – ${formatDose(maxDose/med.concentration)} mL`);
+					`${formatDose(r.minMl)} – ${formatDose(r.maxMl)} mL`);
 			}
 		}
 /* ----- Infusion (single or range) ----- */
 		if (protocol.infusionRate) {
-			const rate = protocol.infusionRate;
-
-			let minDose = rate.min;
-			let maxDose = rate.max;
-
-			if (!rate.absolute) {
-				minDose = weight * rate.min;
-				maxDose = weight * rate.max;
-			}
-
-			const activeUnit = protocol.unit || med.unit;
-			const scalar = rate.perMinute ? 60 : 1;
-			const minDoseHr = rate.absolute ? minDose : minDose * scalar;
-			const maxDoseHr = rate.absolute ? maxDose : maxDose * scalar;
-			const doseUnit = rate.perMinute ? `${activeUnit}/min` : `${activeUnit}/hr`;
-			const unitConversion = ((activeUnit === "mcg") && (med.unit === "mg")) ? 0.001 : 1;
+			const r = computeInfusion(med, protocol, weight);
 
 			update(`${name}-inf`,
-				`${formatDose(minDose)} – ${formatDose(maxDose)} ${doseUnit}`);
+				`${formatDose(r.min)} – ${formatDose(r.max)} ${r.rateUnit}`);
 
 			update(`${name}-mlhr`,
-				`${formatDose((minDoseHr * unitConversion)/med.concentration)} – ${formatDose((maxDoseHr * unitConversion)/med.concentration)} mL/hr`);
+				`${formatDose(r.minMlHr)} – ${formatDose(r.maxMlHr)} mL/hr`);
 		}
 	});
 	Object.keys(MEDICATIONS).forEach(name => {
@@ -1077,45 +1032,21 @@ function calculateVerify(name) {
 		return;
 	};
 
-	const rate = protocol.infusionRate;
-	const activeUnit = protocol.unit || med.unit;
-	const weight = parseFloat(document.getElementById("weightInput").value) || 0;  
-	const unitConversion = (activeUnit === "mcg" && med.unit === "mg") ? 0.001 : 1;
+	const weight = parseFloat(document.getElementById("weightInput").value) || 0;
+	const r = verifyInfusion(med, protocol, weight, dose);
 
-	let mlHr;
-
-	if (rate.absolute) {
-		mlHr = (dose * unitConversion) / med.concentration;
-	} else if (rate.perMinute) {
-		mlHr = (dose * unitConversion * weight * 60) / med.concentration;
-	} else {
-		mlHr = (dose * unitConversion * weight) / med.concentration;
+	if (r.status === 'over-max') {
+		output.innerHTML = `
+			<span style="color:red; font-size: 14px;">
+				<span style="font-size:0.9em;">⚠️</span>
+				${formatDose(r.mlHr)} mL/hr exceeds guideline max of: ${formatDose(r.maxMlHr)} mL/hr
+				<span style="font-size:0.9em;">⚠️</span>
+			</span>
+		`;
+		return;
 	};
 
-	if (typeof rate.maxRate === "number") {
-		let maxMlHr = rate.absolute;
-
-		if (rate.absolute) {
-			maxMlHr = (rate.maxRate * unitConversion) / med.concentration;
-		} else if (rate.perMinute) {
-			maxMlHr = (rate.maxRate * unitConversion * weight * 60) / med.concentration;
-		} else {
-			maxMlHr = (rate.maxRate * unitConversion * weight) / med.concentration;
-		};
-	
-		if (dose > rate.maxRate) {
-			output.innerHTML = `
-				<span style="color:red; font-size: 14px;">
-					<span style="font-size:0.9em;">⚠️</span>
-					${formatDose(mlHr)} mL/hr exceeds guideline max of: ${formatDose(maxMlHr)} mL/hr
-					<span style="font-size:0.9em;">⚠️</span>
-				</span>
-			`;
-			return;
-		};
-	};
-
-	output.textContent = `${formatDose(mlHr)} mL/hr`;
+	output.textContent = `${formatDose(r.mlHr)} mL/hr`;
 }
 
 /* 
@@ -1158,3 +1089,13 @@ function updateHTML(cls, val) {
 		els[i].innerHTML = val; 
 	}
 }
+
+/* 
+======================================================
+		TEMPORARY: module-scope glue (removed when the
+		session module replaces goHome and currentProfile)
+====================================================== 
+*/
+window.goHome = goHome;
+export { calculateAll, calculateVerify, MEDICATIONS };
+export function setProfileForHarness(profile) { currentProfile = profile; }
