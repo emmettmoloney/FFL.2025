@@ -466,9 +466,9 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 		concentration: 10,
 		unit: "mg",
 		protocols: {
-			adult: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg, Repeat dose: 0.5 mg-kg IV Q 20-30 min PRN to maintain paralysis" },
-			geriatric: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg, Repeat dose: 0.5 mg-kg IV Q 20-30 min PRN to maintain paralysis"},
-			pediatric: { doseRange: { min: 0.5, max: 0.5 }, description: "0.5 mg/kg, Repeat dose: 0.5 mg-kg IV Q 20-30 min PRN to maintain paralysis"},
+			adult: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg, Repeat dose: 0.5 mg/kg IV Q 20-30 min PRN to maintain paralysis" },
+			geriatric: { doseRange: { min: 1, max: 1 }, description: "1 mg/kg, Repeat dose: 0.5 mg/kg IV Q 20-30 min PRN to maintain paralysis"},
+			pediatric: { doseRange: { min: 0.5, max: 0.5 }, description: "0.5 mg/kg, Repeat dose: 0.5 mg/kg IV Q 20-30 min PRN to maintain paralysis"},
 		},
 	},
 
@@ -594,8 +594,8 @@ NEED TO FIND OUT WHAT/IF WE ARE GOING TO BE CARRYING FOR TYLENOL
 		concentration: 130,
 		unit: "mg",
 		protocols: {
-			adult: { doseRange: {min: 15, max: 15, maxTotal: 4500 }, description: "15 mg/kg IV, at 60 mg/min" },
-			geriatric: { doseRange: {min: 15, max: 15, maxTotal: 4500 }, description: "15 mg/kg IV, at 60 mg/min" },
+			adult: { doseRange: {min: 15, max: 15 }, description: "15 mg/kg IV, at 60 mg/min" },
+			geriatric: { doseRange: {min: 15, max: 15 }, description: "15 mg/kg IV, at 60 mg/min" },
 			pediatric: { doseRange: {min: 20, max: 20, maxTotal: 1000 }, description: "20 mg/kg IV, at 2 mg/kg/min. MR at 5 mg/kg Q 10-15 min to total of 40 mg/kg" },
 		},
 	},
