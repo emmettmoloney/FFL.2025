@@ -1,6 +1,6 @@
 // service-worker.js
-const CACHE_NAME = 'ffl-calc-v3.0.10'          /* UPDATE CACHE NAME		'ffl-calc-vX.X' */
 const VERSION =              '3.0.10'          /* UPDATE VERSION		    'X.X'		        */
+const CACHE_NAME = `ffl-calc-v${VERSION}`      /* built from VERSION: one edit per release */
 const UPDATE_DATE = '9.15 1952'               /*  'DATE OF UPLOAD'		                */
 const urlsToCache = [
   './',
@@ -10,6 +10,7 @@ const urlsToCache = [
   './scripts/format.js',
   './scripts/results-table.js',
   './scripts/registry.js',
+  './scripts/release.js',
   './data/medications.js',
   './styles/FFL-Calc.css',
   './manifest.json',

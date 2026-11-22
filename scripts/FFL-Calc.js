@@ -3,6 +3,7 @@ import { bolusView, infusionView, verifyView } from './format.js';
 import { createResultsTable } from './results-table.js';
 import { MEDICATIONS } from '../data/medications.js';
 import { protocolFor, entriesFor, validateRegistry } from './registry.js';
+import { initRelease } from './release.js';
 
 /* 
 ======================================================
@@ -208,5 +209,6 @@ function clearAllOutputs() {
 ====================================================== 
 */
 window.goHome = goHome;
+initRelease({ navigator, window, document });
 export { calculateAll, MEDICATIONS };
 export function setProfileForHarness(profile) { currentProfile = profile; }
