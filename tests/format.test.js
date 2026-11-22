@@ -29,3 +29,7 @@ test('verify view: ok gives text, no-dose gives dashes, over-max gives a warning
   const w = verifyView({ status: 'over-max', mlHr: 42, maxMlHr: 31.5 });
   assert.match(w.html, /42 mL\/hr exceeds guideline max of: 31\.5 mL\/hr/);
 });
+
+test('verify view: no weight asks for a weight', () => {
+  assert.deepEqual(verifyView({ status: 'needs-weight' }), { text: 'Enter weight' });
+});

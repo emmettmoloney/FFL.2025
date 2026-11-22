@@ -9,7 +9,7 @@
     table.showBolus(id, view)       view: {label, dose, vol}
     table.showInfusion(id, view)    view: {rate}
     table.showVerify(id, view)      view: {text} | {html}
-    table.clear()
+    table.clear()                   no weight: bolus cells '--', infusion cells 'Enter weight'
     table.verifyDoses()             -> [{id, dose}] for verify inputs that hold a value
     onVerify(id, dose)              called when a verify input changes (dose is a number or NaN)
 
@@ -18,6 +18,7 @@
 */
 
 export function createResultsTable({ onVerify }) {
+	const ENTER_WEIGHT = 'Enter weight';
 	const rows = new Map(); // id -> [{labelCell, label, doseCell, volCell, infSpan, verifyInput, verifyOut}]
 
 	const refsFor = id => rows.get(id) || [];
@@ -143,6 +144,7 @@ export function createResultsTable({ onVerify }) {
 		});
 
 		buildHeaders(config);
+		clear();
 	}
 
 	function showBolus(id, view) {
@@ -165,14 +167,16 @@ export function createResultsTable({ onVerify }) {
 		});
 	}
 
+	// No weight: bolus cells show '--', infusion cells ask for a weight.
+	// Infusion label cells also hold the current-dose span, so only bolus labels are reset.
 	function clear() {
 		rows.forEach(refs => refs.forEach(ref => {
-			if (ref.labelCell) ref.labelCell.innerHTML = ref.label;
+			if (ref.labelCell && !ref.infSpan) ref.labelCell.innerHTML = ref.label;
 			if (ref.doseCell) ref.doseCell.textContent = '--';
 			if (ref.volCell) ref.volCell.textContent = '--';
-			if (ref.infSpan) ref.infSpan.textContent = '--';
+			if (ref.infSpan) ref.infSpan.textContent = ENTER_WEIGHT;
 			if (ref.verifyInput) ref.verifyInput.value = '';
-			if (ref.verifyOut) ref.verifyOut.textContent = '--';
+			if (ref.verifyOut) ref.verifyOut.textContent = ENTER_WEIGHT;
 		}));
 	}
 

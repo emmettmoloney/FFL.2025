@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { computeBolus, computeInfusion, verifyInfusion, weightStatus } from '../scripts/dose.js';
+import { computeBolus, computeInfusion, verifyInfusion, weightStatus, weightDecision } from '../scripts/dose.js';
 
 const near = (a, b) => assert.ok(Math.abs(a - b) < 1e-9, `${a} !~ ${b}`);
 
@@ -109,4 +109,32 @@ test('weightStatus compares against the profile maximum', () => {
   assert.equal(weightStatus('geriatric', 151), 'over-max');
   assert.equal(weightStatus('pediatric', 90), 'ok');
   assert.equal(weightStatus('pediatric', 91), 'over-max');
+});
+
+/* ---- no weight, no calculation ---- */
+test('verify: with no weight entered nothing is calculated, even for absolute rates', () => {
+  const weighted = { concentration: 10000, unit: 'mcg' };
+  const weightedProto = { infusionRate: { perMinute: true, min: 10, max: 75, maxRate: 75 } };
+  const absolute = { concentration: 10, unit: 'mcg' };
+  const absoluteProto = { infusionRate: { absolute: true, min: 25, max: 200, maxRate: 200 } };
+  for (const w of [0, NaN, -1, undefined]) {
+    assert.equal(verifyInfusion(weighted, weightedProto, w, 50).status, 'needs-weight');
+    assert.equal(verifyInfusion(absolute, absoluteProto, w, 50).status, 'needs-weight');
+  }
+});
+
+/* ---- weight decision ---- */
+test('weightDecision: blank, zero or negative weight is none', () => {
+  for (const w of [NaN, 0, -3, undefined]) assert.equal(weightDecision('adult', w, null), 'none');
+});
+
+test('weightDecision: weight within the maximum is ok', () => {
+  assert.equal(weightDecision('adult', 200, null), 'ok');
+  assert.equal(weightDecision('pediatric', 3.5, null), 'ok');
+});
+
+test('weightDecision: weight above the maximum needs confirmation until that exact weight is confirmed', () => {
+  assert.equal(weightDecision('pediatric', 95, null), 'needs-confirm');
+  assert.equal(weightDecision('pediatric', 95, 90), 'needs-confirm');
+  assert.equal(weightDecision('pediatric', 95, 95), 'ok');
 });

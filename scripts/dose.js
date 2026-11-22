@@ -4,11 +4,13 @@
 ------------------------------------------------------
   Interface:
     weightStatus(profile, weight)             -> 'ok' | 'over-max'
+    weightDecision(profile, weight, confirmedWeight)
+                                              -> 'none' | 'ok' | 'needs-confirm'
     computeBolus(med, protocol, weight)       -> {min, max, minMl, maxMl, capped}
     computeInfusion(med, protocol, weight)    -> {min, max, rateUnit, minMlHr, maxMlHr}
     verifyInfusion(med, protocol, weight, dose)
                                               -> {status, mlHr, maxMlHr}
-                                                 status: 'ok' | 'over-max' | 'no-dose'
+                                                 status: 'ok' | 'over-max' | 'no-dose' | 'needs-weight'
 
   All numbers are unrounded. Rounding and text belong to the caller.
   The medication's concentration is per mL in the medication's unit.
@@ -23,6 +25,16 @@ export const MAX_WEIGHT = {
 
 export function weightStatus(profile, weight) {
 	return weight > MAX_WEIGHT[profile] ? 'over-max' : 'ok';
+}
+
+// What to do with the weight in the weight field.
+//   'none'          no usable weight: show no calculation
+//   'needs-confirm' above the profile maximum and not yet confirmed: show no calculation, ask the user
+//   'ok'            calculate
+export function weightDecision(profile, weight, confirmedWeight) {
+	if (!(weight > 0)) return 'none';
+	if (weightStatus(profile, weight) === 'over-max' && weight !== confirmedWeight) return 'needs-confirm';
+	return 'ok';
 }
 
 // Only mcg-on-a-mg-medication is converted. The registry validator rejects other mismatches.
@@ -75,6 +87,7 @@ function doseToMlHr(med, protocol, weight, dose) {
 }
 
 export function verifyInfusion(med, protocol, weight, dose) {
+	if (!(weight > 0)) return { status: 'needs-weight' };
 	if (!dose || dose <= 0) return { status: 'no-dose' };
 
 	const rate = protocol.infusionRate;

@@ -9,6 +9,7 @@
     bolusView(label, unit, result)           -> {label, dose, vol}
     infusionView(result)                     -> {rate}
     verifyView(result)                       -> {text} | {html}
+                                                (no weight -> 'Enter weight')
 ======================================================
 */
 
@@ -34,6 +35,7 @@ export function infusionView(r) {
 }
 
 export function verifyView(r) {
+	if (r.status === 'needs-weight') return { text: 'Enter weight' };
 	if (r.status === 'no-dose') return { text: '--' };
 	if (r.status === 'over-max') {
 		return { html: `
