@@ -15,7 +15,7 @@ test('bolus view shows a range when min differs from max', () => {
 
 test('capped bolus adds the dose cap warning to the label', () => {
   const v = bolusView('Fentanyl', 'mcg', { min: 100, max: 100, minMl: 2, maxMl: 2, capped: true });
-  assert.match(v.label, /^Fentanyl \|\| .*Dose Cap/);
+  assert.match(v.label, /^Fentanyl<br>.*Dose Cap/);
 });
 
 test('infusion view shows the rate range with its unit', () => {

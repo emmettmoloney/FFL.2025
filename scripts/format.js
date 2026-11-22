@@ -28,7 +28,7 @@ const range = (min, max, fmt) =>
 export function bolusView(baseLabel, unit, r) {
 	return {
 		label: r.capped
-			? `${baseLabel} || <span style="color:red;"><span style="font-size:0.9em;">⚠️</span> Dose Cap <span style="font-size:0.9em;">⚠️</span></span>`
+			? `${baseLabel}<br><span style="color:red;"><span style="font-size:0.9em;">⚠️</span> Dose Cap <span style="font-size:0.9em;">⚠️</span></span>`
 			: baseLabel,
 		dose: `${range(r.min, r.max, formatDose)} ${unit}`,
 		vol: `${range(r.minMl, r.maxMl, formatMl)} mL`,
